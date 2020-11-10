@@ -86,12 +86,16 @@ export default defineComponent({
 
 <style scoped>
 .welcome-steps {
-  height: 100%;
+  height: 400px;
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
+}
+
+.welcome-steps .row {
+  flex: initial;
 }
 
 .step-slide-enter-active {
