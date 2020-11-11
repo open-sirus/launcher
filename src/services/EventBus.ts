@@ -2,6 +2,7 @@ import { IpcMain, IpcRenderer } from 'electron'
 
 import { LauncherEvent, EventData } from '@/events/LauncherEvent'
 import { LauncherListener } from '@/events/LauncherListener'
+import { TrayEvent } from '@/events/tray/trayEvent'
 
 export type IpcCallback = ({
   event,
@@ -32,8 +33,8 @@ export abstract class Ipc {
 }
 
 class EventBus {
-  protected events: Map<LauncherEvent, Array<LauncherListener>> = new Map<
-    LauncherEvent,
+  protected events: Map<LauncherEvent | TrayEvent, Array<LauncherListener>> = new Map<
+    LauncherEvent | TrayEvent,
     Array<LauncherListener>
   >()
 
@@ -48,7 +49,7 @@ class EventBus {
     })
   }
 
-  on(event: LauncherEvent, listener: LauncherListener) {
+  on(event: LauncherEvent | TrayEvent, listener: LauncherListener) {
     const listeners = this.events.get(event)
     if (!listeners) {
       this.events.set(event, [listener])
