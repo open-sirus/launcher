@@ -8,20 +8,20 @@ import {
   FileValidationProgress,
 } from '@/services/FileManageService'
 import eventService from '@/background/EventService'
-import Files from '@/services/Files'
+import { getFileHash, isCorrectFile } from '@/utils/files'
 
 jest.mock('@/background/EventService')
-jest.mock('@/services/Files')
+jest.mock('@/utils/files')
 
-describe('Client action events', () => {
+describe('File manage service tests', () => {
   const MockedEventService = mocked(eventService, true)
-  const MockedFiles = mocked(Files, true)
+  const MockedGetFileHash = mocked(getFileHash)
+  const MockedIsCorrectFile = mocked(isCorrectFile)
 
   beforeEach(() => {
     MockedEventService.emit.mockClear()
-    MockedFiles.exists.mockClear()
-    MockedFiles.isCorrectFile.mockClear()
-    MockedFiles.getFileHash.mockClear()
+    MockedGetFileHash.mockClear()
+    MockedIsCorrectFile.mockClear()
   })
 
   const RAW_FILES = [
@@ -51,12 +51,12 @@ describe('Client action events', () => {
 
     expect.assertions(2)
 
-    MockedFiles.isCorrectFile.mockReturnValueOnce(
+    MockedIsCorrectFile.mockReturnValueOnce(
       new Promise<boolean>((resolve) => resolve(false))
     )
 
     expect(await service.isValidFile(files[0])).toBeFalsy()
-    expect(MockedFiles.getFileHash).not.toBeCalled()
+    expect(MockedGetFileHash).not.toBeCalled()
   })
 
   it('calculate and compare hash if size same', async () => {
@@ -65,18 +65,18 @@ describe('Client action events', () => {
 
     expect.assertions(2)
 
-    MockedFiles.isCorrectFile.mockReturnValueOnce(
+    MockedIsCorrectFile.mockReturnValueOnce(
       new Promise<boolean>((resolve) => resolve(true))
     )
 
-    MockedFiles.getFileHash.mockReturnValueOnce(
+    MockedGetFileHash.mockReturnValueOnce(
       new Promise<string>((resolve) =>
         resolve('393ABCBA77B8E369DD83109CBA76A285'.toLocaleLowerCase())
       )
     )
 
     expect(await service.isValidFile(files[0])).toBeTruthy()
-    expect(MockedFiles.getFileHash).toBeCalled()
+    expect(MockedGetFileHash).toBeCalled()
   })
 
   it('files validated and event published', async () => {

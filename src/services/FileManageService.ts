@@ -1,10 +1,10 @@
-import Files from '@/services/Files'
 import LauncherFile, {
   FileStatus,
   IValidatableFile,
 } from '@/entities/LauncherFile'
 import eventService from '@/background/EventService'
 import LauncherEvent from '@/events/LauncherEvent'
+import { getFileHash, isCorrectFile } from '@/utils/files'
 
 export class FileValidationProgress {
   private done: number
@@ -40,13 +40,11 @@ export class FileManageService {
   }
 
   async isValidFile(file: IValidatableFile) {
-    if (!(await Files.isCorrectFile(file.filePath, file.size, null))) {
+    if (!(await isCorrectFile(file.filePath, file.size))) {
       return false
     }
 
-    return (
-      (await Files.getFileHash(file.filePath)) === file.hash.toLocaleLowerCase()
-    )
+    return (await getFileHash(file.filePath)) === file.hash.toLocaleLowerCase()
   }
 
   async validate(clientPath: string, files: Array<LauncherFile>) {

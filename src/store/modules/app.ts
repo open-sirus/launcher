@@ -14,6 +14,7 @@ enum DownloadErrors {
 
 interface IFile {
   isDownloading: boolean
+  isIncomplete: boolean
   path: string
   md5: string
   size: number

@@ -46,7 +46,7 @@ export async function getFileHash(
       resolve(hash.digest('hex').toLocaleLowerCase())
     })
 
-    fileStream.on('error', error => {
+    fileStream.on('error', (error) => {
       reject(error)
     })
   })

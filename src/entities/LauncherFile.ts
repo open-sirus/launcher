@@ -19,7 +19,7 @@ export enum FileStatus {
 
   DOWNLOADING,
   DOWNLOADED,
-  DOWNLOAD_FAILED
+  DOWNLOAD_FAILED,
 }
 
 export default class LauncherFile

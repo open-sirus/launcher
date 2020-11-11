@@ -109,7 +109,7 @@ describe('File list receive', () => {
   })
 
   it.skip('cleanup incomplete downloads after restart', async () => {
-    store.commit('SET_LAUNCHER_FILES', incompleteFiles)
+    store.commit('app/SET_LAUNCHER_FILES', incompleteFiles)
 
     expect(
       store.state.app.launcherFiles.filter((f) => f.isIncomplete).length
@@ -126,7 +126,7 @@ describe('File list receive', () => {
   })
 
   it.skip('list should not be changed if error occurred', async () => {
-    store.commit('SET_FILES', RESPONSE.patches)
+    store.commit('app/SET_FILES', RESPONSE.patches)
 
     nock(baseURL)
       .get('/api/client/patches')
@@ -144,13 +144,13 @@ describe('File list receive', () => {
 
   it('event should not be emitted if file list the same', async () => {
     expect.assertions(1)
-    store.commit('SET_FILES', RESPONSE.patches)
+    store.commit('app/SET_FILES', RESPONSE.patches)
 
     nock('https://api.sirus.su/')
       .get('/api/client/patches')
       .reply(200, { data: RESPONSE })
 
-    await store.dispatch('loadFiles')
+    await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).not.toBeCalled()
   })
 
@@ -161,7 +161,7 @@ describe('File list receive', () => {
       .get('/api/client/patches')
       .reply(200, { data: RESPONSE })
 
-    await store.dispatch('loadFiles')
+    await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).toBeCalledWith(
       LauncherEvent.FILE_LIST_UPDATED,
       RESPONSE.patches
@@ -169,7 +169,7 @@ describe('File list receive', () => {
   })
 
   it('event should be emitted if list of files has different size', async () => {
-    store.commit('SET_FILES', RESPONSE.patches)
+    store.commit('app/SET_FILES', RESPONSE.patches)
     expect.assertions(1)
 
     const patches = [RESPONSE.patches[0], RESPONSE.patches[1]]
@@ -178,7 +178,7 @@ describe('File list receive', () => {
       .get('/api/client/patches')
       .reply(200, { data: { patches, delete: RESPONSE.delete } })
 
-    await store.dispatch('loadFiles')
+    await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).toBeCalledWith(
       LauncherEvent.FILE_LIST_UPDATED,
       patches
@@ -186,7 +186,7 @@ describe('File list receive', () => {
   })
 
   it('event should be emitted if one of fields changed', async () => {
-    store.commit('SET_FILES', RESPONSE.patches)
+    store.commit('app/SET_FILES', RESPONSE.patches)
     expect.assertions(1)
 
     const patches = [...RESPONSE.patches]
@@ -196,7 +196,7 @@ describe('File list receive', () => {
       .get('/api/client/patches')
       .reply(200, { data: { patches, delete: RESPONSE.delete } })
 
-    await store.dispatch('loadFiles')
+    await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).toBeCalledWith(
       LauncherEvent.FILE_LIST_UPDATED,
       patches
