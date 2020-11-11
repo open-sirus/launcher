@@ -1,6 +1,8 @@
-import { ActionTree, GetterTree, Module, MutationTree } from 'vuex'
+import { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
 
 import { axios } from '@/modules/axios'
+import { modulesFactory } from '@/utils/modulesFactory'
+import { Langs } from '@/types/lang'
 import eventService from '@/services/EventService'
 import LauncherEvent from '@/events/LauncherEvent'
 
@@ -10,18 +12,25 @@ enum DownloadErrors {
   ALREADY_IN_PROGRESS = 'ALREADY_IN_PROGRESS',
 }
 
+interface IFile {
+  isDownloading: boolean
+  path: string
+  md5: string
+  size: number
+  filename: string
+  host: string
+}
+
+interface IAvailableLocale {
+  key: Langs
+  lang: string
+}
+
 export interface IAppState {
-  files?: Array<{
-    isDownloading: boolean
-    path: string
-    md5: string
-    size: number
-    filename: string
-    host: string
-  }> // TODO: make normal type
-  filesToRemove: Array<{ isDownloading: boolean }>
-  launcherFiles: Array<{ isDownloading: boolean }>
-  availableLocales: Array<{ key: 'ru' | 'en'; lang: string }>
+  files?: Array<IFile>
+  filesToRemove: Array<IFile>
+  launcherFiles: Array<IFile>
+  availableLocales: Array<IAvailableLocale>
   errors: DownloadErrors | null
 }
 
@@ -30,8 +39,8 @@ const state: IAppState = {
   filesToRemove: [],
   launcherFiles: [],
   availableLocales: [
-    { key: 'en', lang: 'English' },
-    { key: 'ru', lang: 'Русский' },
+    { key: Langs.EN, lang: 'English' },
+    { key: Langs.RU, lang: 'Русский' },
   ],
   errors: null,
 }
@@ -55,7 +64,12 @@ const mutations: MutationTree<IAppState> = {
   },
 }
 
-const actions: ActionTree<IAppState, IRootState> = {
+export interface IAppActions extends ActionTree<IAppState, IRootState> {
+  loadFiles: (ctx: ActionContext<IAppState, IRootState>) => Promise<void>
+  initialStart: (ctx: ActionContext<IAppState, IRootState>) => Promise<void>
+}
+
+const actions: IAppActions = {
   async loadFiles({ commit, state }) {
     if (state.launcherFiles.find((f) => f.isDownloading)) {
       commit('SET_ERROR', DownloadErrors.ALREADY_IN_PROGRESS)
@@ -92,11 +106,17 @@ const actions: ActionTree<IAppState, IRootState> = {
   },
 }
 
-const getters: GetterTree<IAppState, IRootState> = {}
+export interface IAppGetters extends GetterTree<IAppState, IRootState> {
+  availableLocales: (state: IAppState) => Array<IAvailableLocale>
+}
 
-export const appModule: Module<IAppState, IRootState> = {
+const getters: IAppGetters = {
+  availableLocales: (state) => state.availableLocales,
+}
+
+export const appModule = modulesFactory<IAppState, IRootState>({
   state,
   mutations,
   actions,
   getters,
-}
+})

@@ -1,54 +1,86 @@
 <template>
   <div>
-    <v-container pa-0 class="accounts-block">
-      <v-list flat>
-        <v-list-item-group>
-          <v-list-item
-            v-for="account in accounts"
-            :key="account.id"
-            :class="{ 'v-item--active': defaultAccount.id === account.id }"
-            @click="setDefaultAccount(account)"
-            dense
+    <v-container class="accounts-block">
+      <v-row
+        v-for="account in accounts"
+        :key="account.id"
+        :class="{ 'row-active': setActiveClass(account) }"
+        dense
+        v-ripple
+        justify="space-around"
+        align="center"
+      >
+        <v-col cols="8" order="1" class="accounts-block__main-btn">
+          <v-btn
+            pa-0
+            block
+            text
+            tile
+            :disabled="account.tokenIsExpired"
+            @click.stop="setDefaultAccount(account)"
+            :ripple="false"
           >
-            <v-list-item-action>
-              <v-icon v-if="defaultAccount.id === account.id"
-                >mdi-account-check</v-icon
-              >
-            </v-list-item-action>
+            <v-col cols="1" order="1" class="pl-0 ml-n3">
+              <v-icon v-if="defaultAccount.id === account.id">
+                mdi-account-check
+              </v-icon>
+            </v-col>
 
-            <v-list-item-content>
+            <v-col cols="auto" order="2">
               {{ account.username }}
-            </v-list-item-content>
+            </v-col>
 
-            <v-list-item-action>
-              <v-btn text @click="removeAccount(account.id)" tile>
-                <template #default>
-                  {{ $t('accounts.remove_account') }}
-                </template>
-              </v-btn>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list-item-group>
-        <accounts-modal @clear-form="resetForm" @auth-requested="sendRequest" />
-        <tfa-modal
-          :has-tfa="hasTfa"
-          @tfa-was-entered="tfaWasEntered"
-          @clear-form="resetForm"
-        />
-      </v-list>
+            <v-col order="3">
+              <v-spacer />
+            </v-col>
+          </v-btn>
+        </v-col>
+        <v-col cols="auto" order="2">
+          <v-btn
+            v-if="account.tokenIsExpired"
+            text
+            @click.stop="reLogin('', account)"
+            tile
+          >
+            <template #default>
+              {{ $t('accounts.re_login') }}
+            </template>
+          </v-btn>
+          <v-btn v-else text @click.stop="removeAccount(account.id)" tile>
+            <template #default>
+              {{ $t('accounts.remove_account') }}
+            </template>
+          </v-btn>
+        </v-col>
+      </v-row>
+      <accounts-modal
+        :can-show-modal="canShowModal"
+        :can-show-progress-bar="canShowProgressBar"
+        @auth-requested="sendRequest"
+        @open-accounts-modal="showModal"
+        @close-accounts-modal="hideModal"
+      />
+      <tfa-modal
+        :tfa="needTfa"
+        :can-show-progress-bar="canShowProgressBar"
+        @tfa-was-entered="sendRequestWithTfa"
+        @clear-tfa-form="closeTfaForm"
+      />
     </v-container>
   </div>
 </template>
 
 <script lang="ts">
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
-import { defineComponent, ref } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 import {
+  IAccount,
   IAccountsActions,
   IAccountsGetters,
   IAccountsState,
 } from '@/store/modules/accounts/types'
+import { RequestStatus } from '@/types/network'
 
 import AccountsModal from '../accounts/AccountsModal.vue'
 import TfaModal from '../accounts/TfaModal.vue'
@@ -68,12 +100,12 @@ export default defineComponent({
       setDefaultAccount,
       removeAccount,
       sendAuthRequest,
-      switchOffTfa,
+      closeTfaModal,
     } = useAccountsActions([
       'setDefaultAccount',
       'removeAccount',
       'sendAuthRequest',
-      'switchOffTfa',
+      'closeTfaModal',
     ])
 
     const {
@@ -88,12 +120,9 @@ export default defineComponent({
       'getStatus',
     ])
 
-    const username = ref('')
-    const password = ref('')
+    const canShowModal = false
 
     return {
-      username,
-      password,
       accounts,
       defaultAccount,
       needTfa,
@@ -101,38 +130,105 @@ export default defineComponent({
       removeAccount,
       sendAuthRequest,
       getStatus,
-      switchOffTfa,
+      closeTfaModal,
+      canShowModal,
     }
   },
   computed: {
-    hasTfa() {
-      return this.needTfa
+    canShowProgressBar(): boolean {
+      return this.getStatus === RequestStatus.PENDING
+    },
+    canCloseModal(): boolean {
+      return (
+        this.getStatus !== RequestStatus.FAILED || this.needTfa.needTfa === true
+      )
     },
   },
   methods: {
-    async sendRequest({ username, password, token }) {
-      this.username = username
-      this.password = password
-      await this.sendAuthRequest({ username, password, token })
-    },
-    async tfaWasEntered(tfaToken) {
+    async sendRequest({
+      username,
+      password,
+      token,
+    }: {
+      username: string
+      password: string
+      token?: string
+    }) {
       await this.sendAuthRequest({
-        username: this.username,
-        password: this.password,
+        username,
+        password,
+        token,
+        isReLogin: false,
+      })
+
+      if (this.canCloseModal) {
+        this.hideModal()
+      }
+    },
+    async sendRequestWithTfa(tfaToken: string) {
+      if (this.needTfa.isReLogin) {
+        await this.reLogin(tfaToken)
+
+        return
+      }
+
+      await this.sendAuthRequest({
+        username: this.needTfa.username,
+        password: this.needTfa.password,
         token: tfaToken,
+        isReLogin: false,
       })
     },
-    resetForm() {
-      this.username = ''
-      this.password = ''
-      this.switchOffTfa()
+    async reLogin(tfaToken?: string, account?: IAccount) {
+      if (!tfaToken && account) {
+        await this.sendAuthRequest({
+          username: account.username,
+          password: account.password,
+          token: account.tfaToken,
+          isReLogin: true,
+        })
+      }
+
+      if (tfaToken && !account) {
+        await this.sendAuthRequest({
+          username: this.needTfa.username,
+          password: this.needTfa.password,
+          token: tfaToken,
+          isReLogin: true,
+        })
+      }
+    },
+    closeTfaForm() {
+      this.closeTfaModal()
+    },
+    setActiveClass(account: IAccount): boolean {
+      return this.defaultAccount.id === account.id && !account.tokenIsExpired
+    },
+    switchModalToggle(toggle: boolean) {
+      this.canShowModal = toggle
+    },
+    showModal() {
+      this.switchModalToggle(true)
+    },
+    hideModal() {
+      this.switchModalToggle(false)
     },
   },
 })
 </script>
 
 <style scoped>
-.accounts-block .v-item--active {
+.accounts-block .row-active {
   background-color: rgba(255, 255, 255, 0.24);
+}
+.accounts-block .row-active:hover {
+  background-color: rgba(255, 255, 255, 0.24) !important;
+}
+.accounts-block .row:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+.accounts-block__main-btn .theme--dark.v-btn:hover::before {
+  opacity: 0;
 }
 </style>

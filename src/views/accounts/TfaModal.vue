@@ -2,26 +2,31 @@
   <v-dialog
     max-width="300px"
     persistent
-    v-model="tfaModalToggler"
-    @keydown.enter="tfaWasEntered"
+    v-model="isTfaModalShown"
+    @keydown.enter="sendRequestWithTfa"
   >
+    <v-progress-linear
+      :active="canShowProgressBar"
+      :indeterminate="canShowProgressBar"
+    />
     <v-card>
       <v-card-title>
         <span class="headline">{{ $t('accounts.modal.enter_tfa_code') }}</span>
       </v-card-title>
       <v-card-text>
-        <v-container>
+        <v-container pt-0 pb-0>
           <v-row>
-            <v-col cols="12" v-if="hasTfa">
+            <v-col cols="12" class="pt-0 pb-0">
               <v-text-field
                 v-model.lazy="validate.tfaToken.$model"
                 :error-messages="tfaError"
+                :disabled="canShowProgressBar"
                 autofocus
                 clearable
                 required
               >
                 <template #label>
-                  {{ $t('accounts.modal.enter_tfa_code') }}*
+                  {{ $t('accounts.modal.enter_tfa_code') }}
                 </template>
               </v-text-field>
             </v-col>
@@ -30,12 +35,16 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn text @click="tfaWasEntered" :disabled="validate.$invalid">
+        <v-btn
+          text
+          @click.stop="sendRequestWithTfa"
+          :disabled="validate.$invalid || canShowProgressBar"
+        >
           <template #default>
             {{ $t('accounts.add_account') }}
           </template>
         </v-btn>
-        <v-btn text @click="resetForm">
+        <v-btn text @click.stop="resetForm" :disabled="canShowProgressBar">
           <template #default>
             {{ $t('accounts.modal.close_modal') }}
           </template>
@@ -45,47 +54,72 @@
   </v-dialog>
 </template>
 
-<script>
+<script lang="ts">
+// TODO: Fix typescript for validators here
 import { defineComponent, ref } from '@vue/composition-api'
 import useVuelidate from '@vuelidate/core'
 
+import { INeedTfa } from '@/store/modules/accounts/types'
 import { validateTfa } from '@/utils/validate'
 
-export default defineComponent({
-  name: 'TfaModal',
-  props: {
-    hasTfa: {
-      type: Boolean,
-      default: false,
-    },
-  },
+interface ITfaModalProps {
+  tfa: INeedTfa
+  canShowProgressBar: boolean
+}
+
+export default defineComponent<ITfaModalProps>({
   setup() {
     const tfaToken = ref('')
-    const validate = useVuelidate(validateTfa, { tfaToken }, 'tfaToken')
+    const validate = useVuelidate(
+      // @ts-ignore
+      validateTfa,
+      { tfaToken },
+      { $autoDirty: true }
+    )
 
     return {
       tfaToken,
       validate,
     }
   },
+  props: {
+    tfa: {
+      type: Object,
+      required: true,
+    },
+    canShowProgressBar: {
+      type: Boolean,
+      required: true,
+    },
+  },
   computed: {
-    tfaModalToggler: {
+    isTfaModalShown: {
       get() {
-        return this.hasTfa
+        // @ts-ignore
+        return this.tfa.needTfa
       },
       set(val) {
-        this.$emit('tfa-modal-closed', !val)
+        if (val) {
+          // @ts-ignore
+          this.$emit('tfa-was-entered', this.tfaToken)
+        } else {
+          // @ts-ignore
+          this.$emit('clear-tfa-form')
+        }
       },
     },
     tfaError() {
-      if (!(this.validate.tfaToken.$dirty && this.hasTfa)) {
+      // @ts-ignore
+      if (!(this.validate.tfaToken.$dirty && this.tfa.needTfa)) {
         return
       }
 
+      // @ts-ignore
       if (this.validate.tfaToken.minLength.$invalid) {
         return this.$t('accounts.modal.tfaError.minLength')
       }
 
+      // @ts-ignore
       if (this.validate.tfaToken.required.$invalid) {
         return this.$t('accounts.modal.tfaError.required')
       }
@@ -94,16 +128,21 @@ export default defineComponent({
     },
   },
   methods: {
-    tfaWasEntered() {
-      this.$emit('tfa-was-entered', {
-        tfaToken: this.tfaToken,
-      })
+    hideModal() {
+      this.isTfaModalShown = false
+    },
+    sendRequestWithTfa() {
+      this.isTfaModalShown = true
 
       this.tfaToken = ''
+      // @ts-ignore
+      this.validate.tfaToken.$reset()
     },
     resetForm() {
       this.tfaToken = ''
-      this.$emit('clear-form')
+      this.hideModal()
+      // @ts-ignore
+      this.validate.tfaToken.$reset()
     },
   },
 })

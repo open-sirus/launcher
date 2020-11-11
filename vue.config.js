@@ -1,7 +1,15 @@
 const { GenerateSW } = require('workbox-webpack-plugin')
 
+const isDevelopment = process.env.NODE_ENV !== 'production'
+
 module.exports = {
-  lintOnSave: false,
+  lintOnSave: isDevelopment,
+  devServer: {
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
+  },
   pluginOptions: {
     electronBuilder: {
       nodeIntegration: true,
@@ -16,20 +24,21 @@ module.exports = {
       enableInSFC: false,
     },
   },
-  transpileDependencies: ['vuetify'],
+  transpileDependencies: ['vuetify', 'vuex-composition-helpers'],
   configureWebpack: {
     devtool: 'source-map',
     plugins: [
-      new GenerateSW({
-        clientsClaim: true,
-        runtimeCaching: [
-          {
-            urlPattern: new RegExp('/uploads/news'),
-            handler: 'CacheFirst',
-          },
-        ],
-        navigateFallbackDenylist: [new RegExp('^/_')],
-      }),
-    ],
+      !isDevelopment &&
+        new GenerateSW({
+          clientsClaim: true,
+          runtimeCaching: [
+            {
+              urlPattern: new RegExp('/uploads/news'),
+              handler: 'CacheFirst',
+            },
+          ],
+          navigateFallbackDenylist: [new RegExp('^/_')],
+        }),
+    ].filter(Boolean),
   },
 }

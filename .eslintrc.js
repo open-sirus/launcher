@@ -30,6 +30,7 @@ module.exports = {
   plugins: ['eslint-plugin-import', 'lodash'],
 
   rules: {
+    'prettier/prettier': ERROR,
     'no-console': process.env.NODE_ENV === 'production' ? WARN : OFF,
     'no-debugger': process.env.NODE_ENV === 'production' ? WARN : OFF,
     'lodash/import-scope': [ERROR, 'method'],
@@ -86,6 +87,7 @@ module.exports = {
         '@typescript-eslint/ban-ts-ignore': OFF,
         '@typescript-eslint/explicit-module-boundary-types': OFF,
         '@typescript-eslint/ban-ts-comment': OFF,
+        '@typescript-eslint/no-empty-interface': OFF,
         '@typescript-eslint/naming-convention': [
           ERROR,
           {
@@ -100,7 +102,10 @@ module.exports = {
       },
     },
     {
-      files: ['**/__tests__/*.{j,t}s?(x)'],
+      files: [
+        '**/__tests__/*.{j,t}s?(x)',
+        '**/tests/unit/**/*.spec.{j,t}s?(x)',
+      ],
       env: {
         jest: true,
       },

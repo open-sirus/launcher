@@ -8,12 +8,13 @@
     "choose_lang": "Choose language",
     "choose_client_directory": "Select game client directory",
     "errors": {
-      "wrong_client_directory": "Please select correct directory"
+      "wrong_client_directory": "Please, select correct directory"
     }
   },
   "accounts": {
     "add_account": "Add account",
     "remove_account": "Remove account",
+    "re_login": "Re-login",
     "modal": {
       "title": "Add account",
       "enter_login": "Enter login",
@@ -42,6 +43,23 @@
     "online": "0 players | {n} player | {n} players"
   },
   "notification": {
-    "feeds_loading_error": "Cannot load news"
+    "feeds_loading_error": "Cannot load news",
+    "send_auth_request": "Cannot authorize you. Try again later or contact support",
+    "token_has_expired": "Account password has been changed or auth token has expired, re-login please",
+    "account_duplicate": "Account already exist in account list"
+  },
+  "steps": {
+    "select_folder": {
+      "select_existed": "Select folder",
+      "download": "Download game"
+    },
+    "login": {
+      "username": "Enter login",
+      "password": "Enter password",
+      "tfa_code": "Enter 2FA code"
+    },
+    "next-step": "Next",
+    "prev-step": "Back",
+    "skip": "Skip"
   }
 }

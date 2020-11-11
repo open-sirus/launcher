@@ -5,16 +5,28 @@ import {
   IAccountsActions,
   IAccountsGetters,
   IAccountsState,
+  IAuthResponse,
   INormalizedAccount,
+  IValidationTimestamp,
 } from '@/store/modules/accounts/types'
 import { axios } from '@/modules/axios'
 import { denormalizeData } from '@/utils/denormalizeData'
 import { modulesFactory } from '@/utils/modulesFactory'
 import { IRootState } from '@/store/types'
+import { NotificationTypes } from '@/types/notification'
+
 import {
   adaptUserDataToRequestParams,
   adaptExtendedAccount,
-} from '@/store/modules/accounts/adapters'
+  adaptResponse,
+} from './adapters'
+import {
+  getShiftedTimestamp,
+  getTimestamp,
+  getTimestampOffset,
+  isDelayTimeIsGone,
+  isTimezoneHasOffset,
+} from './lib'
 
 const state: IAccountsState = {
   accounts: {
@@ -26,7 +38,17 @@ const state: IAccountsState = {
   },
   additional: {
     status: RequestStatus.INITIAL,
-    needTfa: false,
+    needTfa: {
+      needTfa: false,
+      isReLogin: false,
+      username: '',
+      password: '',
+    },
+    lastValidationTimestamp: {
+      timestamp: 0,
+      timezone: '',
+      timestampWithDelayTime: 0,
+    },
   },
 }
 
@@ -43,13 +65,12 @@ const mutations: MutationTree<IAccountsState> = {
     state.accounts.data.allIds.push(account.id)
     state.accounts.data.byId[account.id] = account.byId
   },
-  REMOVE_ACCOUNT(state, id) {
-    delete state.accounts.data.byId[id]
-
-    const index = state.accounts.data.allIds.findIndex(
-      (accountId) => accountId === id
+  REMOVE_ACCOUNT(state, id: number) {
+    state.accounts.data.allIds = state.accounts.data.allIds.filter(
+      (accountId) => accountId !== id
     )
-    state.accounts.data.allIds.splice(index, 1)
+
+    delete state.accounts.data.byId[id]
   },
   SET_DEFAULT_ID(state, accountId: number) {
     state.accounts.data.defaultId = accountId
@@ -57,29 +78,73 @@ const mutations: MutationTree<IAccountsState> = {
   SET_STATUS(state, status: RequestStatus) {
     state.additional.status = status
   },
-  SET_NEED_TFA(state, value) {
-    state.additional.needTfa = value
+  SET_NEED_TFA(
+    state,
+    {
+      needTfa,
+      isReLogin,
+      username,
+      password,
+    }: {
+      needTfa: boolean
+      isReLogin: boolean
+      username: string
+      password: string
+    }
+  ) {
+    state.additional.needTfa = {
+      needTfa,
+      isReLogin,
+      username,
+      password,
+    }
+  },
+  SET_VALIDATE_ACCOUNTS_TIME(state, timestamp: IValidationTimestamp) {
+    state.additional.lastValidationTimestamp = timestamp
+  },
+  SET_IS_EXPIRED(state, { value, id }: { value: boolean; id: number }) {
+    state.accounts.data.byId[id].tokenIsExpired = value
   },
 }
 
 const actions: IAccountsActions = {
-  addAccount({ state, commit }, account) {
-    if (state.accounts.data.allIds.length === 0) {
+  async addAccount({ dispatch, state, commit }, account) {
+    const existAccount = state.accounts.data.byId[account.id]
+    const isFirstAccount = state.accounts.data.allIds.length === 0
+
+    if (existAccount && existAccount.tokenIsExpired) {
+      commit('SET_IS_EXPIRED', { value: false, id: account.id })
+
+      return
+    }
+
+    if (existAccount) {
+      await dispatch(
+        'notification/addNotification',
+        { type: NotificationTypes.WARN, i18n: 'account_duplicate' },
+        { root: true }
+      )
+
+      return
+    }
+
+    if (isFirstAccount) {
       commit('SET_DEFAULT_ID', account.id)
     }
 
-    if (!state.accounts.data.allIds.includes(account.id)) {
-      commit('ADD_ACCOUNT', account)
-    }
+    commit('ADD_ACCOUNT', account)
   },
   removeAccount({ state, commit }, accountId) {
-    if (state.accounts.data.defaultId === accountId) {
-      commit('SET_DEFAULT_ID', state.accounts.data.allIds[0])
-    }
+    const isNoMoreAccounts = state.accounts.data.allIds.length === 0
+    const isAccountDefault = state.accounts.data.defaultId === accountId
 
     commit('REMOVE_ACCOUNT', accountId)
 
-    if (state.accounts.data.allIds.length === 0) {
+    if (isAccountDefault) {
+      commit('SET_DEFAULT_ID', state.accounts.data.allIds[0])
+    }
+
+    if (isNoMoreAccounts) {
       commit('SET_DEFAULT_ID', 0)
       localStorage.removeItem('tokens')
     }
@@ -91,10 +156,18 @@ const actions: IAccountsActions = {
       `${account.tokens.tokenType} ${account.tokens.accessToken}`
     )
   },
-  switchOffTfa({ commit }) {
-    commit('SET_NEED_TFA', false)
+  closeTfaModal({ commit }) {
+    commit('SET_NEED_TFA', {
+      needTfa: false,
+      isReLogin: false,
+      username: '',
+      password: '',
+    })
   },
-  async sendAuthRequest({ dispatch, commit }, { username, password, token }) {
+  async sendAuthRequest(
+    { dispatch, commit },
+    { username, password, token, isReLogin }
+  ) {
     commit('SET_STATUS', RequestStatus.PENDING)
 
     const userDataToRequestParams = adaptUserDataToRequestParams({
@@ -104,10 +177,7 @@ const actions: IAccountsActions = {
     })
 
     try {
-      const authResponse: {
-        tokenType: string
-        accessToken: string
-      } = await axios.post(
+      const authResponse: IAuthResponse = await axios.post(
         'https://api.sirus.su/oauth/token',
         userDataToRequestParams
       )
@@ -117,33 +187,125 @@ const actions: IAccountsActions = {
         `${authResponse.tokenType} ${authResponse.accessToken}`
       )
 
-      await dispatch('loadAccountInfo', authResponse)
+      const adaptedResponse = adaptResponse(authResponse, {
+        username,
+        password,
+        token,
+      })
+
+      await dispatch('loadAccountInfo', adaptedResponse)
     } catch (error) {
       commit('SET_STATUS', RequestStatus.FAILED)
 
       if (error.response && error.response.status === 401) {
-        commit('SET_NEED_TFA', true)
+        commit('SET_NEED_TFA', { needTfa: true, isReLogin, username, password })
       } else {
-        console.error(error)
+        await dispatch(
+          'notification/addNotification',
+          { type: NotificationTypes.ERROR, i18n: 'send_auth_request' },
+          { root: true }
+        )
       }
     }
   },
-  async loadAccountInfo({ dispatch, commit }, authResponse) {
+  async loadAccountInfo({ dispatch, commit }, adaptedAuthResponse) {
     try {
-      const accountInfo: { id: number; username: string } = await axios.get(
-        '/user'
-      )
+      const accountInfo: { id: number } = await axios.get('/user')
 
-      const account = adaptExtendedAccount(accountInfo, authResponse)
+      const account = adaptExtendedAccount(accountInfo, adaptedAuthResponse)
 
       await dispatch('addAccount', account)
 
       commit('SET_STATUS', RequestStatus.LOADED)
 
-      commit('SET_NEED_TFA', false)
+      commit('SET_NEED_TFA', {
+        needTfa: false,
+        isReLogin: false,
+        username: '',
+        password: '',
+      })
     } catch (error) {
       commit('SET_STATUS', RequestStatus.FAILED)
-      console.error(error)
+
+      await dispatch(
+        'notification/addNotification',
+        { type: NotificationTypes.ERROR, i18n: 'send_auth_request' },
+        { root: true }
+      )
+    }
+  },
+  async validateAccounts({ dispatch, state }) {
+    await dispatch('validateTimezone')
+
+    const timestampObject = getTimestamp()
+
+    const hasDelayTimeIsGone = isDelayTimeIsGone(
+      state.additional.lastValidationTimestamp.timestampWithDelayTime,
+      timestampObject.timestamp
+    )
+
+    if (!hasDelayTimeIsGone) {
+      return
+    }
+
+    const dispatchArray = state.accounts.data.allIds.map((id) =>
+      dispatch('validateAccount', id)
+    )
+
+    await Promise.all(dispatchArray)
+    await dispatch('setValidationTimestamp')
+  },
+  setValidationTimestamp({ commit }) {
+    const timestampObject = getTimestamp()
+
+    commit('SET_VALIDATE_ACCOUNTS_TIME', timestampObject)
+  },
+  validateTimezone({ commit, state }) {
+    const date = new Date()
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    const hasTimezoneOffset = isTimezoneHasOffset(
+      state.additional.lastValidationTimestamp.timezone,
+      timezone
+    )
+
+    if (hasTimezoneOffset) {
+      const offset = getTimestampOffset(date)
+      const shiftedTimestampObject = getShiftedTimestamp(
+        state.additional.lastValidationTimestamp,
+        timezone,
+        offset
+      )
+
+      commit('SET_VALIDATE_ACCOUNTS_TIME', shiftedTimestampObject)
+    }
+  },
+  async validateAccount({ dispatch, commit, state }, accountId) {
+    const account = state.accounts.data.byId[accountId]
+    if (account.tfaToken) {
+      return
+    }
+
+    const accountDataToRequestParams = adaptUserDataToRequestParams({
+      username: account.username,
+      password: account.password,
+      token: account.tfaToken,
+    })
+
+    try {
+      await axios.post(
+        'https://api.sirus.su/oauth/token',
+        accountDataToRequestParams
+      )
+    } catch (error) {
+      if ([400, 401].includes(error.response.status)) {
+        commit('SET_IS_EXPIRED', { value: true, id: account.id })
+
+        await dispatch(
+          'notification/addNotification',
+          { type: NotificationTypes.WARN, i18n: 'token_has_expired' },
+          { root: true }
+        )
+      }
     }
   },
 }
