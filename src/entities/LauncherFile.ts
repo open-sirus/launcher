@@ -12,6 +12,16 @@ export interface IDownloadableFile {
   filename: string
 }
 
+export enum FileStatus {
+  VALIDATING,
+  VALID,
+  INVALID,
+
+  DOWNLOADING,
+  DOWNLOADED,
+  DOWNLOAD_FAILED
+}
+
 export default class LauncherFile
   implements IValidatableFile, IDownloadableFile {
   host: string

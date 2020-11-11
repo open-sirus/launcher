@@ -22,13 +22,7 @@ export class ValidateFileList extends LauncherListener {
     event: LauncherEvent,
     { files, clientPath }: { files: Array<LauncherFile>; clientPath: string }
   ) {
-    fileManageService.clientPath = clientPath
-
-    files.forEach(async (file) => {
-      file.isValidating = true
-      file.isValid = await fileManageService.isValidFile(file)
-      file.isValidating = false
-    })
+    await fileManageService.validate(clientPath, files)
   }
 }
 

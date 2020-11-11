@@ -1,10 +1,11 @@
 import { mocked } from 'ts-jest/utils'
 
-import { ValidateFileList } from '@/background/ClientActions'
 import LauncherFile from '@/entities/LauncherFile'
 import LauncherEvent from '@/events/LauncherEvent'
 import fileManageServier from '@/services/FileManageService'
+import { ValidateFileList } from '@/background/ClientActions'
 jest.mock('@/services/FileManageService')
+jest.mock('@/background/EventService')
 
 describe('Client action events', () => {
   const MockedFileManageService = mocked(fileManageServier, true)
@@ -34,15 +35,16 @@ describe('Client action events', () => {
     },
   ]
 
-  it('validation function called', () => {
+  it('validation function called', async () => {
     const files = RAW_FILES.map(LauncherFile.fromObject)
     const handler = new ValidateFileList()
+    const clientPath = '/dummy/path'
 
-    handler.handle(LauncherEvent.FILE_LIST_UPDATED, {
+    await handler.handle(LauncherEvent.FILE_LIST_UPDATED, {
       files,
-      clientPath: '/dummy/path',
+      clientPath,
     })
 
-    expect(MockedFileManageService.isValidFile).toBeCalledTimes(2)
+    expect(MockedFileManageService.validate).toBeCalledWith(clientPath, files)
   })
 })
