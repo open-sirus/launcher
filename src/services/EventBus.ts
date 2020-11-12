@@ -33,10 +33,10 @@ export abstract class Ipc {
 }
 
 class EventBus {
-  protected events: Map<LauncherEvent | TrayEvent, Array<LauncherListener>> = new Map<
+  protected events: Map<
     LauncherEvent | TrayEvent,
     Array<LauncherListener>
-  >()
+  > = new Map<LauncherEvent | TrayEvent, Array<LauncherListener>>()
 
   private ipc: Ipc
   static CHANNEL_NAME = 'global-event-bus'

@@ -1,4 +1,5 @@
 import { Tray, Menu, MenuItemConstructorOptions } from 'electron'
+import path from 'path'
 
 // TODO: need to implement tray event-bus for click events
 const isAppShown = (): boolean => {
@@ -9,11 +10,27 @@ const canRunGame = (): boolean => {
   return false
 }
 
-const getIconPath = (): string => {
-  return '/home/vylor/WebstormProjects/launcher/public/icon.png'
+const isProductionMode = process.env.NODE_ENV === 'production'
+
+const getIconPath = (isProductionMode: boolean): string => {
+  let icon: string
+
+  if (isProductionMode) {
+    icon = path.dirname(process.execPath)
+  } else {
+    icon = path.resolve('.')
+  }
+
+  icon = path.resolve(icon + '/public/icon.png')
+
+  return icon
 }
 
-export const buildMenu = (isAppShown: () => boolean, canRunGame: () => boolean, tray?: Tray): Menu | null => {
+export const buildMenu = (
+  isAppShown: () => boolean,
+  canRunGame: () => boolean,
+  tray?: Tray
+): Menu | null => {
   const menuTemplate: Array<MenuItemConstructorOptions> = [
     {
       enabled: canRunGame(),
@@ -30,7 +47,7 @@ export const buildMenu = (isAppShown: () => boolean, canRunGame: () => boolean, 
       label: isAppShown() ? 'Свернуть' : 'Развернуть',
       click: () => {
         console.log(`show/hide app`)
-      }
+      },
     },
     {
       enabled: true,
@@ -38,7 +55,7 @@ export const buildMenu = (isAppShown: () => boolean, canRunGame: () => boolean, 
       label: 'Выйти',
       click: () => {
         console.log(`close launcher`)
-      }
+      },
     },
   ]
 
@@ -54,7 +71,7 @@ export const buildMenu = (isAppShown: () => boolean, canRunGame: () => boolean, 
 }
 
 export const buildTray = (): Tray => {
-  const tray: Tray = new Tray(getIconPath())
+  const tray: Tray = new Tray(getIconPath(isProductionMode))
 
   tray.setContextMenu(buildMenu(isAppShown, canRunGame))
   tray.setToolTip('Sirus launcher')

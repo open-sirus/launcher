@@ -1,7 +1,7 @@
 import { TrayEvent } from '@/events/tray/trayEvent'
 import LauncherListener from '@/events/LauncherListener'
 
-export class TrayEventsListener extends LauncherListener{
+export class TrayEventsListener extends LauncherListener {
   private readonly _callback: (
     event: TrayEvent,
     data: Record<string, unknown>

@@ -56,13 +56,20 @@ describe('accounts module', () => {
     expect(Object.keys(store.getters)).toContain('accounts/accounts')
     expect(Object.keys(store.getters)).toContain('accounts/defaultAccount')
     expect(store.getters['accounts/accounts']).toHaveLength(1)
-    expect(store.getters['accounts/defaultAccount']).toMatchObject(stubs.accountStub)
+    expect(store.getters['accounts/defaultAccount']).toMatchObject(
+      stubs.accountStub
+    )
   })
 
   test('correct remove account if it set as default', async () => {
     await store.dispatch('accounts/addAccount', stubs.normalizedAccountStub)
-    await store.dispatch('accounts/addAccount', stubs.normalizedAccountWithTfaStub)
-    expect(store.getters['accounts/defaultAccount']).toMatchObject(stubs.accountStub)
+    await store.dispatch(
+      'accounts/addAccount',
+      stubs.normalizedAccountWithTfaStub
+    )
+    expect(store.getters['accounts/defaultAccount']).toMatchObject(
+      stubs.accountStub
+    )
     expect(store.getters['accounts/accounts']).toHaveLength(2)
 
     await store.dispatch('accounts/removeAccount', stubs.accountStub.id)
@@ -86,9 +93,12 @@ describe('accounts module', () => {
 
     await store.dispatch('accounts/addAccount', stubs.normalizedAccountStub)
     expect(store.getters['accounts/accounts']).toHaveLength(1)
-    expect(store.getters['accounts/defaultAccount']).toMatchObject(stubs.accountStub)
+    expect(store.getters['accounts/defaultAccount']).toMatchObject(
+      stubs.accountStub
+    )
     expect(
-      store.state.accounts.accounts.data.byId[stubs.accountStub.id].tokenIsExpired
+      store.state.accounts.accounts.data.byId[stubs.accountStub.id]
+        .tokenIsExpired
     ).toBe(false)
   })
 
@@ -145,9 +155,14 @@ describe('accounts module', () => {
     await store.dispatch('accounts/setValidationTimestamp')
 
     await store.dispatch('accounts/addAccount', stubs.normalizedAccountStub)
-    expect(store.getters['accounts/accounts'][0]).toMatchObject(stubs.accountStub)
+    expect(store.getters['accounts/accounts'][0]).toMatchObject(
+      stubs.accountStub
+    )
 
-    await store.dispatch('accounts/addAccount', stubs.normalizedAccountWithTfaStub)
+    await store.dispatch(
+      'accounts/addAccount',
+      stubs.normalizedAccountWithTfaStub
+    )
     expect(store.getters['accounts/accounts'][1]).toMatchObject(
       stubs.accountWithTfaStub
     )
@@ -157,7 +172,8 @@ describe('accounts module', () => {
 
     await store.dispatch('accounts/validateAccounts')
     expect(
-      store.state.accounts.accounts.data.byId[stubs.accountStub.id].tokenIsExpired
+      store.state.accounts.accounts.data.byId[stubs.accountStub.id]
+        .tokenIsExpired
     ).toBe(true)
     expect(
       store.state.accounts.accounts.data.byId[stubs.accountWithTfaStub.id]
