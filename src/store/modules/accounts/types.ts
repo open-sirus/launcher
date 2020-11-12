@@ -91,6 +91,10 @@ export interface IAccountsGetters
   extends GetterTree<IAccountsState, IRootState> {
   accounts: (state: IAccountsState) => Array<IAccount>
   defaultAccount: (state: IAccountsState) => IAccount
+  hasSettedAccount: (
+    state: IAccountsState,
+    getters: IAccountsGetters
+  ) => boolean
   needTfa: (
     state: IAccountsState
   ) => {
@@ -99,5 +103,5 @@ export interface IAccountsGetters
     username: string
     password: string
   }
-  getStatus: (state: IAccountsState) => RequestStatus
+  requestStatus: (state: IAccountsState) => RequestStatus
 }

@@ -193,7 +193,9 @@ export default defineComponent<IAccountsModalProps>({
       this.authForm.pass = ''
       this.validate.authForm.$reset()
     },
-    sendRequest() {
+    async sendRequest() {
+      await this.validate?.$touch()
+
       const hasFieldsFilled =
         this.authForm.login === '' && this.authForm.pass === ''
 

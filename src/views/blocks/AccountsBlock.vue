@@ -93,7 +93,6 @@ const {
 )
 
 export default defineComponent({
-  name: 'AccountsBlock',
   components: { AccountsModal, TfaModal },
   setup() {
     const {
@@ -112,12 +111,12 @@ export default defineComponent({
       defaultAccount,
       accounts,
       needTfa,
-      getStatus,
+      requestStatus,
     } = useAccountsGetters([
       'defaultAccount',
       'accounts',
       'needTfa',
-      'getStatus',
+      'requestStatus',
     ])
 
     const canShowModal = false
@@ -129,18 +128,19 @@ export default defineComponent({
       setDefaultAccount,
       removeAccount,
       sendAuthRequest,
-      getStatus,
+      requestStatus,
       closeTfaModal,
       canShowModal,
     }
   },
   computed: {
     canShowProgressBar(): boolean {
-      return this.getStatus === RequestStatus.PENDING
+      return this.requestStatus === RequestStatus.PENDING
     },
     canCloseModal(): boolean {
       return (
-        this.getStatus !== RequestStatus.FAILED || this.needTfa.needTfa === true
+        this.requestStatus !== RequestStatus.FAILED ||
+        this.needTfa.needTfa === true
       )
     },
   },

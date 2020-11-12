@@ -3,8 +3,8 @@
     <status-bar-block />
     <template v-if="isWelcomeScreenCompleted">
       <navigation />
+      <notifications />
       <v-main>
-        <notifications />
         <v-container fluid>
           <transition name="slide">
             <router-view />

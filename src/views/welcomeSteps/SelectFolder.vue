@@ -64,6 +64,7 @@ export default defineComponent({
       )
     },
     downloadGame() {
+      // TODO: implement after add download game logic
       console.log('downloadGame')
     },
   },
