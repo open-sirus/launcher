@@ -6,13 +6,13 @@ import { autoUpdater } from 'electron-updater'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
 import * as clientActions from '@/background/ClientActions'
-import { buildTray } from '@/services/tray'
+import { buildTray, buildMenu } from '@/services/tray'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win, tray
+let win, tray, winId
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -53,12 +53,22 @@ function createWindow() {
 
   clientActions.init()
 
-  tray = buildTray()
+  winId = win.id
+
+  tray = buildTray(winId)
 }
 
 if (win) {
   win.on('closed', () => {
     win = null
+  })
+
+  win.on('minimize', () => {
+    buildMenu(winId, tray)
+  })
+
+  win.on('restore', () => {
+    buildMenu(winId, tray)
   })
 }
 // Quit when all windows are closed.

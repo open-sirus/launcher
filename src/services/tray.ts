@@ -1,18 +1,27 @@
-import { Tray, Menu, MenuItemConstructorOptions } from 'electron'
 import path from 'path'
+import { app, BrowserWindow, Menu, MenuItemConstructorOptions, Tray } from 'electron'
+import { triggerMainTrayAction } from '@/background/tray/trayMainActions'
 
-// TODO: need to implement tray event-bus for click events
-const isAppShown = (): boolean => {
-  return true
+type menuTemplate = Array<MenuItemConstructorOptions>
+
+let menuTemplate: menuTemplate
+
+const getMainWindowFromId = (winId: number): BrowserWindow => {
+  return BrowserWindow.fromId(winId)
 }
 
 const canRunGame = (): boolean => {
-  return false
+  return true
 }
 
-const isProductionMode = process.env.NODE_ENV === 'production'
+const isAppShown = (winId: number): boolean => {
+  const mainWindow = getMainWindowFromId(winId)
 
-const getIconPath = (isProductionMode: boolean): string => {
+  return mainWindow.isVisible()
+}
+
+const getIconPath = (): string => {
+  const isProductionMode: boolean = process.env.NODE_ENV === 'production'
   let icon: string
 
   if (isProductionMode) {
@@ -26,27 +35,32 @@ const getIconPath = (isProductionMode: boolean): string => {
   return icon
 }
 
-export const buildMenu = (
-  isAppShown: () => boolean,
-  canRunGame: () => boolean,
-  tray?: Tray
-): Menu | null => {
-  const menuTemplate: Array<MenuItemConstructorOptions> = [
+const buildMenuTemplate = (
+  isAppShown: boolean,
+  canRunGame: boolean,
+  winId: number
+): menuTemplate => {
+  menuTemplate = [
     {
-      enabled: canRunGame(),
+      enabled: canRunGame,
       type: 'normal',
       label: 'В игру',
       click: () => {
-        console.log(`run game`)
+        triggerMainTrayAction()
       },
     },
     { enabled: true, type: 'separator' },
     {
       enabled: true,
       type: 'normal',
-      label: isAppShown() ? 'Свернуть' : 'Развернуть',
+      label: isAppShown ? 'Свернуть' : 'Развернуть',
       click: () => {
-        console.log(`show/hide app`)
+        const mainWindow = getMainWindowFromId(winId)
+        if (isAppShown) {
+          mainWindow.minimize()
+        } else {
+          mainWindow.restore()
+        }
       },
     },
     {
@@ -54,26 +68,30 @@ export const buildMenu = (
       type: 'normal',
       label: 'Выйти',
       click: () => {
-        console.log(`close launcher`)
+        app.quit()
       },
     },
   ]
 
-  if (tray) {
-    const rebuildMenu = Menu.buildFromTemplate(menuTemplate)
+  return menuTemplate
+}
 
-    tray.setContextMenu(rebuildMenu)
+export const buildMenu = (winId: number, tray?: Tray): Menu | null => {
+  const template = buildMenuTemplate(isAppShown(winId), canRunGame(), winId)
+
+  if (tray) {
+    tray.setContextMenu(Menu.buildFromTemplate(template))
 
     return null
   }
 
-  return Menu.buildFromTemplate(menuTemplate)
+  return Menu.buildFromTemplate(template)
 }
 
-export const buildTray = (): Tray => {
-  const tray: Tray = new Tray(getIconPath(isProductionMode))
+export const buildTray = (winId: number): Tray => {
+  const tray: Tray = new Tray(getIconPath())
 
-  tray.setContextMenu(buildMenu(isAppShown, canRunGame))
+  tray.setContextMenu(buildMenu(winId))
   tray.setToolTip('Sirus launcher')
 
   return tray
