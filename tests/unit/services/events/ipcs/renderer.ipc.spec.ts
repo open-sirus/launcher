@@ -3,7 +3,7 @@ import { mocked } from 'ts-jest/utils'
 
 import RenderedIpc from '@/events/ipcs/RenderedIpc'
 import EventBus from '@/services/EventBus'
-import LauncherEvent from '@/events/LauncherEvent'
+import { LauncherEvent}  from '@/events/LauncherEvent'
 
 jest.mock('electron', () => ({
   __esModule: true,

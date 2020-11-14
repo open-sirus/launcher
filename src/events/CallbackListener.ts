@@ -1,22 +1,18 @@
-import LauncherEvent from '@/events/LauncherEvent'
-import LauncherListener from '@/events/LauncherListener'
+import { LauncherEvent, EventData } from '@/events/LauncherEvent'
+import { LauncherListener } from '@/events/LauncherListener'
 
-export default class CallbackListener extends LauncherListener {
-  private readonly _callback: (
-    event: LauncherEvent,
-    data: Record<string, unknown>
-  ) => void
+export default class CallbackListener<
+  E extends LauncherEvent
+> extends LauncherListener {
+  private readonly _callback: (event: E, data: EventData[E]) => void
 
-  constructor(
-    callback: (event: LauncherEvent, data: Record<string, unknown>) => void,
-    once = false
-  ) {
+  constructor(callback: (event: E, data: EventData[E]) => void, once = false) {
     super()
     this._callback = callback
     this.once = once
   }
 
-  handle(event: LauncherEvent, data: Record<string, unknown>) {
+  handle(event: E, data: EventData[E]) {
     this._callback(event, data)
   }
 }

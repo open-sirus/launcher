@@ -32,7 +32,7 @@
 import { defineComponent } from '@vue/composition-api'
 
 import eventService from '@/services/EventService'
-import LauncherEvent from '@/events/LauncherEvent'
+import { LauncherEvent } from '@/events/LauncherEvent'
 import CallbackListener from '@/events/CallbackListener'
 
 export interface ISelectFolderState {
@@ -53,7 +53,7 @@ export default defineComponent({
     selectFolder() {
       this.errors.clientDirectory = null
 
-      eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG, {})
+      eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG)
       eventService.on(
         LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
         new CallbackListener(() => {

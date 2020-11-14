@@ -1,8 +1,7 @@
-import LauncherEvent from '@/events/LauncherEvent'
+import { LauncherEvent } from '@/events/LauncherEvent'
 
-abstract class LauncherListener {
+export abstract class LauncherListener {
   once = false
-  abstract handle(event: LauncherEvent, data: Record<string, unknown>)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  abstract handle(event: LauncherEvent, data?: any)
 }
-
-export default LauncherListener

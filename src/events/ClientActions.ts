@@ -1,13 +1,10 @@
 import eventService from '@/services/EventService'
-import LauncherEvent from '@/events/LauncherEvent'
-import LauncherListener from '@/events/LauncherListener'
+import { LauncherEvent, ISelectGameDirectoryData } from '@/events/LauncherEvent'
+import { LauncherListener } from '@/events/LauncherListener'
 import store from '@/store'
 
 export class DirectorySelected extends LauncherListener {
-  async handle(
-    event: LauncherEvent,
-    { directory }: { directory: string | null }
-  ) {
+  async handle(event: LauncherEvent, { directory }: ISelectGameDirectoryData) {
     // it can be null if windows closed but directory not selected
     await store.dispatch('settings/setClientDirectory', directory, {
       root: true,

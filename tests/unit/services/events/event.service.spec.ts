@@ -2,7 +2,7 @@ import { mocked } from 'ts-jest/utils'
 
 import EventBus from '@/services/EventBus'
 import RenderedIpc from '@/events/ipcs/RenderedIpc'
-import LauncherEvent from '@/events/LauncherEvent'
+import { LauncherEvent } from '@/events/LauncherEvent'
 import { DirectorySelected } from '@/events/ClientActions'
 
 jest.mock('@/events/ipcs/RenderedIpc')
@@ -31,7 +31,7 @@ describe('event service', () => {
     const bus = new EventBus(ipc)
     const listener = new DirectorySelected()
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
-    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, {})
+    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
     expect(ipc.send).toBeCalled()
   })
 })
