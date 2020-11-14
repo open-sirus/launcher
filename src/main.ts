@@ -22,7 +22,6 @@ Vue.config.productionTip = false
 Vue.use(VueCompositionAPI)
 Vue.use(Interop)
 Vue.use(Notification, { store })
-// @ts-ignore
 Vue.use(Vuelidate)
 
 new Vue({

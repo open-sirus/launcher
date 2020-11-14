@@ -169,12 +169,15 @@ export default defineComponent<IAccountsModalProps>({
     },
     isModalShown: {
       get() {
+        // @ts-ignore
         return this.canShowModal
       },
       set(val) {
         if (val) {
+          // @ts-ignore
           this.$emit('open-accounts-modal', val)
         } else {
+          // @ts-ignore
           this.$emit('close-accounts-modal', val)
         }
       },
@@ -188,32 +191,44 @@ export default defineComponent<IAccountsModalProps>({
       this.isModalShown = false
     },
     resetForm() {
+      // @ts-ignore
       this.hideModal()
+      // @ts-ignore
       this.authForm.login = ''
+      // @ts-ignore
       this.authForm.pass = ''
+      // @ts-ignore
       this.validate.authForm.$reset()
     },
     async sendRequest() {
+      // @ts-ignore
       await this.validate?.$touch()
 
       const hasFieldsFilled =
+        // @ts-ignore
         this.authForm.login === '' && this.authForm.pass === ''
 
       if (hasFieldsFilled) {
         return
       }
 
+      // @ts-ignore
       if (this.validate.authForm.$invalid) {
         return
       }
 
       this.$emit('auth-requested', {
+        // @ts-ignore
         username: this.authForm.login,
+        // @ts-ignore
         password: this.authForm.pass,
       })
 
+      // @ts-ignore
       this.authForm.login = ''
+      // @ts-ignore
       this.authForm.pass = ''
+      // @ts-ignore
       this.validate.authForm.$reset()
     },
   },
