@@ -35,7 +35,7 @@ describe('renderer ipc', () => {
 
   it('ipc send to background process with correct data', () => {
     const ipc = new RenderedIpc()
-    const data = { foo: 'bar' }
+    const data = { directory: 'bar' }
 
     ipc.send(LauncherEvent.SELECT_GAME_DIRECTORY, { ...data })
 
