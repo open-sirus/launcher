@@ -62,14 +62,6 @@ if (win) {
   win.on('closed', () => {
     win = null
   })
-
-  win.on('minimize', () => {
-    buildMenu(winId, tray)
-  })
-
-  win.on('restore', () => {
-    buildMenu(winId, tray)
-  })
 }
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

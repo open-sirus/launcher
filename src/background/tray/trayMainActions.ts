@@ -1,6 +1,6 @@
 import eventService from '../EventService'
 import { TrayEvent } from '@/events/tray/trayEvent'
-import LauncherListener from '@/events/LauncherListener'
+import { LauncherListener } from '@/events/LauncherListener'
 
 class TrayActions extends LauncherListener {
   handle(event: TrayEvent, data: Record<string, any>) {

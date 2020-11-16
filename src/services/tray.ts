@@ -2,9 +2,9 @@ import path from 'path'
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions, Tray } from 'electron'
 import { triggerMainTrayAction } from '@/background/tray/trayMainActions'
 
-type menuTemplate = Array<MenuItemConstructorOptions>
+type MenuTemplate = Array<MenuItemConstructorOptions>
 
-let menuTemplate: menuTemplate
+let menuTemplate: MenuTemplate
 
 const getMainWindowFromId = (winId: number): BrowserWindow => {
   return BrowserWindow.fromId(winId)
@@ -39,7 +39,7 @@ const buildMenuTemplate = (
   isAppShown: boolean,
   canRunGame: boolean,
   winId: number
-): menuTemplate => {
+): MenuTemplate => {
   menuTemplate = [
     {
       enabled: canRunGame,
@@ -76,6 +76,11 @@ const buildMenuTemplate = (
   return menuTemplate
 }
 
+const setMenuChangeEventListeners = (mainWindow: BrowserWindow, winId: number, tray?: Tray): void => {
+  mainWindow.on('minimize', () => buildMenu(winId, tray))
+  mainWindow.on('restore', () => buildMenu(winId, tray))
+}
+
 export const buildMenu = (winId: number, tray?: Tray): Menu | null => {
   const template = buildMenuTemplate(isAppShown(winId), canRunGame(), winId)
 
@@ -91,6 +96,7 @@ export const buildMenu = (winId: number, tray?: Tray): Menu | null => {
 export const buildTray = (winId: number): Tray => {
   const tray: Tray = new Tray(getIconPath())
 
+  setMenuChangeEventListeners(getMainWindowFromId(winId), winId, tray)
   tray.setContextMenu(buildMenu(winId))
   tray.setToolTip('Sirus launcher')
 
