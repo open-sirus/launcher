@@ -1,17 +1,17 @@
 import path from 'path'
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions, Tray } from 'electron'
-import { triggerMainTrayAction } from '@/background/tray/trayMainActions'
+
+import eventService from '@/background/EventService'
+import { LauncherEvent } from '@/events/LauncherEvent'
+import { CallbackListener } from '@/events/CallbackListener'
 
 type MenuTemplate = Array<MenuItemConstructorOptions>
 
-let menuTemplate: MenuTemplate
+let menuTemplate: MenuTemplate,
+    isClientReady: boolean = false
 
 const getMainWindowFromId = (winId: number): BrowserWindow => {
   return BrowserWindow.fromId(winId)
-}
-
-const canRunGame = (): boolean => {
-  return true
 }
 
 const isAppShown = (winId: number): boolean => {
@@ -37,16 +37,16 @@ const getIconPath = (): string => {
 
 const buildMenuTemplate = (
   isAppShown: boolean,
-  canRunGame: boolean,
+  isClientReady: boolean,
   winId: number
 ): MenuTemplate => {
   menuTemplate = [
     {
-      enabled: canRunGame,
+      enabled: isClientReady,
       type: 'normal',
       label: 'В игру',
       click: () => {
-        triggerMainTrayAction()
+        eventService.emit(LauncherEvent.RUN_GAME, { runGame: true })
       },
     },
     { enabled: true, type: 'separator' },
@@ -79,10 +79,20 @@ const buildMenuTemplate = (
 const setMenuChangeEventListeners = (mainWindow: BrowserWindow, winId: number, tray?: Tray): void => {
   mainWindow.on('minimize', () => buildMenu(winId, tray))
   mainWindow.on('restore', () => buildMenu(winId, tray))
+  eventService.on(LauncherEvent.CAN_RUN_GAME,
+    new CallbackListener<LauncherEvent.CAN_RUN_GAME>(
+      (event, data) => {
+        if (data && 'hasClientReady' in data) {
+          isClientReady = data.hasClientReady
+        }
+        buildMenu(winId, tray)
+      }
+    )
+  )
 }
 
-export const buildMenu = (winId: number, tray?: Tray): Menu | null => {
-  const template = buildMenuTemplate(isAppShown(winId), canRunGame(), winId)
+const buildMenu = (winId: number, tray?: Tray): Menu | null => {
+  const template = buildMenuTemplate(isAppShown(winId), isClientReady, winId)
 
   if (tray) {
     tray.setContextMenu(Menu.buildFromTemplate(template))

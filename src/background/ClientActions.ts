@@ -1,6 +1,6 @@
 import { dialog } from 'electron'
 
-import {  LauncherListener } from '@/events/LauncherListener'
+import { LauncherListener } from '@/events/LauncherListener'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import eventService from '@/background/EventService'
 

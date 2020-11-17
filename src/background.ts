@@ -6,7 +6,7 @@ import { autoUpdater } from 'electron-updater'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
 import * as clientActions from '@/background/ClientActions'
-import { buildTray, buildMenu } from '@/services/tray'
+import { buildTray } from '@/background/tray'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
