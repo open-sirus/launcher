@@ -3,7 +3,7 @@ export enum LauncherEvent {
   SELECT_GAME_DIRECTORY = 'SELECT_GAME_DIRECTORY',
   WRONG_GAME_DIRECTORY_SELECTED = 'WRONG_GAME_DIRECTORY_SELECTED',
   CAN_RUN_GAME = 'CAN_RUN_GAME',
-  RUN_GAME = 'RUN_GAME'
+  RUN_GAME = 'RUN_GAME',
 }
 
 export interface IWrongGameDirectorySelectedData {
