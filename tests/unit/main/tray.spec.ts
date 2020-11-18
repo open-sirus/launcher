@@ -1,14 +1,15 @@
 import { Tray } from 'electron'
+import { mocked } from 'ts-jest/utils'
 
-import { buildTray } from '@/background/tray'
+import { initTray } from '@/background/tray'
 
 describe('Tray', () => {
-  let winId = 1
-
+  const winId = 1
+  const mockedTray = mocked(Tray, true)
 
   test('return correct instance of Tray', () => {
-    const tray = buildTray(winId)
+    const tray = initTray(winId)
 
-    expect(tray).toBeInstanceOf(Tray)
+    expect(tray).toBeInstanceOf(mockedTray)
   })
 })
