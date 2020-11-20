@@ -25,6 +25,11 @@
         :error-messages="errors.clientDirectory"
       >
       </v-text-field>
+      <v-checkbox v-model="hasStartOnSystemStartup" dense class="mt-0">
+        <template #label>
+          {{ $t('settings.start_on_system_startup') }}
+        </template>
+      </v-checkbox>
     </v-card-text>
   </v-card>
 </template>
@@ -72,18 +77,38 @@ export default defineComponent({
   setup() {
     const { availableLocales } = useAppGetters(['availableLocales'])
 
-    const { clientDirectory, locale } = useSettingsGetters([
+    const {
+      clientDirectory,
+      locale,
+      startOnSystemStartup,
+    } = useSettingsGetters([
       'clientDirectory',
       'locale',
+      'startOnSystemStartup',
     ])
-    const { setLocale } = useSettingsActions(['setLocale'])
+    const { setLocale, setStartOnSystemStartup } = useSettingsActions([
+      'setLocale',
+      'setStartOnSystemStartup',
+    ])
 
     return {
+      setStartOnSystemStartup,
+      startOnSystemStartup,
       availableLocales,
       clientDirectory,
       locale,
       setLocale,
     }
+  },
+  computed: {
+    hasStartOnSystemStartup: {
+      get() {
+        return this.startOnSystemStartup
+      },
+      set(val) {
+        this.setStartOnSystemStartup(val)
+      },
+    },
   },
   methods: {
     handleChangeLocale(locale) {
