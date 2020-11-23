@@ -4,7 +4,7 @@ import eventService from '@/background/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
 import {
-  onCanRunGame,
+  onCanLaunchGame,
   onMinimize,
   onRestore,
 } from '@/background/tray/trayEventHandlers'
@@ -19,9 +19,9 @@ export const registerTrayEventListeners = (
   mainWindow.on('restore', () => onRestore(mainWindow, menu, tray))
 
   eventService.on(
-    LauncherEvent.CAN_RUN_GAME,
-    new CallbackListener<LauncherEvent.CAN_RUN_GAME>(() =>
-      onCanRunGame(menu, tray)
+    LauncherEvent.CAN_LAUNCH_GAME,
+    new CallbackListener<LauncherEvent.CAN_LAUNCH_GAME>(() =>
+      onCanLaunchGame(menu, tray)
     )
   )
 }

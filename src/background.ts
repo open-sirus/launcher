@@ -8,7 +8,7 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import * as clientActions from '@/background/ClientActions'
 import { initTray } from '@/background/tray'
 
-export const isDevelopment = process.env.NODE_ENV !== 'production'
+import { IS_DEVELOPMENT } from './constants'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -83,7 +83,7 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-  if (isDevelopment) {
+  if (IS_DEVELOPMENT) {
     try {
       await installExtension(VUEJS_DEVTOOLS)
     } catch (error) {
@@ -95,7 +95,7 @@ app.on('ready', async () => {
 })
 
 // Exit cleanly on request from parent process in development mode.
-if (isDevelopment) {
+if (IS_DEVELOPMENT) {
   if (process.platform === 'win32') {
     process.on('message', (data) => {
       if (data === 'graceful-exit') {

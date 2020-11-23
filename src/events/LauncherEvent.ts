@@ -2,8 +2,8 @@ export enum LauncherEvent {
   OPEN_SELECT_GAME_DIRECTORY_DIALOG = 'OPEN_SELECT_GAME_DIRECTORY_DIALOG',
   SELECT_GAME_DIRECTORY = 'SELECT_GAME_DIRECTORY',
   WRONG_GAME_DIRECTORY_SELECTED = 'WRONG_GAME_DIRECTORY_SELECTED',
-  CAN_RUN_GAME = 'CAN_RUN_GAME',
-  RUN_GAME = 'RUN_GAME',
+  CAN_LAUNCH_GAME = 'CAN_LAUNCH_GAME',
+  LAUNCH_GAME = 'LAUNCH_GAME',
 }
 
 export interface IWrongGameDirectorySelectedData {
@@ -18,8 +18,8 @@ export interface IHasClientReadyData {
   hasClientReady: boolean
 }
 
-export interface IRunGame {
-  runGame: boolean
+export interface ILaunchGame {
+  launchGame: boolean
 }
 
 export type EventData = {
@@ -29,6 +29,6 @@ export type EventData = {
     | IWrongGameDirectorySelectedData
     | ISelectGameDirectoryData
     | IHasClientReadyData
-    | IRunGame
+    | ILaunchGame
     | null
 }

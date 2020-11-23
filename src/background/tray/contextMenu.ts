@@ -1,31 +1,18 @@
-import {
-  app,
-  BrowserWindow,
-  Menu,
-  MenuItem,
-  MenuItemConstructorOptions,
-  Tray,
-} from 'electron'
+import { app, BrowserWindow, Menu, MenuItem, Tray } from 'electron'
 
 import { IEventData } from '@/background/tray/types'
 import eventService from '@/background/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 
-export const buildMenuFromTemplate = (
-  template: Array<MenuItemConstructorOptions | MenuItem>
-): Menu => {
-  return Menu.buildFromTemplate(template)
-}
-
 export const initialContextMenu = (mainWindow: BrowserWindow): Menu =>
-  buildMenuFromTemplate([
+  Menu.buildFromTemplate([
     {
       id: '1',
       enabled: false,
       type: 'normal',
       label: 'В игру',
       click: () => {
-        eventService.emit(LauncherEvent.RUN_GAME, { runGame: true })
+        eventService.emit(LauncherEvent.LAUNCH_GAME, { launchGame: true })
       },
     },
     { id: '2', type: 'separator' },
@@ -44,11 +31,11 @@ export const initialContextMenu = (mainWindow: BrowserWindow): Menu =>
     },
   ])
 
-export const reBuildMenu = (eventData: IEventData, menu: Menu, tray: Tray) => {
+export const buildMenu = (eventData: IEventData, menu: Menu, tray: Tray) => {
   const menuItem = new MenuItem(eventData)
 
   const filteredMenuItems = menu.items.filter((item) => item.id !== menuItem.id)
-  const filteredMenu = buildMenuFromTemplate(filteredMenuItems)
+  const filteredMenu = Menu.buildFromTemplate(filteredMenuItems)
   filteredMenu.insert(Number(menuItem.id) - 1, menuItem)
 
   tray.setContextMenu(filteredMenu)

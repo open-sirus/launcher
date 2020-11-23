@@ -2,7 +2,7 @@ import { BrowserWindow, Menu, Tray } from 'electron'
 
 import { LauncherEvent } from '@/events/LauncherEvent'
 
-import { reBuildMenu } from './contextMenu'
+import { buildMenu } from './contextMenu'
 import eventService from '../EventService'
 
 export const onMinimize = (
@@ -10,7 +10,7 @@ export const onMinimize = (
   menu: Menu,
   tray: Tray
 ) => {
-  reBuildMenu(
+  buildMenu(
     {
       id: '3',
       isEnabled: true,
@@ -30,7 +30,7 @@ export const onRestore = (
   menu: Menu,
   tray: Tray
 ) => {
-  reBuildMenu(
+  buildMenu(
     {
       id: '3',
       isEnabled: true,
@@ -45,15 +45,15 @@ export const onRestore = (
   )
 }
 
-export const onCanRunGame = (menu: Menu, tray: Tray) => {
-  reBuildMenu(
+export const onCanLaunchGame = (menu: Menu, tray: Tray) => {
+  buildMenu(
     {
       id: '1',
       isEnabled: true,
       type: 'normal',
       label: 'В игру',
       click: () => {
-        eventService.emit(LauncherEvent.RUN_GAME, { runGame: true })
+        eventService.emit(LauncherEvent.LAUNCH_GAME, { launchGame: true })
       },
     },
     menu,
