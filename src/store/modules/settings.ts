@@ -4,6 +4,8 @@ import { isCorrectClientDirectory } from '@/utils/files'
 import { modulesFactory } from '@/utils/modulesFactory'
 import { Langs } from '@/types/lang'
 import { i18n as i18nModule } from '@/modules/i18n'
+import eventService from '@/services/EventService'
+import { LauncherEvent } from '@/events/LauncherEvent'
 
 import { IRootState } from '../types'
 
@@ -57,6 +59,9 @@ const actions: ISettingsActions = {
   },
   setStartOnSystemStartup({ commit }, payload) {
     commit('START_ON_SYSTEM_STARTUP', payload)
+    eventService.emit(LauncherEvent.SET_START_ON_SYSTEM_STARTUP, {
+      isStartOnSystemStartup: payload,
+    })
   },
 }
 

@@ -15,6 +15,7 @@ export enum LauncherEvent {
   CAN_LAUNCH_GAME = 'CAN_LAUNCH_GAME',
   LAUNCH_GAME = 'LAUNCH_GAME',
   START_ON_SYSTEM_STARTUP = 'START_ON_SYSTEM_STARTUP',
+  SET_START_ON_SYSTEM_STARTUP = 'SET_START_ON_SYSTEM_STARTUP',
 }
 
 export interface IWrongGameDirectorySelectedData {
@@ -34,7 +35,7 @@ export interface ILaunchGame {
 }
 
 export interface IStartOnSystemStartupData {
-  isStartOnSystemStartup: boolean | null
+  isStartOnSystemStartup: boolean
 }
 
 export interface IFileStatusUpdated {

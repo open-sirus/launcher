@@ -1,7 +1,7 @@
-import { dialog } from 'electron'
+import { app, dialog } from 'electron'
 
 import { LauncherListener } from '@/events/LauncherListener'
-import { LauncherEvent } from '@/events/LauncherEvent'
+import { IStartOnSystemStartupData, LauncherEvent } from '@/events/LauncherEvent'
 import { eventService } from '@/background/EventService'
 import LauncherFile from '@/entities/LauncherFile'
 import fileManageService from '@/services/FileManageService'
@@ -17,6 +17,12 @@ export class SelectDirectory extends LauncherListener {
   }
 }
 
+class StartOnSystemStartup extends LauncherListener {
+  handle(event, { isStartOnSystemStartup }: IStartOnSystemStartupData) {
+    app.setLoginItemSettings({
+      openAtLogin: isStartOnSystemStartup,
+      openAsHidden: isStartOnSystemStartup,
+    })
 export class ValidateFileList extends LauncherListener {
   async handle(
     event: LauncherEvent,
@@ -30,6 +36,10 @@ export function init() {
   eventService.on(
     LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG,
     new SelectDirectory()
+  )
+  eventService.on(
+    LauncherEvent.START_ON_SYSTEM_STARTUP,
+    new StartOnSystemStartup()
   )
   eventService.on(LauncherEvent.FILE_LIST_UPDATED, new ValidateFileList())
 }

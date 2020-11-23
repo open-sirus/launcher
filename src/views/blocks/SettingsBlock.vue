@@ -43,9 +43,9 @@ import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
 import { IAppGetters, IAppState } from '@/store/modules/app'
 import {
-  ISettingsState,
   ISettingsActions,
   ISettingsGetters,
+  ISettingsState,
 } from '@/store/modules/settings'
 
 const { useGetters: useAppGetters } = createNamespacedHelpers<
