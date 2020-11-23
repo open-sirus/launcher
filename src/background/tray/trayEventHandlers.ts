@@ -4,6 +4,7 @@ import { LauncherEvent } from '@/events/LauncherEvent'
 
 import { buildMenu } from './contextMenu'
 import eventService from '../EventService'
+import { menuComponentTypes } from '@/background/tray/types'
 
 export const onMinimize = (
   mainWindow: BrowserWindow,
@@ -12,13 +13,13 @@ export const onMinimize = (
 ) => {
   buildMenu(
     {
-      id: '3',
-      isEnabled: true,
+      enabled: true,
       type: 'normal',
       label: 'Развернуть',
       click: () => {
         mainWindow.restore()
       },
+      nodeType: menuComponentTypes.SHOW_HIDE_APP
     },
     menu,
     tray
@@ -32,13 +33,13 @@ export const onRestore = (
 ) => {
   buildMenu(
     {
-      id: '3',
-      isEnabled: true,
+      enabled: true,
       type: 'normal',
       label: 'Свернуть',
       click: () => {
         mainWindow.minimize()
       },
+      nodeType: menuComponentTypes.SHOW_HIDE_APP
     },
     menu,
     tray
@@ -48,13 +49,13 @@ export const onRestore = (
 export const onCanLaunchGame = (menu: Menu, tray: Tray) => {
   buildMenu(
     {
-      id: '1',
-      isEnabled: true,
+      enabled: true,
       type: 'normal',
       label: 'В игру',
       click: () => {
         eventService.emit(LauncherEvent.LAUNCH_GAME, { launchGame: true })
       },
+      nodeType: menuComponentTypes.LAUNCH_GAME
     },
     menu,
     tray

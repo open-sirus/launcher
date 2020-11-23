@@ -17,7 +17,7 @@ export class DirectorySelected extends LauncherListener {
         directory,
       })
     } else {
-      // TODO: implement more truthful check to trigger "run game" action
+      // TODO: implement more truthful check to trigger "launch game" action
       eventService.emit(LauncherEvent.CAN_LAUNCH_GAME)
     }
   }
