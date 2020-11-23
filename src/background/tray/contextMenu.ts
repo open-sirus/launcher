@@ -44,11 +44,15 @@ export const buildMenu = (eventData: IMenuItem, menu: Menu, tray: Tray) => {
   const menuItem = new MenuItem(eventData)
 
   // TODO: Fix typescript errors
-  // @ts-ignore
-  const filteredMenuItems = menu.items.filter((item) => item.nodeType !== menuItem.nodeType)
+  const filteredMenuItems = menu.items.filter(
+    // @ts-ignore
+    (item) => item.nodeType !== menuItem.nodeType
+  )
   const filteredMenu = Menu.buildFromTemplate(filteredMenuItems)
-  // @ts-ignore
-  const menuItemIndex = MENU_ORDER.findIndex(menuItemType => menuItemType === menuItem.nodeType)
+  const menuItemIndex = MENU_ORDER.findIndex(
+    // @ts-ignore
+    (menuItemType) => menuItemType === menuItem.nodeType
+  )
   filteredMenu.insert(menuItemIndex, menuItem)
 
   tray.setContextMenu(filteredMenu)
