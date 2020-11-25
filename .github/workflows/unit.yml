@@ -1,0 +1,42 @@
+name: Linters
+
+on:
+  push:
+    # Run on pushes to specific branches
+    branches:
+      - master
+      - next
+      - beta
+      - alpha
+    # Do not run on tags
+    tags-ignore:
+      - "*"
+  pull_request:
+    # Run on to branches with an open PR
+    branches:
+      - "*"
+
+jobs:
+  lint:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: test:unit
+        env:
+          VUE_APP_I18N_LOCALE: ${{ secrets.VUE_APP_I18N_LOCALE }}
+          VUE_APP_I18N_FALLBACK_LOCALE:  ${{ secrets.VUE_APP_I18N_FALLBACK_LOCALE }}
+          VUE_APP_GRANT_TYPE: ${{ secrets.VUE_APP_GRANT_TYPE }}
+          VUE_APP_API_URL: ${{ secrets.VUE_APP_API_URL }}
+          VUE_APP_CLIENT_ID: ${{ secrets.VUE_APP_CLIENT_ID }}
+          VUE_APP_CLIENT_SECRET: ${{ secrets.VUE_APP_CLIENT_SECRET }}
