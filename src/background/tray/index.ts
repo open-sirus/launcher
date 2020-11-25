@@ -1,16 +1,16 @@
 import { BrowserWindow, Tray } from 'electron'
 
-import { initialContextMenu } from '@/background/tray/contextMenu'
+import { initContextMenu } from '@/background/tray/contextMenu'
 import { registerTrayEventListeners } from '@/background/tray/trayEventListeners'
+import { PROJECT_TITLE } from '@/constants'
 
 import { getIconPath } from './helpers'
 
-export const initTray = (winId: number): Tray => {
+export const initTray = (mainWindow: BrowserWindow): Tray => {
   const tray = new Tray(getIconPath())
-  const mainWindow = BrowserWindow.fromId(winId)
-  const initialMenu = initialContextMenu(mainWindow)
+  const initialMenu = initContextMenu(mainWindow)
 
-  tray.setToolTip('Sirus launcher')
+  tray.setToolTip(PROJECT_TITLE)
   tray.setContextMenu(initialMenu)
 
   registerTrayEventListeners(mainWindow, initialMenu, tray)

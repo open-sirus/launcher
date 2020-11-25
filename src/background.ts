@@ -53,7 +53,7 @@ function createWindow() {
 
   clientActions.init()
 
-  tray = initTray(win.id)
+  tray = initTray(win)
 }
 
 if (win) {

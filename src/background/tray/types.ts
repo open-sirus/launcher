@@ -1,16 +1,17 @@
-import { MenuItemConstructorOptions } from 'electron'
+import { MenuItem, MenuItemConstructorOptions } from 'electron'
 
-export enum menuComponentTypes {
+export const enum menuComponentTypes {
   LAUNCH_GAME = 'LAUNCH_GAME',
   SEPARATOR = 'SEPARATOR',
   SHOW_HIDE_APP = 'SHOW_HIDE_APP',
   CLOSE_APP = 'CLOSE_APP',
 }
 
-export interface IMenuItem extends MenuItemConstructorOptions {
-  enabled: boolean
-  type: 'normal' | 'separator' | 'submenu' | 'checkbox' | 'radio'
-  label: string
-  click: () => void
+export interface IMenuItemConstructorOptions
+  extends MenuItemConstructorOptions {
   nodeType: menuComponentTypes
+}
+
+export interface IMenuItem extends MenuItem {
+  nodeType?: menuComponentTypes
 }

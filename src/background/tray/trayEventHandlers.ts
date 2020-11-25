@@ -6,11 +6,7 @@ import { menuComponentTypes } from '@/background/tray/types'
 import { buildMenu } from './contextMenu'
 import eventService from '../EventService'
 
-export const onMinimize = (
-  mainWindow: BrowserWindow,
-  menu: Menu,
-  tray: Tray
-) => {
+const onMinimize = (mainWindow: BrowserWindow, menu: Menu, tray: Tray) => {
   buildMenu(
     {
       enabled: true,
@@ -26,11 +22,7 @@ export const onMinimize = (
   )
 }
 
-export const onRestore = (
-  mainWindow: BrowserWindow,
-  menu: Menu,
-  tray: Tray
-) => {
+const onRestore = (mainWindow: BrowserWindow, menu: Menu, tray: Tray) => {
   buildMenu(
     {
       enabled: true,
@@ -46,7 +38,7 @@ export const onRestore = (
   )
 }
 
-export const onCanLaunchGame = (menu: Menu, tray: Tray) => {
+const onCanLaunchGame = (menu: Menu, tray: Tray) => {
   buildMenu(
     {
       enabled: true,
@@ -60,4 +52,10 @@ export const onCanLaunchGame = (menu: Menu, tray: Tray) => {
     menu,
     tray
   )
+}
+
+export const eventListeners = {
+  onMinimize,
+  onRestore,
+  onCanLaunchGame,
 }

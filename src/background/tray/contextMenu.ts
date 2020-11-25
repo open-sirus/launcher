@@ -1,12 +1,16 @@
 import { app, BrowserWindow, Menu, MenuItem, Tray } from 'electron'
 
-import { IMenuItem, menuComponentTypes } from '@/background/tray/types'
+import {
+  IMenuItem,
+  IMenuItemConstructorOptions,
+  menuComponentTypes,
+} from '@/background/tray/types'
 import eventService from '@/background/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { MENU_ORDER } from '@/constants'
 
-export const initialContextMenu = (mainWindow: BrowserWindow): Menu => {
-  const template: Array<IMenuItem> = [
+export const initContextMenu = (mainWindow: BrowserWindow): Menu => {
+  const template: Array<IMenuItemConstructorOptions> = [
     {
       enabled: false,
       type: 'normal',
@@ -18,9 +22,7 @@ export const initialContextMenu = (mainWindow: BrowserWindow): Menu => {
     },
     {
       enabled: true,
-      label: '',
       type: 'separator',
-      click: () => {},
       nodeType: menuComponentTypes.SEPARATOR,
     },
     {
@@ -38,19 +40,21 @@ export const initialContextMenu = (mainWindow: BrowserWindow): Menu => {
       nodeType: menuComponentTypes.CLOSE_APP,
     },
   ]
+
   return Menu.buildFromTemplate(template)
 }
-export const buildMenu = (eventData: IMenuItem, menu: Menu, tray: Tray) => {
-  const menuItem = new MenuItem(eventData)
+export const buildMenu = (
+  eventData: IMenuItemConstructorOptions,
+  menu: Menu,
+  tray: Tray
+) => {
+  const menuItem: IMenuItem = new MenuItem(eventData)
 
-  // TODO: Fix typescript errors
-  const filteredMenuItems = menu.items.filter(
-    // @ts-ignore
+  const filteredMenuItems = (menu.items as IMenuItem[]).filter(
     (item) => item.nodeType !== menuItem.nodeType
   )
   const filteredMenu = Menu.buildFromTemplate(filteredMenuItems)
   const menuItemIndex = MENU_ORDER.findIndex(
-    // @ts-ignore
     (menuItemType) => menuItemType === menuItem.nodeType
   )
   filteredMenu.insert(menuItemIndex, menuItem)
