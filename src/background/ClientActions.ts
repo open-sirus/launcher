@@ -38,7 +38,7 @@ export function init() {
     new SelectDirectory()
   )
   eventService.on(
-    LauncherEvent.START_ON_SYSTEM_STARTUP,
+    LauncherEvent.SET_START_ON_SYSTEM_STARTUP,
     new StartOnSystemStartup()
   )
   eventService.on(LauncherEvent.FILE_LIST_UPDATED, new ValidateFileList())
