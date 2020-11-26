@@ -1,42 +1,45 @@
+// TODO: TEST NOT WORKING!!!!!
+import { BrowserWindow } from 'electron'
 import { mocked } from 'ts-jest/utils'
-import Vuex from 'vuex'
-import cloneDeep from 'lodash/cloneDeep'
 
-import {
-  onMinimize,
-  onRestore,
-  onCanLaunchGame,
-} from '@/background/tray/trayEventHandlers'
-import EventBus from '@/services/EventBus'
-import RenderedIpc from '@/events/ipcs/RenderedIpc'
-import { DirectorySelected } from '@/events/ClientActions'
-import { settingsModule } from '@/store/modules/settings'
+import { eventListeners } from '@/background/tray/trayEventHandlers'
 
-jest.mock('@/events/ipcs/RenderedIpc')
-jest.mock('@/events/ClientActions')
+jest.mock('electron', () => {
+  return {
+    BrowserWindow: jest.fn(() => {
+      return {
+        on: jest.fn(),
+      }
+    }),
+  }
+})
+
+let onCanLaunchGameSpy, onMinimizeSpy, onRestoreSpy, win
 
 describe('tray event handlers', () => {
-  const MockedIpc = mocked(RenderedIpc, true)
-  const MockedDirectorySelected = mocked(DirectorySelected, true)
-  let ipc, bus, store
+  const mockBrowserWindow = mocked(BrowserWindow, true)
 
-  beforeEach(() => {
-    MockedIpc.mockClear()
-    MockedDirectorySelected.mockClear()
-
-    store = new Vuex.Store({
-      modules: {
-        settings: cloneDeep(settingsModule),
-      },
-    })
+  beforeAll(() => {
+    onCanLaunchGameSpy = jest.spyOn(eventListeners, 'onCanLaunchGame')
+    onMinimizeSpy = jest.spyOn(eventListeners, 'onMinimize')
+    onRestoreSpy = jest.spyOn(eventListeners, 'onRestore')
   })
 
-  test('onMinimize', () => {})
+  beforeEach(() => {
+    mockBrowserWindow.mockClear()
+  })
 
-  test('onRestore', () => {})
+  afterAll(() => {
+    onCanLaunchGameSpy.mockRestore()
+    onMinimizeSpy.mockRestore()
+    onRestoreSpy.mockRestore()
+  })
 
-  test('onCanLaunchGame', () => {
-    ipc = new RenderedIpc()
-    bus = new EventBus(ipc)
+  test('onMinimize', () => {
+    win = new BrowserWindow()
+
+    win.on('minimize', eventListeners.onMinimize)
+
+    expect(onMinimizeSpy).toBeCalled()
   })
 })
