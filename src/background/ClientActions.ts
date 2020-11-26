@@ -17,7 +17,7 @@ export class SelectDirectory extends LauncherListener {
   }
 }
 
-class StartOnSystemStartup extends LauncherListener {
+export class StartOnSystemStartup extends LauncherListener {
   handle(event, { isStartOnSystemStartup }: IStartOnSystemStartupData) {
     app.setLoginItemSettings({
       openAtLogin: isStartOnSystemStartup,
