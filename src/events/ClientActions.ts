@@ -16,6 +16,9 @@ export class DirectorySelected extends LauncherListener {
       eventService.emit(LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED, {
         directory,
       })
+    } else {
+      // TODO: implement more truthful check to trigger "launch game" action
+      eventService.emit(LauncherEvent.CAN_LAUNCH_GAME)
     }
   }
 }

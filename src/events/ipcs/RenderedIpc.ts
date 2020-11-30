@@ -1,14 +1,14 @@
 import { ipcRenderer } from 'electron'
 
 import EventBus, { Ipc } from '@/services/EventBus'
-import { LauncherEvent } from '@/events/LauncherEvent'
+import { EventData, LauncherEvent } from '@/events/LauncherEvent'
 
-export default class RenderedIpc extends Ipc {
+export default class RenderedIpc<E extends LauncherEvent> extends Ipc {
   constructor() {
     super(ipcRenderer)
   }
 
-  send(event: LauncherEvent, data: Record<string, unknown>) {
+  send(event: E, data?: EventData[E]) {
     ipcRenderer.send(EventBus.CHANNEL_NAME, { event, data })
   }
 }

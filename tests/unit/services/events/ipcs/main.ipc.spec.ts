@@ -1,7 +1,7 @@
 import { ipcMain, BrowserWindow, WebContents } from 'electron'
 import { mocked } from 'ts-jest/utils'
 
-import { LauncherEvent}  from '@/events/LauncherEvent'
+import { LauncherEvent } from '@/events/LauncherEvent'
 import MainIpc from '@/events/ipcs/MainIpc'
 
 jest.mock('electron', function () {
@@ -44,7 +44,7 @@ describe('main ipc', () => {
 
   it('ipc send to background process with correct data', () => {
     const ipc = new MainIpc()
-    const data = { foo: 'bar' }
+    const data = { directory: 'bar' }
 
     ipc.send(LauncherEvent.SELECT_GAME_DIRECTORY, { ...data })
 

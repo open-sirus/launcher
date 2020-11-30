@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid'
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
-import { NOTIFICATION_TITLE, REMOVE_NOTIFICATION_TIMEOUT } from '@/constants'
+import { PROJECT_TITLE, REMOVE_NOTIFICATION_TIMEOUT } from '@/constants'
 import { modulesFactory } from '@/utils/modulesFactory'
 import { i18n as i18nModule } from '@/modules/i18n'
 import type { INotification } from '@/types/notification'
@@ -62,7 +62,7 @@ const actions: INotificationActions = {
     commit('addNotification', newNotification)
 
     if (withSystemNotification) {
-      const systemNotification = new Notification(NOTIFICATION_TITLE, {
+      const systemNotification = new Notification(PROJECT_TITLE, {
         body: text,
       })
 

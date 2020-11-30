@@ -6,12 +6,13 @@ import { autoUpdater } from 'electron-updater'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
 import * as clientActions from '@/background/ClientActions'
+import { initTray } from '@/background/tray'
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
+import { IS_DEVELOPMENT } from './constants'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+let win, tray
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -51,6 +52,8 @@ function createWindow() {
   }
 
   clientActions.init()
+
+  tray = initTray(win)
 }
 
 if (win) {
@@ -63,6 +66,7 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    tray.destroy()
     app.quit()
   }
 })
@@ -79,7 +83,7 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-  if (isDevelopment) {
+  if (IS_DEVELOPMENT) {
     try {
       await installExtension(VUEJS_DEVTOOLS)
     } catch (error) {
@@ -91,15 +95,17 @@ app.on('ready', async () => {
 })
 
 // Exit cleanly on request from parent process in development mode.
-if (isDevelopment) {
+if (IS_DEVELOPMENT) {
   if (process.platform === 'win32') {
     process.on('message', (data) => {
       if (data === 'graceful-exit') {
+        tray.destroy()
         app.quit()
       }
     })
   } else {
     process.on('SIGTERM', () => {
+      tray.destroy()
       app.quit()
     })
   }
