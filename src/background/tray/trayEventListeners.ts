@@ -1,6 +1,6 @@
 import { BrowserWindow, Menu, Tray } from 'electron'
 
-import eventService from '@/background/EventService'
+import { eventService } from '@/background/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
 import { eventListeners } from '@/background/tray/trayEventHandlers'

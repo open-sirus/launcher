@@ -1,4 +1,4 @@
-import EventBus from '@/services/EventBus'
-import RenderedIpc from '@/events/ipcs/RenderedIpc'
+import { EventBus } from '@/services/EventBus'
+import { RenderedIpc } from '@/events/ipcs/RenderedIpc'
 
-export default new EventBus(new RenderedIpc())
+export const eventService = new EventBus(new RenderedIpc())

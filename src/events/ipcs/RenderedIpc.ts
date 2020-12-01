@@ -1,9 +1,9 @@
 import { ipcRenderer } from 'electron'
 
-import EventBus, { Ipc } from '@/services/EventBus'
+import { Ipc, EventBus } from '@/services/EventBus'
 import { EventData, LauncherEvent } from '@/events/LauncherEvent'
 
-export default class RenderedIpc<E extends LauncherEvent> extends Ipc {
+export class RenderedIpc<E extends LauncherEvent> extends Ipc {
   constructor() {
     super(ipcRenderer)
   }

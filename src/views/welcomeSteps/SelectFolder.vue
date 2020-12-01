@@ -31,7 +31,7 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import eventService from '@/services/EventService'
+import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
 

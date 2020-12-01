@@ -6,14 +6,23 @@ export class TorrentClient {
   private isCancelled = true
   private downloadProcess: ChildProcessWithoutNullStreams | null = null
   private executableFile = null
+  private eventBus = null
 
-  constructor(eventBus) {}
+  constructor(eventBus) {
+    this.eventBus = eventBus
+  }
 
-  private subscribeToExternalEvents() {}
-  private subscribeToStdinData() {}
+  private subscribeToExternalEvents() {
+    console.log('subscribeToExternalEvents')
+  }
+
+  private subscribeToStdinData() {
+    console.log('subscribeToStdinData')
+  }
 
   startTorrenting(torrentId, torrentUrl, path, torrentDirectory) {
     this.isCancelled = false
+    console.log(torrentId, torrentUrl, path, torrentDirectory)
   }
 
   stopTorrenting() {

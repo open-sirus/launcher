@@ -31,7 +31,7 @@ export abstract class Ipc {
   abstract send(event: string, data?: any)
 }
 
-class EventBus {
+export class EventBus {
   protected events: Map<LauncherEvent, Array<LauncherListener>> = new Map<
     LauncherEvent,
     Array<LauncherListener>
@@ -91,5 +91,3 @@ class EventBus {
     })
   }
 }
-
-export default EventBus

@@ -1,9 +1,9 @@
 import { ipcMain, BrowserWindow } from 'electron'
 
-import EventBus, { Ipc } from '@/services/EventBus'
+import { EventBus, Ipc } from '@/services/EventBus'
 import { EventData, LauncherEvent } from '@/events/LauncherEvent'
 
-export default class MainIpc<E extends LauncherEvent> extends Ipc {
+export class MainIpc<E extends LauncherEvent> extends Ipc {
   constructor() {
     super(ipcMain)
   }

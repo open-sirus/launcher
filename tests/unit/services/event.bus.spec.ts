@@ -1,7 +1,7 @@
 import { mocked } from 'ts-jest/utils'
 
-import EventBus from '@/services/EventBus'
-import RenderedIpc from '@/events/ipcs/RenderedIpc'
+import { EventBus } from '@/services/EventBus'
+import { RenderedIpc } from '@/events/ipcs/RenderedIpc'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { DirectorySelected } from '@/events/ClientActions'
 

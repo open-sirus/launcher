@@ -1,8 +1,8 @@
 import { ipcRenderer } from 'electron'
 import { mocked } from 'ts-jest/utils'
 
-import RenderedIpc from '@/events/ipcs/RenderedIpc'
-import EventBus from '@/services/EventBus'
+import { RenderedIpc } from '@/events/ipcs/RenderedIpc'
+import { EventBus } from '@/services/EventBus'
 import { LauncherEvent } from '@/events/LauncherEvent'
 
 jest.mock('electron', () => ({

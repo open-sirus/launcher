@@ -2,7 +2,7 @@ import { ipcMain, BrowserWindow, WebContents } from 'electron'
 import { mocked } from 'ts-jest/utils'
 
 import { LauncherEvent } from '@/events/LauncherEvent'
-import MainIpc from '@/events/ipcs/MainIpc'
+import { MainIpc } from '@/events/ipcs/MainIpc'
 
 jest.mock('electron', function () {
   return {

@@ -4,7 +4,7 @@ import { LauncherEvent } from '@/events/LauncherEvent'
 import { menuComponentTypes } from '@/background/tray/types'
 
 import { buildMenu } from './contextMenu'
-import eventService from '../EventService'
+import { eventService } from '../EventService'
 
 const onMinimize = (mainWindow: BrowserWindow, menu: Menu, tray: Tray) => {
   buildMenu(

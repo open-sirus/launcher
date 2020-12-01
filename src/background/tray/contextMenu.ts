@@ -5,7 +5,7 @@ import {
   IMenuItemConstructorOptions,
   menuComponentTypes,
 } from '@/background/tray/types'
-import eventService from '@/background/EventService'
+import { eventService } from '@/background/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { MENU_ORDER } from '@/constants'
 

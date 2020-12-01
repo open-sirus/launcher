@@ -33,7 +33,7 @@
 import { defineComponent } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
-import eventService from '@/services/EventService'
+import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
 import { IAppGetters, IAppState } from '@/store/modules/app'

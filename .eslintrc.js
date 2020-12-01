@@ -34,6 +34,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? WARN : OFF,
     'no-debugger': process.env.NODE_ENV === 'production' ? WARN : OFF,
     'lodash/import-scope': [ERROR, 'method'],
+    'import/named': ERROR,
     'import/order': [
       ERROR,
       {
