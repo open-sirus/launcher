@@ -30,6 +30,16 @@
           {{ $t('settings.start_on_system_startup') }}
         </template>
       </v-checkbox>
+      <v-checkbox
+        v-if="hasStartOnSystemStartup"
+        v-model="hasStartInMinimizedMode"
+        dense
+        class="mt-0"
+      >
+        <template #label>
+          {{ $t('settings.start_in_minimized_mode') }}
+        </template>
+      </v-checkbox>
     </v-card-text>
   </v-card>
 </template>
@@ -81,17 +91,26 @@ export default defineComponent({
       clientDirectory,
       locale,
       startOnSystemStartup,
+      startInMinimizedMode,
     } = useSettingsGetters([
       'clientDirectory',
       'locale',
       'startOnSystemStartup',
+      'startInMinimizedMode',
     ])
-    const { setLocale, setStartOnSystemStartup } = useSettingsActions([
+    const {
+      setLocale,
+      setStartOnSystemStartup,
+      setStartInMinimizedMode,
+    } = useSettingsActions([
       'setLocale',
       'setStartOnSystemStartup',
+      'setStartInMinimizedMode',
     ])
 
     return {
+      setStartInMinimizedMode,
+      startInMinimizedMode,
       setStartOnSystemStartup,
       startOnSystemStartup,
       availableLocales,
@@ -107,6 +126,15 @@ export default defineComponent({
       },
       set(val) {
         this.setStartOnSystemStartup(val)
+      },
+    },
+    hasStartInMinimizedMode: {
+      get() {
+        return this.startInMinimizedMode
+      },
+      set(val) {
+        console.log(val)
+        this.setStartInMinimizedMode(val)
       },
     },
   },

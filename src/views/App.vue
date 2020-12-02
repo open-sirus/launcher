@@ -52,6 +52,7 @@ export default defineComponent({
     await this.$store.dispatch('accounts/validateAccounts', {
       root: true,
     })
+    await this.$store.dispatch('settings/setIsFirstStart')
   },
 })
 </script>

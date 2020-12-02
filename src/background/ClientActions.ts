@@ -21,7 +21,14 @@ export class StartOnSystemStartup extends LauncherListener {
   handle(event, { isStartOnSystemStartup }: IStartOnSystemStartupData) {
     app.setLoginItemSettings({
       openAtLogin: isStartOnSystemStartup,
-      openAsHidden: isStartOnSystemStartup,
+    })
+  }
+}
+
+export class StartInMinimizedMode extends LauncherListener {
+  handle(event, { isStartInMinimizedMode }: IStartOnSystemStartupData) {
+    app.setLoginItemSettings({
+      openAsHidden: isStartInMinimizedMode,
     })
 export class ValidateFileList extends LauncherListener {
   async handle(
@@ -40,6 +47,10 @@ export function init() {
   eventService.on(
     LauncherEvent.SET_START_ON_SYSTEM_STARTUP,
     new StartOnSystemStartup()
+  )
+  eventService.on(
+    LauncherEvent.SET_START_IN_MINIMIZED_MODE,
+    new StartInMinimizedMode()
   )
   eventService.on(LauncherEvent.FILE_LIST_UPDATED, new ValidateFileList())
 }
