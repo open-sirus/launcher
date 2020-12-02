@@ -45,7 +45,7 @@ const mutations: MutationTree<ISettingsState> = {
   },
   SET_IS_FIRST_START(state) {
     state.isFirstStart = false
-  }
+  },
 }
 
 type ActionCtx = ActionContext<ISettingsState, IRootState>
@@ -89,7 +89,7 @@ const actions: ISettingsActions = {
     eventService.emit(LauncherEvent.SET_START_IN_MINIMIZED_MODE, {
       isStartInMinimizedMode: true,
     })
-  }
+  },
 }
 
 export interface ISettingsGetters

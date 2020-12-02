@@ -1,5 +1,5 @@
 import { eventService } from '@/services/EventService'
-import { LauncherEvent, ISelectGameDirectoryData, IStartOnSystemStartupData, } from '@/events/LauncherEvent'
+import { LauncherEvent, ISelectGameDirectoryData } from '@/events/LauncherEvent'
 import { LauncherListener } from '@/events/LauncherListener'
 import store from '@/store'
 
@@ -23,20 +23,6 @@ export class DirectorySelected extends LauncherListener {
   }
 }
 
-class SetStartOnSystemStartup extends LauncherListener {
-  handle(
-    event: LauncherEvent,
-    { isStartOnSystemStartup }: IStartOnSystemStartupData
-  ) {
-    eventService.emit(LauncherEvent.START_ON_SYSTEM_STARTUP, {
-      isStartOnSystemStartup,
-    })
-  }
-}
 export function init() {
   eventService.on(LauncherEvent.SELECT_GAME_DIRECTORY, new DirectorySelected())
-  eventService.on(
-    LauncherEvent.SET_START_ON_SYSTEM_STARTUP,
-    new SetStartOnSystemStartup()
-  )
 }

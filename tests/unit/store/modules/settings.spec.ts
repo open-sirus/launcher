@@ -34,10 +34,27 @@ describe('settings module', () => {
       },
     })
   })
-
-  test('set start on system startup', async () => {
+  test('set true start on system startup', async () => {
     await store.dispatch('settings/setStartOnSystemStartup', true)
 
     expect(store.getters['settings/startOnSystemStartup']).toBe(true)
+  })
+
+  test('set false start on system startup', async () => {
+    await store.dispatch('settings/setStartOnSystemStartup', false)
+
+    expect(store.getters['settings/startOnSystemStartup']).toBe(false)
+  })
+
+  test('set true start on system startup in minimized mode', async () => {
+    await store.dispatch('settings/setStartInMinimizedMode', true)
+
+    expect(store.getters['settings/startInMinimizedMode']).toBe(true)
+  })
+
+  test('set false start on system startup in minimized mode', async () => {
+    await store.dispatch('settings/setStartInMinimizedMode', false)
+
+    expect(store.getters['settings/startInMinimizedMode']).toBe(false)
   })
 })
