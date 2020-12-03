@@ -9,6 +9,7 @@ export function Interop(Vue: typeof _Vue, options?: any): void {
 }
 
 declare module 'vue/types/vue' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Vue {
     $interop: ElectronInterop
   }

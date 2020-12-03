@@ -38,6 +38,7 @@ export function Notification(Vue: typeof _Vue, { store }): void {
 }
 
 declare module 'vue/types/vue' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Vue {
     $notification: INotificationPlugin
   }
