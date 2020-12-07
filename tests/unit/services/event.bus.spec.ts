@@ -1,8 +1,8 @@
 import { mocked } from 'ts-jest/utils'
 
-import EventBus from '@/services/EventBus'
-import RenderedIpc from '@/events/ipcs/RenderedIpc'
-import LauncherEvent from '@/events/LauncherEvent'
+import { EventBus } from '@/services/EventBus'
+import { RenderedIpc } from '@/events/ipcs/RenderedIpc'
+import { LauncherEvent } from '@/events/LauncherEvent'
 import { DirectorySelected } from '@/events/ClientActions'
 
 jest.mock('@/events/ipcs/RenderedIpc')
@@ -23,7 +23,7 @@ describe('Event Bus', () => {
     const bus = new EventBus(ipc)
     const listener = new DirectorySelected()
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
-    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, {})
+    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
     expect(listener.handle).toBeCalled()
   })
 
@@ -36,7 +36,7 @@ describe('Event Bus', () => {
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener2)
 
-    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, {})
+    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
 
     expect(listener.handle).toBeCalled()
     expect(listener2.handle).toBeCalled()
@@ -51,7 +51,7 @@ describe('Event Bus', () => {
     bus.on(LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED, listener)
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener2)
 
-    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, {})
+    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
 
     expect(listener.handle).not.toBeCalled()
     expect(listener2.handle).toBeCalled()
@@ -62,7 +62,7 @@ describe('Event Bus', () => {
     const bus = new EventBus(ipc)
     const listener = new DirectorySelected()
 
-    const data = { foo: 'bar' }
+    const data = { directory: 'bar' }
 
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
 
@@ -82,8 +82,8 @@ describe('Event Bus', () => {
 
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
 
-    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, {})
-    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, {})
+    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
+    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
 
     expect(listener.handle).toBeCalledTimes(1)
   })
@@ -95,8 +95,8 @@ describe('Event Bus', () => {
 
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
 
-    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, {})
-    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, {})
+    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
+    bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
 
     expect(listener.handle).toBeCalledTimes(2)
   })

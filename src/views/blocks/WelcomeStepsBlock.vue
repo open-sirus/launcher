@@ -3,14 +3,18 @@
     <transition name="step-slide">
       <component :is="stepComponent" />
     </transition>
-    <v-row>
-      <v-col>
-        <v-btn @click="prevStep">{{ $t('steps.prev-step') }}</v-btn>
+    <v-row class="button-row">
+      <v-col align-self="start">
+        <v-btn :disabled="isFirstStep" @click="prevStep">
+          {{ $t('steps.prev-step') }}
+        </v-btn>
       </v-col>
-      <v-col>
-        <v-btn @click="nextStep">{{ $t('steps.next-step') }}</v-btn>
+      <v-col align-self="end">
+        <v-btn @click="nextStep">
+          {{ $t('steps.next-step') }}
+        </v-btn>
       </v-col>
-      <v-col>
+      <v-col align-self="end">
         <v-btn color="primary" @click="skipWelcomeScreen">
           {{ $t('steps.skip') }}
         </v-btn>
@@ -58,7 +62,7 @@ export default defineComponent({
     const { currentStep, currentStepIndex, stepsCount } = useWelcomeGetters([
       'currentStep',
       'currentStepIndex',
-      'steps',
+      'stepsCount',
     ])
 
     return {
@@ -73,6 +77,9 @@ export default defineComponent({
   computed: {
     stepComponent() {
       return componentByStepType[this.currentStep as WelcomeSteps]
+    },
+    isFirstStep() {
+      return this.currentStepIndex === 0
     },
   },
   methods: {
@@ -89,9 +96,12 @@ export default defineComponent({
   height: 400px;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-direction: column;
+}
+
+.welcome-steps .button-row {
+  margin-top: auto;
 }
 
 .welcome-steps .row {

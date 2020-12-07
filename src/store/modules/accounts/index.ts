@@ -54,10 +54,11 @@ const state: IAccountsState = {
 
 const getters: IAccountsGetters = {
   accounts: (state) => denormalizeData(state.accounts.data),
+  hasSettedAccount: (_, getters) => Boolean(getters.accounts.length),
   defaultAccount: (state) =>
     state.accounts.data.byId[state.accounts.data.defaultId],
   needTfa: (state) => state.additional.needTfa,
-  getStatus: (state) => state.additional.status,
+  requestStatus: (state) => state.additional.status,
 }
 
 const mutations: MutationTree<IAccountsState> = {
@@ -166,7 +167,7 @@ const actions: IAccountsActions = {
   },
   async sendAuthRequest(
     { dispatch, commit },
-    { username, password, token, isReLogin }
+    { username, password, token, isReLogin = false }
   ) {
     commit('SET_STATUS', RequestStatus.PENDING)
 

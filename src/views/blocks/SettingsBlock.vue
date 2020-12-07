@@ -33,9 +33,9 @@
 import { defineComponent } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
-import eventService from '@/services/EventService'
-import LauncherEvent from '@/events/LauncherEvent'
-import CallbackListener from '@/events/CallbackListener'
+import { eventService } from '@/services/EventService'
+import { LauncherEvent } from '@/events/LauncherEvent'
+import { CallbackListener } from '@/events/CallbackListener'
 import { IAppGetters, IAppState } from '@/store/modules/app'
 import {
   ISettingsState,
@@ -92,14 +92,17 @@ export default defineComponent({
     async choose() {
       this.errors.clientDirectory = null
 
-      eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG, {})
+      eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG)
       eventService.on(
         LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
-        new CallbackListener(() => {
-          this.errors.clientDirectory = this.$t(
-            'settings.errors.wrong_client_directory'
-          ) as string
-        }, true)
+        new CallbackListener<LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED>(
+          () => {
+            this.errors.clientDirectory = this.$t(
+              'settings.errors.wrong_client_directory'
+            ) as string
+          },
+          true
+        )
       )
     },
   },

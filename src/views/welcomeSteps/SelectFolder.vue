@@ -31,9 +31,9 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import eventService from '@/services/EventService'
-import LauncherEvent from '@/events/LauncherEvent'
-import CallbackListener from '@/events/CallbackListener'
+import { eventService } from '@/services/EventService'
+import { LauncherEvent } from '@/events/LauncherEvent'
+import { CallbackListener } from '@/events/CallbackListener'
 
 export interface ISelectFolderState {
   errors: {
@@ -53,7 +53,7 @@ export default defineComponent({
     selectFolder() {
       this.errors.clientDirectory = null
 
-      eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG, {})
+      eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG)
       eventService.on(
         LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
         new CallbackListener(() => {
@@ -64,6 +64,7 @@ export default defineComponent({
       )
     },
     downloadGame() {
+      // TODO: implement after add download game logic
       console.log('downloadGame')
     },
   },

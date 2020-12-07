@@ -54,9 +54,13 @@
       "download": "Download game"
     },
     "login": {
+      "title": "Login",
       "username": "Enter login",
       "password": "Enter password",
-      "tfa_code": "Enter 2FA code"
+      "tfa_code": "Enter 2FA code",
+       "req_fields": "* - indicates required field",
+       "login": "Login",
+      "loggined": "You loggined by {username}"
     },
     "next-step": "Next",
     "prev-step": "Back",

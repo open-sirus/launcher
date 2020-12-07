@@ -1,9 +1,9 @@
 import { ipcRenderer } from 'electron'
 import { mocked } from 'ts-jest/utils'
 
-import RenderedIpc from '@/events/ipcs/RenderedIpc'
-import EventBus from '@/services/EventBus'
-import LauncherEvent from '@/events/LauncherEvent'
+import { RenderedIpc } from '@/events/ipcs/RenderedIpc'
+import { EventBus } from '@/services/EventBus'
+import { LauncherEvent } from '@/events/LauncherEvent'
 
 jest.mock('electron', () => ({
   __esModule: true,
@@ -35,7 +35,7 @@ describe('renderer ipc', () => {
 
   it('ipc send to background process with correct data', () => {
     const ipc = new RenderedIpc()
-    const data = { foo: 'bar' }
+    const data = { directory: 'bar' }
 
     ipc.send(LauncherEvent.SELECT_GAME_DIRECTORY, { ...data })
 

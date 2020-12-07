@@ -140,6 +140,7 @@ export default defineComponent<ITfaModalProps>({
     },
     resetForm() {
       this.tfaToken = ''
+      // @ts-ignore
       this.hideModal()
       // @ts-ignore
       this.validate.tfaToken.$reset()

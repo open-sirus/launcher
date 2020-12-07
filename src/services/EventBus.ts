@@ -1,14 +1,15 @@
 import { IpcMain, IpcRenderer } from 'electron'
 
-import LauncherEvent from '@/events/LauncherEvent'
-import LauncherListener from '@/events/LauncherListener'
+import { LauncherEvent, EventData } from '@/events/LauncherEvent'
+import { LauncherListener } from '@/events/LauncherListener'
 
 export type IpcCallback = ({
   event,
   data,
 }: {
   event: string
-  data: Record<string, unknown>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any
 }) => void
 
 export abstract class Ipc {
@@ -26,10 +27,11 @@ export abstract class Ipc {
     this.onCallback = callback
   }
 
-  abstract send(event: LauncherEvent, data: Record<string, unknown>)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  abstract send(event: string, data?: any)
 }
 
-class EventBus {
+export class EventBus {
   protected events: Map<LauncherEvent, Array<LauncherListener>> = new Map<
     LauncherEvent,
     Array<LauncherListener>
@@ -55,7 +57,7 @@ class EventBus {
     }
   }
 
-  emit(event: LauncherEvent, data: Record<string, unknown>) {
+  emit<E extends LauncherEvent>(event: E, data?: EventData[E]) {
     this.internalEmit(event, data, false)
   }
 
@@ -65,10 +67,10 @@ class EventBus {
    * @param isIpc - is ipc event, we should not publish it to ipc
    * @private
    */
-  private internalEmit(
-    event: LauncherEvent,
-    data: Record<string, unknown>,
-    isIpc: boolean
+  private internalEmit<E extends LauncherEvent>(
+    event: E,
+    data?: EventData[E],
+    isIpc?: boolean
   ) {
     const listeners = this.events.get(event)
     // we need to send ipc event even we have no listeners, listeners still can be registered in main/render process
@@ -89,5 +91,3 @@ class EventBus {
     })
   }
 }
-
-export default EventBus

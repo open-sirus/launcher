@@ -22,7 +22,7 @@ interface IFile {
   host: string
 }
 
-interface IAvailableLocale {
+export interface IAvailableLocale {
   key: Langs
   lang: string
 }
