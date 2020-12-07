@@ -3,7 +3,7 @@ import Vuex, { Store } from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import nock from 'nock'
 
-import { appModule, IAppState } from '@/store/modules/app'
+import { appModule, IAppState, IFile } from '@/store/modules/app'
 import LauncherFile from '@/entities/LauncherFile'
 
 describe('File list receive', () => {
@@ -11,7 +11,7 @@ describe('File list receive', () => {
   let localVue
   const baseURL = 'https://api.sirus.su'
 
-  const RESPONSE = {
+  const RESPONSE: { patches: Array<IFile>; delete: Array<IFile> } = {
     patches: [
       {
         filename: 'patch-d.zip',

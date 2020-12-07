@@ -10,13 +10,25 @@ enum DownloadErrors {
   ALREADY_IN_PROGRESS = 'ALREADY_IN_PROGRESS',
 }
 
-interface IFile {
+export interface IFile {
   // TODO: make normal type
-  isDownloading: boolean
-  isIncomplete: boolean
+  id?: number | string
+  isDownloading?: boolean
+  isIncomplete?: boolean
+  isNew?: boolean
+  filename?: string
+  path?: string
+  size?: number
+  md5?: string
+  host?: string
+  storagePath?: string
+  updatedAt?: string
+  createdAt?: string
+  new?: boolean // TODO: use isNew everywhere
+  status?: number // TODO: make enum
 }
 
-interface IAvailableLocale {
+export interface IAvailableLocale {
   key: Langs
   lang: string
 }
