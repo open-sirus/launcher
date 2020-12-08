@@ -1,8 +1,13 @@
 import { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
+import differentWith from 'lodash/differenceWith'
 
 import { axios } from '@/modules/axios'
 import { modulesFactory } from '@/utils/modulesFactory'
 import { Langs } from '@/types/lang'
+import { eventService } from '@/services/EventService'
+import { LauncherEvent } from '@/events/LauncherEvent'
+import LauncherFile from '@/entities/LauncherFile'
+import { isPatchEqual } from '@/utils/patches'
 
 import { IRootState } from '../types'
 
@@ -11,20 +16,19 @@ enum DownloadErrors {
 }
 
 export interface IFile {
-  // TODO: make normal type
   id?: number | string
   isDownloading?: boolean
   isIncomplete?: boolean
-  isNew?: boolean
-  filename?: string
   path?: string
-  size?: number
   md5?: string
+  size?: number
+  filename?: string
   host?: string
   storagePath?: string
   updatedAt?: string
   createdAt?: string
   new?: boolean // TODO: use isNew everywhere
+  isNew?: boolean // TODO: use isNew everywhere
   status?: number // TODO: make enum
 }
 
@@ -84,8 +88,21 @@ const actions: IAppActions = {
     }
 
     const { data } = await axios.get('client/patches')
-    commit('SET_FILES', data.patches)
+    const patches = data.patches.map(LauncherFile.fromObject)
+
     commit('SET_FILES_TO_REMOVE', data.delete)
+
+    // Update file list and emit event only when they was really changed
+    if (
+      state.files &&
+      patches.length === state.files.length &&
+      differentWith(patches, state.files, isPatchEqual).length === 0
+    ) {
+      return
+    }
+
+    eventService.emit(LauncherEvent.FILE_LIST_UPDATED, data.patches)
+    commit('SET_FILES', data.patches)
   },
   async initialStart({ state, commit }) {
     state.launcherFiles.forEach((file) => {

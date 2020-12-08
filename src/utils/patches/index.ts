@@ -1,0 +1,1 @@
+export { isPatchEqual } from './isPatchEqual'
