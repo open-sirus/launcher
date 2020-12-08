@@ -6,25 +6,25 @@ import { modulesFactory } from '@/utils/modulesFactory'
 import { Langs } from '@/types/lang'
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
+import LauncherFile from '@/entities/LauncherFile'
+import { isPatchEqual } from '@/utils/patches'
 
 import { IRootState } from '../types'
-import LauncherFile from "@/entities/LauncherFile";
-import {isPatchEqual} from "@/utils/patches";
 
 enum DownloadErrors {
   ALREADY_IN_PROGRESS = 'ALREADY_IN_PROGRESS',
 }
 
 export interface IFile {
-  id?: number | string,
+  id?: number | string
   isDownloading?: boolean
   isIncomplete?: boolean
   path?: string
   md5?: string
   size?: number
   filename?: string
-  host?: string,
-  storagePath?: string,
+  host?: string
+  storagePath?: string
   updatedAt?: string
   createdAt?: string
   new?: boolean // TODO: use isNew everywhere
