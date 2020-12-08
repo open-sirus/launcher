@@ -1,5 +1,7 @@
 import nodePath from 'path'
 
+import { IFile } from '@/store/modules/app'
+
 export interface IValidatableFile {
   filePath: string
   size: number
@@ -23,13 +25,23 @@ export enum FileStatus {
 }
 
 export default class LauncherFile
-  implements IValidatableFile, IDownloadableFile {
+  implements IValidatableFile, IDownloadableFile, IFile {
   host: string
   path: string
   size: number
   hash: string
   filename: string
   filePath: string
+
+  static fromObject({ filename, md5, host, size, path }: IFile) {
+    return new LauncherFile(
+      <string>filename,
+      <string>path,
+      <string>host,
+      <number>size,
+      <string>md5
+    )
+  }
 
   constructor(
     filename: string,
@@ -57,35 +69,31 @@ export default class LauncherFile
     return this.downloadAttributes.isDownloading
   }
 
-  set isDownloading(val: boolean) {
-    this.downloadAttributes.isDownloading = val
+  set isDownloading(isDownloading: boolean) {
+    this.downloadAttributes.isDownloading = isDownloading
   }
 
   get isIncomplete() {
     return this.downloadAttributes.isIncomplete
   }
 
-  set isIncomplete(val: boolean) {
-    this.downloadAttributes.isIncomplete = val
+  set isIncomplete(isIncomplete: boolean) {
+    this.downloadAttributes.isIncomplete = isIncomplete
   }
 
-  set isValid(val: boolean) {
-    this.downloadAttributes.isValid = val
+  set isValid(isValid: boolean) {
+    this.downloadAttributes.isValid = isValid
   }
 
   get isValid() {
     return this.downloadAttributes.isValid
   }
 
-  set isValidating(val: boolean) {
-    this.downloadAttributes.isValid = val
+  set isValidating(isValidating: boolean) {
+    this.downloadAttributes.isValid = isValidating
   }
 
   get isValidating() {
     return this.downloadAttributes.isValid
-  }
-
-  static fromObject({ filename, md5, host, size, path }) {
-    return new LauncherFile(filename, path, host, size, md5)
   }
 }

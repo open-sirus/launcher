@@ -1,20 +1,22 @@
+import cloneDeep from 'lodash/cloneDeep'
+
 import LauncherFile, {
   FileStatus,
   IValidatableFile,
 } from '@/entities/LauncherFile'
-import eventService from '@/background/EventService'
-import LauncherEvent from '@/events/LauncherEvent'
+import { eventService } from '@/background/EventService'
+import { LauncherEvent } from '@/events/LauncherEvent'
 import { getFileHash, isCorrectFile } from '@/utils/files'
 
 export class FileValidationProgress {
-  private done: number
-  private valid: number
-  private files: number
+  private validatedCount: number
+  private validCount: number
+  private filesCount: number
 
-  constructor(files: number, done: number, valid: number) {
-    this.done = done
-    this.valid = valid
-    this.files = files
+  constructor(filesCount: number, validatedCount: number, validCount: number) {
+    this.validCount = validCount
+    this.validatedCount = validatedCount
+    this.filesCount = filesCount
   }
 }
 
@@ -49,11 +51,11 @@ export class FileManageService {
 
   async validate(clientPath: string, files: Array<LauncherFile>) {
     this.clientPath = clientPath
+    this.files = cloneDeep(files)
+
     files.forEach((file) => {
       file.isValidating = true
     })
-
-    this.files = files
 
     this.updateStatus(FileManageStatus.VALIDATING)
 

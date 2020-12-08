@@ -1,7 +1,7 @@
 import { mocked } from 'ts-jest/utils'
 
 import LauncherFile from '@/entities/LauncherFile'
-import LauncherEvent from '@/events/LauncherEvent'
+import { LauncherEvent } from '@/events/LauncherEvent'
 import fileManageServier from '@/services/FileManageService'
 import { ValidateFileList } from '@/background/ClientActions'
 jest.mock('@/services/FileManageService')

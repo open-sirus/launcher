@@ -1,13 +1,13 @@
 import { mocked } from 'ts-jest/utils'
 
 import LauncherFile from '@/entities/LauncherFile'
-import LauncherEvent from '@/events/LauncherEvent'
+import { LauncherEvent } from '@/events/LauncherEvent'
 import {
   FileManageService,
   FileManageStatus,
   FileValidationProgress,
 } from '@/services/FileManageService'
-import eventService from '@/background/EventService'
+import { eventService } from '@/background/EventService'
 import { getFileHash, isCorrectFile } from '@/utils/files'
 
 jest.mock('@/background/EventService')

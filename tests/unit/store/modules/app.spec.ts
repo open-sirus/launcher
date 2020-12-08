@@ -6,8 +6,8 @@ import { mocked } from 'ts-jest/utils'
 
 import { appModule, IAppState, IFile } from '@/store/modules/app'
 import LauncherFile from '@/entities/LauncherFile'
-import eventService from '@/services/EventService'
-import LauncherEvent from '@/events/LauncherEvent'
+import { eventService } from '@/services/EventService'
+import { LauncherEvent } from '@/events/LauncherEvent'
 
 jest.mock('@/services/EventService')
 
@@ -104,7 +104,9 @@ describe('File list receive', () => {
     nock(baseURL).get('/api/client/patches').reply(200, { data: RESPONSE })
 
     await store.dispatch('app/loadFiles', null, { root: true })
-    expect(store.state.app.files).toStrictEqual(RESPONSE.patches)
+    expect(store.state.app.files).toStrictEqual(
+      RESPONSE.patches.map(LauncherFile.fromObject)
+    )
     expect(store.state.app.filesToRemove).toStrictEqual(RESPONSE.delete)
   })
 
@@ -126,7 +128,7 @@ describe('File list receive', () => {
   })
 
   it.skip('list should not be changed if error occurred', async () => {
-    store.commit('app/SET_FILES', RESPONSE.patches)
+    store.commit('app/SET_FILES', RESPONSE.patches.map(LauncherFile.fromObject))
 
     nock(baseURL)
       .get('/api/client/patches')
@@ -144,7 +146,7 @@ describe('File list receive', () => {
 
   it('event should not be emitted if file list the same', async () => {
     expect.assertions(1)
-    store.commit('app/SET_FILES', RESPONSE.patches)
+    store.commit('app/SET_FILES', RESPONSE.patches.map(LauncherFile.fromObject))
 
     nock('https://api.sirus.su/')
       .get('/api/client/patches')

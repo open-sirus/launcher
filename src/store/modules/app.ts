@@ -1,25 +1,35 @@
 import { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
+import differentWith from 'lodash/differenceWith'
 
 import { axios } from '@/modules/axios'
 import { modulesFactory } from '@/utils/modulesFactory'
 import { Langs } from '@/types/lang'
-import eventService from '@/services/EventService'
-import LauncherEvent from '@/events/LauncherEvent'
+import { eventService } from '@/services/EventService'
+import { LauncherEvent } from '@/events/LauncherEvent'
 
 import { IRootState } from '../types'
+import LauncherFile from "@/entities/LauncherFile";
+import {isPatchEqual} from "@/utils/patches";
 
 enum DownloadErrors {
   ALREADY_IN_PROGRESS = 'ALREADY_IN_PROGRESS',
 }
 
-interface IFile {
-  isDownloading: boolean
-  isIncomplete: boolean
-  path: string
-  md5: string
-  size: number
-  filename: string
-  host: string
+export interface IFile {
+  id?: number | string,
+  isDownloading?: boolean
+  isIncomplete?: boolean
+  path?: string
+  md5?: string
+  size?: number
+  filename?: string
+  host?: string,
+  storagePath?: string,
+  updatedAt?: string
+  createdAt?: string
+  new?: boolean // TODO: use isNew everywhere
+  isNew?: boolean // TODO: use isNew everywhere
+  status?: number // TODO: make enum
 }
 
 export interface IAvailableLocale {
@@ -78,23 +88,19 @@ const actions: IAppActions = {
     }
 
     const { data } = await axios.get('client/patches')
+    const patches = data.patches.map(LauncherFile.fromObject)
 
     commit('SET_FILES_TO_REMOVE', data.delete)
 
-    if (state.files && data.patches.length === state.files.length) {
-      const original = state.files.map((p) =>
-        [p.path, p.filename, p.host, p.md5, p.size].join('#')
-      )
-      const updated = data.patches.map((p) =>
-        [p.path, p.filename, p.host, p.md5, p.size].join('#')
-      )
-      const merged = updated.filter((u) => original.includes(u))
-
-      if (merged.length === updated.length) {
-        return
-      }
-    }
     // Update file list and emit event only when they was really changed
+    if (
+      state.files &&
+      patches.length === state.files.length &&
+      differentWith(patches, state.files, isPatchEqual).length === 0
+    ) {
+      return
+    }
+
     eventService.emit(LauncherEvent.FILE_LIST_UPDATED, data.patches)
     commit('SET_FILES', data.patches)
   },
