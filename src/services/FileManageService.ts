@@ -53,14 +53,14 @@ export class FileManageService {
     this.clientPath = clientPath
     this.files = cloneDeep(files)
 
-    files.forEach((file) => {
+    this.files.forEach((file) => {
       file.isValidating = true
     })
 
     this.updateStatus(FileManageStatus.VALIDATING)
 
     await Promise.all(
-      files.map(async (file) => {
+      this.files.map(async (file) => {
         eventService.emit(LauncherEvent.FILE_STATUS_UPDATED, {
           file,
           status: FileStatus.VALIDATING,
