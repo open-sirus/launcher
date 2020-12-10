@@ -1,7 +1,10 @@
 import { app, dialog } from 'electron'
 
 import { LauncherListener } from '@/events/LauncherListener'
-import { IStartOnSystemStartupData, LauncherEvent } from '@/events/LauncherEvent'
+import {
+  IStartOnSystemStartupData,
+  LauncherEvent,
+} from '@/events/LauncherEvent'
 import { eventService } from '@/background/EventService'
 import LauncherFile from '@/entities/LauncherFile'
 import fileManageService from '@/services/FileManageService'

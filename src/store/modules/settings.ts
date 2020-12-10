@@ -4,7 +4,7 @@ import { isCorrectClientDirectory } from '@/utils/files'
 import { modulesFactory } from '@/utils/modulesFactory'
 import { Langs } from '@/types/lang'
 import { i18n as i18nModule } from '@/modules/i18n'
-import eventService from '@/services/EventService'
+import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 
 import { IRootState } from '../types'
