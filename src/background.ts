@@ -4,6 +4,7 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { autoUpdater } from 'electron-updater'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
+import { DownloadManager, setDownloadManager } from '@/services/DownloadManager'
 import * as clientActions from '@/background/ClientActions'
 import { initTray } from '@/background/tray'
 
@@ -53,9 +54,9 @@ function createWindow() {
     autoUpdater.checkForUpdatesAndNotify()
   }
 
-  clientActions.init()
-
   tray = initTray(win)
+  setDownloadManager(new DownloadManager(win))
+  clientActions.init()
 }
 
 app.on('window-all-closed', () => {

@@ -1,19 +1,4 @@
-import { session, BrowserWindow } from 'electron'
-
-import { LauncherListener } from '@/events/LauncherListener'
-import { LauncherEvent } from '@/events/LauncherEvent'
-import { eventService } from '@/background/EventService'
-import LauncherFile from '@/entities/LauncherFile'
-import fileManageService from '@/services/FileManageService'
-
-export class OnDownloadRequested extends LauncherListener {
-  async handle(
-    event: LauncherEvent,
-    { files, clientPath }: { files: Array<LauncherFile>; clientPath: string }
-  ) {
-    await fileManageService.validate(clientPath, files)
-  }
-}
+import { BrowserWindow, session } from 'electron'
 
 export interface IDownloadRequest {
   filename: string
@@ -124,4 +109,18 @@ export class DownloadManager {
     this.queue.set(request.url, request)
     this.window.webContents.downloadURL(request.url)
   }
+}
+
+let instance: DownloadManager
+
+export function getDownloadManager(): DownloadManager {
+  if (!instance) {
+    throw new Error('Download manager is not initialized')
+  }
+
+  return instance
+}
+
+export function setDownloadManager(downloadManager: DownloadManager) {
+  instance = downloadManager
 }
