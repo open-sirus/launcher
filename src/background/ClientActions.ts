@@ -33,6 +33,9 @@ export class StartInMinimizedMode extends LauncherListener {
     app.setLoginItemSettings({
       openAsHidden: isStartInMinimizedMode,
     })
+  }
+}
+
 export class ValidateFileList extends LauncherListener {
   async handle(
     event: LauncherEvent,
