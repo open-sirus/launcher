@@ -21,6 +21,11 @@ import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { defineComponent } from '@vue/composition-api'
 
 import { IWelcomeGetters, IWelcomeState } from '@/store/modules/welcome'
+import {
+  IAccountsActions,
+  IAccountsState,
+} from '@/store/modules/accounts/types'
+import { ISettingsActions, ISettingsState } from '@/store/modules/settings'
 
 import Navigation from './common/Navigation.vue'
 import StatusBarBlock from './blocks/StatusBarBlock.vue'
@@ -31,6 +36,16 @@ const { useGetters: useWelcomeGetters } = createNamespacedHelpers<
   IWelcomeState,
   IWelcomeGetters
 >('welcome')
+
+const { useActions: useAccountsActions } = createNamespacedHelpers<
+  IAccountsState,
+  IAccountsActions
+>('accounts')
+
+const { useActions: useSettingsActions } = createNamespacedHelpers<
+  ISettingsState,
+  ISettingsActions
+>('settings')
 
 export default defineComponent({
   components: {
@@ -44,15 +59,16 @@ export default defineComponent({
       'isCompleted',
     ])
 
+    const { validateAccounts } = useAccountsActions(['validateAccounts'])
+
+    const { setIsFirstStart } = useSettingsActions(['setIsFirstStart'])
+
+    validateAccounts()
+    setIsFirstStart()
+
     return {
       isWelcomeScreenCompleted,
     }
-  },
-  async created() {
-    await this.$store.dispatch('accounts/validateAccounts', {
-      root: true,
-    })
-    await this.$store.dispatch('settings/setIsFirstStart')
   },
 })
 </script>
