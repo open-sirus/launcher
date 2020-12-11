@@ -38,5 +38,6 @@ jobs:
           VUE_APP_I18N_FALLBACK_LOCALE:  ${{ secrets.VUE_APP_I18N_FALLBACK_LOCALE }}
           VUE_APP_GRANT_TYPE: ${{ secrets.VUE_APP_GRANT_TYPE }}
           VUE_APP_API_URL: ${{ secrets.VUE_APP_API_URL }}
+          VUE_APP_FILE_RESOLVER_URL: ${{ secrets.VUE_APP_FILE_RESOLVER_URL }}
           VUE_APP_CLIENT_ID: ${{ secrets.VUE_APP_CLIENT_ID }}
           VUE_APP_CLIENT_SECRET: ${{ secrets.VUE_APP_CLIENT_SECRET }}

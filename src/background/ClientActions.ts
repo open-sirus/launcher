@@ -1,10 +1,12 @@
 import { app, dialog } from 'electron'
 
 import { LauncherListener } from '@/events/LauncherListener'
-import type { IStartOnSystemStartupData } from '@/events/LauncherEvent'
+import type {
+  IStartOnSystemStartupData,
+  IFileListUpdated,
+} from '@/events/LauncherEvent'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { eventService } from '@/background/EventService'
-import type { LauncherFile } from '@/entities/LauncherFile'
 import fileManageService from '@/services/FileManageService'
 import { TorrentClient } from '@/services/TorrentClient'
 
@@ -29,10 +31,7 @@ export class StartOnSystemStartup extends LauncherListener {
 }
 
 export class ValidateFileList extends LauncherListener {
-  async handle(
-    event: LauncherEvent,
-    { files, clientPath }: { files: Array<LauncherFile>; clientPath: string }
-  ) {
+  async handle(event: LauncherEvent, { files, clientPath }: IFileListUpdated) {
     await fileManageService.validate(clientPath, files)
   }
 }

@@ -65,14 +65,14 @@ export interface IAppActions extends ActionTree<IAppState, IRootState> {
 }
 
 const actions: IAppActions = {
-  async loadFiles({ commit, state }) {
+  async loadFiles({ commit, state, rootGetters }) {
     if (state.launcherFiles.find((f) => f.isDownloading)) {
       commit('SET_ERROR', DownloadErrors.ALREADY_IN_PROGRESS)
       return
     }
 
     const { data } = await axios.get('client/patches')
-    const patches: Array<IFile> = data.patches.map(LauncherFile.fromObject)
+    const patches = data.patches.map(LauncherFile.fromObject)
 
     commit('SET_FILES_TO_REMOVE', data.delete)
 
@@ -86,8 +86,11 @@ const actions: IAppActions = {
       return
     }
 
-    eventService.emit(LauncherEvent.FILE_LIST_UPDATED, data.patches)
-    commit('SET_FILES', data.patches)
+    eventService.emit(LauncherEvent.FILE_LIST_UPDATED, {
+      files: patches,
+      clientPath: rootGetters['settings/clientDirectory'],
+    })
+    commit('SET_FILES', patches)
   },
   async initialStart({ state, commit }) {
     state.launcherFiles.forEach((file) => {

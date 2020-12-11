@@ -67,7 +67,10 @@ export interface IFileManagerStatusChanged {
   progress: FileValidationProgress
 }
 
-export interface IFileListUpdated extends Array<IFile> {}
+export interface IFileListUpdated {
+  files: Array<LauncherFile>
+  clientPath: string
+}
 
 export interface ITorrentSelectFolderData {
   directory: string | null
