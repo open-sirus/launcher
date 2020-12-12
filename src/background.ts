@@ -5,7 +5,7 @@ import { autoUpdater } from 'electron-updater'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 
 import { DownloadManager, setDownloadManager } from '@/services/DownloadManager'
-import * as clientActions from '@/background/ClientActions'
+import { init as initClientActions } from '@/background/ClientActions'
 import { initTray } from '@/background/tray'
 
 import { IS_DEVELOPMENT } from './constants'
@@ -56,7 +56,7 @@ function createWindow() {
 
   tray = initTray(win)
   setDownloadManager(new DownloadManager(win))
-  clientActions.init()
+  initClientActions()
 }
 
 app.on('window-all-closed', () => {

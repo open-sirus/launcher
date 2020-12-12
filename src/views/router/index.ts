@@ -5,6 +5,7 @@ import Feeds from '@/views/pages/Feeds.vue'
 import Settings from '@/views/pages/Settings.vue'
 import Accounts from '@/views/pages/Accounts.vue'
 import Profile from '@/views/pages/Profile.vue'
+import ClientUpdate from '@/views/pages/ClientUpdate.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
+  },
+  {
+    path: '/update',
+    name: 'Client Updates',
+    component: ClientUpdate,
   },
 ]
 

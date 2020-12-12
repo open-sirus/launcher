@@ -7,22 +7,34 @@ import { LauncherEvent } from '@/events/LauncherEvent'
 import { getFileHash, isCorrectFile } from '@/utils/files'
 
 export class FileValidationProgress {
-  private validatedCount: number
-  private validCount: number
-  private filesCount: number
+  get filesCount(): number {
+    return this._filesCount
+  }
+
+  get validatedCount(): number {
+    return this._validatedCount
+  }
+
+  get validCount(): number {
+    return this._validCount
+  }
+
+  private _validatedCount: number
+  private _validCount: number
+  private _filesCount: number
 
   constructor(filesCount: number, validatedCount: number, validCount: number) {
-    this.validCount = validCount
-    this.validatedCount = validatedCount
-    this.filesCount = filesCount
+    this._validCount = validCount
+    this._validatedCount = validatedCount
+    this._filesCount = filesCount
   }
 }
 
 export enum FileManageStatus {
-  VALID,
-  VALIDATING,
-  INVALID,
-  DOWNLOADING,
+  VALID = 'VALID',
+  VALIDATING = 'VALIDATING',
+  INVALID = 'INVALID',
+  DOWNLOADING = 'DOWNLOADING',
 }
 
 export class FileManageService {
@@ -39,15 +51,21 @@ export class FileManageService {
     return this._clientPath
   }
 
-  async isValidFile(file: IValidatableFile) {
+  async isValidFile(file: IValidatableFile, forceHashCheck: boolean) {
     if (!(await isCorrectFile(file.filePath, file.size))) {
       return false
+    } else if (!forceHashCheck) {
+      return true
     }
 
     return (await getFileHash(file.filePath)) === file.hash.toLocaleLowerCase()
   }
 
-  async validate(clientPath: string, files: Array<LauncherFile>) {
+  async validate(
+    clientPath: string,
+    files: Array<LauncherFile>,
+    forceHashCheck = false
+  ) {
     this.clientPath = clientPath
     this.files = cloneDeep(files)
 
@@ -64,7 +82,7 @@ export class FileManageService {
           status: FileStatus.VALIDATING,
         })
 
-        file.isValid = await this.isValidFile(file)
+        file.isValid = await this.isValidFile(file, forceHashCheck)
         file.isValidating = false
 
         eventService.emit(LauncherEvent.FILE_STATUS_UPDATED, {
@@ -83,11 +101,9 @@ export class FileManageService {
   }
 
   private updateStatus(status?: FileManageStatus) {
-    if (status) {
-      this.status = status
-    }
+    this.status = status || FileManageStatus.VALIDATING
     eventService.emit(LauncherEvent.FILE_MANAGER_STATUS_CHANGED, {
-      status: FileManageStatus.VALIDATING,
+      status: this.status,
       progress: new FileValidationProgress(
         this.files.length,
         this.files.filter((file) => !file.isValidating).length,

@@ -55,7 +55,7 @@ describe('File manage service tests', () => {
       new Promise<boolean>((resolve) => resolve(false))
     )
 
-    expect(await service.isValidFile(files[0])).toBeFalsy()
+    expect(await service.isValidFile(files[0], true)).toBeFalsy()
     expect(MockedGetFileHash).not.toBeCalled()
   })
 
@@ -75,7 +75,7 @@ describe('File manage service tests', () => {
       )
     )
 
-    expect(await service.isValidFile(files[0])).toBeTruthy()
+    expect(await service.isValidFile(files[0], true)).toBeTruthy()
     expect(MockedGetFileHash).toBeCalled()
   })
 

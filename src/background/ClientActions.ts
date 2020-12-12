@@ -1,11 +1,11 @@
 import { app, dialog } from 'electron'
 
 import { LauncherListener } from '@/events/LauncherListener'
+import { LauncherEvent } from '@/events/LauncherEvent'
 import type {
   IStartOnSystemStartupData,
   IFileListUpdated,
 } from '@/events/LauncherEvent'
-import { LauncherEvent } from '@/events/LauncherEvent'
 import { eventService } from '@/background/EventService'
 import fileManageService from '@/services/FileManageService'
 import { TorrentClient } from '@/services/TorrentClient'

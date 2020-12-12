@@ -1,5 +1,8 @@
 import { eventService } from '@/services/EventService'
-import type { ISelectGameDirectoryData } from '@/events/LauncherEvent'
+import type {
+  ISelectGameDirectoryData,
+  IFileManagerStatusChanged,
+} from '@/events/LauncherEvent'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { LauncherListener } from '@/events/LauncherListener'
 import type { Store } from '@/views/store'
@@ -40,7 +43,26 @@ export class DirectorySelected extends LauncherListener {
   }
 }
 
+export class FileManagerStatusChanged extends LauncherListener {
+  constructor(private store: Store) {
+    super()
+
+    this.store = store
+  }
+
+  async handle(
+    event: LauncherEvent,
+    { status, progress }: IFileManagerStatusChanged
+  ) {
+    await this.store.dispatch('app/setValidationStatus', { status, progress })
+  }
+}
+
 export function init(store: Store) {
+  eventService.on(
+    LauncherEvent.FILE_MANAGER_STATUS_CHANGED,
+    new FileManagerStatusChanged(store)
+  )
   eventService.on(
     LauncherEvent.SELECT_GAME_DIRECTORY,
     new DirectorySelected(store)
