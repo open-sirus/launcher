@@ -15,6 +15,15 @@ module.exports = {
       nodeIntegration: true,
       builderOptions: {
         publish: ['github'],
+        appId: 'su.sirus.launcher',
+        // eslint-disable-next-line no-template-curly-in-string
+        artifactName: 'SirusLauncher-${version}.${ext}',
+        extraResources: [
+          {
+            from: 'public/',
+            to: 'public/',
+          },
+        ],
       },
     },
     i18n: {

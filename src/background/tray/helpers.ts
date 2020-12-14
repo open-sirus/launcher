@@ -8,11 +8,11 @@ const getIconPath = (): string => {
 
   if (!IS_DEVELOPMENT) {
     icon = path.dirname(process.execPath)
+    icon = path.resolve(icon + '/resources/public/icon.png')
   } else {
     icon = path.resolve('.')
+    icon = path.resolve(icon + '/public/icon.png')
   }
-
-  icon = path.resolve(icon + '/public/icon.png')
 
   return icon
 }
