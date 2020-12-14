@@ -74,6 +74,10 @@ export default defineComponent({
 </script>
 
 <style>
+html {
+  overflow-y: auto;
+}
+
 .slide-enter-active {
   transition: all 0.3s ease;
 }
