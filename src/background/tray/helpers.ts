@@ -1,8 +1,9 @@
 import path from 'path'
+import { nativeImage } from 'electron'
 
 import { IS_DEVELOPMENT } from '@/constants'
 
-export const getIconPath = (): string => {
+const getIconPath = (): string => {
   let icon: string
 
   if (!IS_DEVELOPMENT) {
@@ -14,4 +15,8 @@ export const getIconPath = (): string => {
   icon = path.resolve(icon + '/public/icon.png')
 
   return icon
+}
+
+export const createImageFromPath = (): nativeImage => {
+  return nativeImage.createFromPath(getIconPath())
 }

@@ -6,6 +6,7 @@
   "engines": {
     "node": ">= 14"
   },
+  "main": "background.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -52,6 +53,7 @@
     "@storybook/addon-essentials": "^6.1.9",
     "@storybook/addon-knobs": "^6.1.9",
     "@storybook/vue": "^6.1.9",
+    "@types/electron-devtools-installer": "^2.2.0",
     "@types/jest": "^26.0.16",
     "@types/lodash": "^4.14.164",
     "@types/vuelidate": "^0.7.13",

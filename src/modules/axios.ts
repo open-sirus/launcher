@@ -1,13 +1,14 @@
 import Axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import humps from 'humps'
 import isArrayBuffer from 'is-array-buffer'
+import httpAdapter from 'axios/lib/adapters/http'
 
 const config = {
   baseURL: process.env.VUE_APP_API_URL,
   headers: {
     'User-Agent': `sirus-launcher`, // TODO: add version
   },
-  adapter: global.require('axios/lib/adapters/http'),
+  adapter: httpAdapter,
 }
 
 const axios = Axios.create(config)

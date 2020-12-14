@@ -6,7 +6,7 @@ import {
   isFileExists,
   removeFile,
   getFileHash,
-  FileCheckProgress
+  FileCheckProgress,
 } from '@/utils/files'
 
 describe('File helper', () => {
@@ -102,5 +102,4 @@ describe('File helper', () => {
       new FileCheckProgress(7, path, 7)
     )
   })
-
 })
