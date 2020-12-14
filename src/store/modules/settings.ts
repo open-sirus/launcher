@@ -71,13 +71,16 @@ const actions: ISettingsActions = {
   },
   setStartOnSystemStartup({ commit }, payload) {
     commit('SET_START_ON_SYSTEM_STARTUP', payload)
+    commit('SET_START_IN_MINIMIZED_MODE', payload)
     eventService.emit(LauncherEvent.SET_START_ON_SYSTEM_STARTUP, {
       isStartOnSystemStartup: payload,
+      isStartInMinimizedMode: payload,
     })
   },
   setStartInMinimizedMode({ commit }, payload) {
     commit('SET_START_IN_MINIMIZED_MODE', payload)
     eventService.emit(LauncherEvent.SET_START_IN_MINIMIZED_MODE, {
+      isStartOnSystemStartup: true,
       isStartInMinimizedMode: payload,
     })
   },
@@ -85,8 +88,6 @@ const actions: ISettingsActions = {
     commit('SET_IS_FIRST_START')
     eventService.emit(LauncherEvent.SET_START_ON_SYSTEM_STARTUP, {
       isStartOnSystemStartup: true,
-    })
-    eventService.emit(LauncherEvent.SET_START_IN_MINIMIZED_MODE, {
       isStartInMinimizedMode: true,
     })
   },

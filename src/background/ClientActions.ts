@@ -21,17 +21,10 @@ export class SelectDirectory extends LauncherListener {
 }
 
 export class StartOnSystemStartup extends LauncherListener {
-  handle(event, { isStartOnSystemStartup }: IStartOnSystemStartupData) {
+  handle(event: LauncherEvent, data: IStartOnSystemStartupData) {
     app.setLoginItemSettings({
-      openAtLogin: isStartOnSystemStartup,
-    })
-  }
-}
-
-export class StartInMinimizedMode extends LauncherListener {
-  handle(event, { isStartInMinimizedMode }: IStartOnSystemStartupData) {
-    app.setLoginItemSettings({
-      openAsHidden: isStartInMinimizedMode,
+      openAtLogin: data.isStartOnSystemStartup,
+      openAsHidden: data.isStartInMinimizedMode,
     })
   }
 }
@@ -56,7 +49,7 @@ export function init() {
   )
   eventService.on(
     LauncherEvent.SET_START_IN_MINIMIZED_MODE,
-    new StartInMinimizedMode()
+    new StartOnSystemStartup()
   )
   eventService.on(LauncherEvent.FILE_LIST_UPDATED, new ValidateFileList())
 }
