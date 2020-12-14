@@ -4,10 +4,10 @@ import { initContextMenu } from '@/background/tray/contextMenu'
 import { registerTrayEventListeners } from '@/background/tray/trayEventListeners'
 import { PROJECT_TITLE } from '@/constants'
 
-import { getIconPath } from './helpers'
+import { createImageFromPath } from './helpers'
 
 export const initTray = (mainWindow: BrowserWindow): Tray => {
-  const tray = new Tray(getIconPath())
+  const tray = new Tray(createImageFromPath())
   const initialMenu = initContextMenu(mainWindow)
 
   tray.setToolTip(PROJECT_TITLE)

@@ -3,7 +3,7 @@ import {
   FileManageStatus,
   FileValidationProgress,
 } from '@/services/FileManageService'
-import {IFile} from "@/store/modules/app";
+import { IFile } from '@/store/modules/app'
 
 export enum LauncherEvent {
   OPEN_SELECT_GAME_DIRECTORY_DIALOG = 'OPEN_SELECT_GAME_DIRECTORY_DIALOG',

@@ -16,7 +16,7 @@ let win, tray
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'opslauncher', privileges: { secure: true, standard: true } },
+  { scheme: 'app', privileges: { secure: true, standard: true } },
 ])
 
 function createWindow() {
@@ -29,10 +29,13 @@ function createWindow() {
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: Boolean(process.env.ELECTRON_NODE_INTEGRATION),
+      nodeIntegration: Boolean(
+        (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean
+      ),
       contextIsolation: false,
       webviewTag: true,
       enableRemoteModule: true,
+      webSecurity: false,
     },
     useContentSize: true,
     frame: false,
@@ -42,7 +45,7 @@ function createWindow() {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
     if (!process.env.IS_TEST) win.webContents.openDevTools() // TODO: remove, never bind on test env in code
   } else {
     createProtocol('app')
@@ -56,12 +59,6 @@ function createWindow() {
   tray = initTray(win)
 }
 
-if (win) {
-  win.on('closed', () => {
-    win = null
-  })
-}
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
