@@ -25,6 +25,21 @@
         :error-messages="errors.clientDirectory"
       >
       </v-text-field>
+      <v-checkbox v-model="hasStartOnSystemStartup" dense class="mt-0">
+        <template #label>
+          {{ $t('settings.start_on_system_startup') }}
+        </template>
+      </v-checkbox>
+      <v-checkbox
+        v-if="hasStartOnSystemStartup"
+        v-model="hasStartInMinimizedMode"
+        dense
+        class="mt-0"
+      >
+        <template #label>
+          {{ $t('settings.start_in_minimized_mode') }}
+        </template>
+      </v-checkbox>
     </v-card-text>
   </v-card>
 </template>
@@ -38,9 +53,9 @@ import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
 import { IAppGetters, IAppState } from '@/store/modules/app'
 import {
-  ISettingsState,
   ISettingsActions,
   ISettingsGetters,
+  ISettingsState,
 } from '@/store/modules/settings'
 
 const { useGetters: useAppGetters } = createNamespacedHelpers<
@@ -72,18 +87,56 @@ export default defineComponent({
   setup() {
     const { availableLocales } = useAppGetters(['availableLocales'])
 
-    const { clientDirectory, locale } = useSettingsGetters([
+    const {
+      clientDirectory,
+      locale,
+      startOnSystemStartup,
+      startInMinimizedMode,
+    } = useSettingsGetters([
       'clientDirectory',
       'locale',
+      'startOnSystemStartup',
+      'startInMinimizedMode',
     ])
-    const { setLocale } = useSettingsActions(['setLocale'])
+    const {
+      setLocale,
+      setStartOnSystemStartup,
+      setStartInMinimizedMode,
+    } = useSettingsActions([
+      'setLocale',
+      'setStartOnSystemStartup',
+      'setStartInMinimizedMode',
+    ])
 
     return {
+      setStartInMinimizedMode,
+      startInMinimizedMode,
+      setStartOnSystemStartup,
+      startOnSystemStartup,
       availableLocales,
       clientDirectory,
       locale,
       setLocale,
     }
+  },
+  computed: {
+    hasStartOnSystemStartup: {
+      get() {
+        return this.startOnSystemStartup
+      },
+      set(val) {
+        this.setStartOnSystemStartup(val)
+      },
+    },
+    hasStartInMinimizedMode: {
+      get() {
+        return this.startInMinimizedMode
+      },
+      set(val) {
+        console.log(val)
+        this.setStartInMinimizedMode(val)
+      },
+    },
   },
   methods: {
     handleChangeLocale(locale) {

@@ -14,6 +14,8 @@ export enum LauncherEvent {
   FILE_MANAGER_STATUS_CHANGED = 'FILE_MANAGER_STATUS_CHANGED',
   CAN_LAUNCH_GAME = 'CAN_LAUNCH_GAME',
   LAUNCH_GAME = 'LAUNCH_GAME',
+  SET_START_ON_SYSTEM_STARTUP = 'SET_START_ON_SYSTEM_STARTUP',
+  SET_START_IN_MINIMIZED_MODE = 'SET_START_IN_MINIMIZED_MODE',
 }
 
 export interface IWrongGameDirectorySelectedData {
@@ -30,6 +32,11 @@ export interface IHasClientReadyData {
 
 export interface ILaunchGame {
   launchGame: boolean
+}
+
+export interface IStartOnSystemStartupData {
+  isStartOnSystemStartup?: boolean
+  isStartInMinimizedMode?: boolean
 }
 
 export interface IFileStatusUpdated {
@@ -50,6 +57,7 @@ export type EventData = {
   [e in LauncherEvent]?:
     | IWrongGameDirectorySelectedData
     | ISelectGameDirectoryData
+    | IStartOnSystemStartupData
     | IHasClientReadyData
     | ILaunchGame
     | IFileStatusUpdated
