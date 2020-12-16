@@ -1,9 +1,14 @@
 import { ChildProcessWithoutNullStreams } from 'child_process'
 
+const enum TorrentClientStatus {
+  IDLE = 'IDLE',
+  IN_PROGRESS = 'IN_PROGRESS',
+  CANCELLED = 'CANCELLED',
+  DONE = 'DONE',
+}
+
 export class TorrentClient {
-  private isInProgress = false
-  private isDoneSend = false
-  private isCancelled = true
+  private status = TorrentClientStatus.IDLE
   private downloadProcess: ChildProcessWithoutNullStreams | null = null
   private executableFile = null
   private eventBus = null
@@ -21,12 +26,11 @@ export class TorrentClient {
   }
 
   startTorrenting(torrentId, torrentUrl, path, torrentDirectory) {
-    this.isCancelled = false
     console.log(torrentId, torrentUrl, path, torrentDirectory)
   }
 
   stopTorrenting() {
-    this.isCancelled = true
+    this.status = TorrentClientStatus.CANCELLED
 
     if (!this.downloadProcess) {
       return
