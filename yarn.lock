@@ -3508,10 +3508,10 @@
   optionalDependencies:
     prettier "^1.18.2"
 
-"@vue/composition-api@^1.0.0-beta.21":
-  version "1.0.0-beta.21"
-  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.21.tgz#d5a3c68afc8b569dfc3eccd69998388bb7f6a16c"
-  integrity sha512-tgbvDpLvKQ1GrII424wsoyzPCsG0oTFf38emMq495SfLY7RmUqhVIl81pvnC5489PPrCxDkbauJHJrhlcXfbTQ==
+"@vue/composition-api@^1.0.0-beta.22":
+  version "1.0.0-beta.22"
+  resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.0.0-beta.22.tgz#8b0046bda138820c6d79c91dc961839a52d853c7"
+  integrity sha512-KkTeHVWgsJbtoA5t6pUien/ARw7JhVM7QZh05ko/UdgzALYMGwJsBf4WlcvbpMKE5eAu4ONYJypQ+r8LwBIOhA==
   dependencies:
     tslib "^2.0.1"
 
@@ -8005,10 +8005,10 @@ eslint-visitor-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-2.0.0.tgz#21fdc8fbcd9c795cc0321f0563702095751511a8"
   integrity sha512-QudtT6av5WXels9WjIM7qz1XD1cWGvX4gGXvp/zBn9nXG02D0utdU3Em2m/QjTnrsk6bBjmCygl3rmj118msQQ==
 
-eslint@7.15.0:
-  version "7.15.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.15.0.tgz#eb155fb8ed0865fcf5d903f76be2e5b6cd7e0bc7"
-  integrity sha512-Vr64xFDT8w30wFll643e7cGrIkPEU50yIiI36OdSIDoSGguIeaLzBo0vpGvzo9RECUqq7htURfwEtKqwytkqzA==
+eslint@7.16.0:
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.16.0.tgz#a761605bf9a7b32d24bb7cde59aeb0fd76f06092"
+  integrity sha512-iVWPS785RuDA4dWuhhgXTNrGxHHK3a8HLSMBgbbU59ruJDubUraXN8N5rn7kb8tG6sjg74eE0RA3YWT51eusEw==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     "@eslint/eslintrc" "^0.2.2"
@@ -8044,7 +8044,7 @@ eslint@7.15.0:
     semver "^7.2.1"
     strip-ansi "^6.0.0"
     strip-json-comments "^3.1.0"
-    table "^5.2.3"
+    table "^6.0.4"
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
 
@@ -11093,10 +11093,10 @@ jest-leak-detector@^24.9.0:
     jest-get-type "^24.9.0"
     pretty-format "^24.9.0"
 
-jest-localstorage-mock@^2.4.5:
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/jest-localstorage-mock/-/jest-localstorage-mock-2.4.5.tgz#d7f98cc750d125062dfd5c9f99560bff9d140f06"
-  integrity sha512-ouu/Z7QKWVzC32avBxeYitOs5p+pfxj6buiX2oGjVSEkI3+mryIRgCgrnB4O+DohU+xBzkCtJov7nBzFn3nuVQ==
+jest-localstorage-mock@^2.4.6:
+  version "2.4.6"
+  resolved "https://registry.yarnpkg.com/jest-localstorage-mock/-/jest-localstorage-mock-2.4.6.tgz#ebb9481943bf52e0f8c864ae4858eb791d68149d"
+  integrity sha512-8n6tuqscEShpvC7vkq3BPabOGGszD1cdLAKTtTtCRqH2bWJIVfpV4aIhrDJstV7xLOjo56wSVZkoMbT7dWLIVg==
 
 jest-matcher-utils@^24.9.0:
   version "24.9.0"
@@ -16290,15 +16290,6 @@ slice-ansi@0.0.4:
   resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-0.0.4.tgz#edbf8903f66f7ce2f8eafd6ceed65e264c831b35"
   integrity sha1-7b+JA/ZvfOL46v1s7tZeJkyDGzU=
 
-slice-ansi@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-2.1.0.tgz#cacd7693461a637a5788d92a7dd4fba068e81636"
-  integrity sha512-Qu+VC3EwYLldKa1fCxuuvULvSJOKEgk9pi8dZeCVK7TqBfUNTH4sFkk4joj8afVSfAYgJoSOetjx9QWOJ5mYoQ==
-  dependencies:
-    ansi-styles "^3.2.0"
-    astral-regex "^1.0.0"
-    is-fullwidth-code-point "^2.0.0"
-
 slice-ansi@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-3.0.0.tgz#31ddc10930a1b7e0b67b08c96c2f49b77a789787"
@@ -17084,17 +17075,7 @@ syntax-error@^1.1.1:
   dependencies:
     acorn-node "^1.2.0"
 
-table@^5.2.3:
-  version "5.4.6"
-  resolved "https://registry.yarnpkg.com/table/-/table-5.4.6.tgz#1292d19500ce3f86053b05f0e8e7e4a3bb21079e"
-  integrity sha512-wmEc8m4fjnob4gt5riFRtTu/6+4rSe12TpAELNSqHMfF3IqnA+CH37USM6/YR3qRZv7e56kAEAtd6nKZaxe0Ug==
-  dependencies:
-    ajv "^6.10.2"
-    lodash "^4.17.14"
-    slice-ansi "^2.1.0"
-    string-width "^3.0.0"
-
-table@^6.0.3:
+table@^6.0.3, table@^6.0.4:
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/table/-/table-6.0.4.tgz#c523dd182177e926c723eb20e1b341238188aa0d"
   integrity sha512-sBT4xRLdALd+NFBvwOz8bw4b15htyythha+q+DVZqy2RS08PPC8O2sZFgJYEY7bJvbCFKccs+WIZ/cd+xxTWCw==
