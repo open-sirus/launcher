@@ -1,10 +1,14 @@
-import Vue from 'vue'
+import _Vue from 'vue'
 import VueI18n from 'vue-i18n'
+
+import { I18nValue, Path } from '@/types/i18n'
 
 import { en } from '../locales/en'
 import { ru } from '../locales/ru'
 
-Vue.use(VueI18n)
+_Vue.use(VueI18n)
+
+type Locales = typeof en | typeof ru
 
 const pluralizationRules = {
   ru: (choice: number) => {
@@ -39,3 +43,21 @@ export const i18n = new VueI18n({
   },
   pluralizationRules,
 })
+
+function $i18n<P extends Path<Locales>>(
+  path: P,
+  values?
+): I18nValue<Locales, P> {
+  return i18n.t(path, values) as I18nValue<Locales, P>
+}
+
+export const initI18n = () => {
+  _Vue.prototype.$i18n = $i18n
+}
+
+declare module 'vue/types/vue' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/naming-convention
+  interface Vue {
+    $tn: typeof $i18n
+  }
+}

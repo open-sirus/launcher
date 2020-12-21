@@ -116,12 +116,12 @@ export default defineComponent<ITfaModalProps>({
 
       // @ts-ignore
       if (this.validate.tfaToken.minLength.$invalid) {
-        return this.$t('accounts.modal.tfaError.minLength')
+        return this.$tn('accounts.modal.tfaError.minLength')
       }
 
       // @ts-ignore
       if (this.validate.tfaToken.required.$invalid) {
-        return this.$t('accounts.modal.tfaError.required')
+        return this.$tn('accounts.modal.tfaError.required')
       }
 
       return null

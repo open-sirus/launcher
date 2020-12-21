@@ -139,12 +139,12 @@ export default defineComponent<IAccountsModalProps>({
 
       // @ts-ignore
       if (this.validate.authForm.login.minLength.$invalid) {
-        return this.$t('accounts.modal.authError.loginMinLength')
+        return this.$tn('accounts.modal.authError.loginMinLength')
       }
 
       // @ts-ignore
       if (this.validate.authForm.login.required.$invalid) {
-        return this.$t('accounts.modal.authError.loginRequired')
+        return this.$tn('accounts.modal.authError.loginRequired')
       }
 
       return null
@@ -157,12 +157,12 @@ export default defineComponent<IAccountsModalProps>({
 
       // @ts-ignore
       if (this.validate.authForm.pass.minLength.$invalid) {
-        return this.$t('accounts.modal.authError.passMinLength')
+        return this.$tn('accounts.modal.authError.passMinLength')
       }
 
       // @ts-ignore
       if (this.validate.authForm.pass.required.$invalid) {
-        return this.$t('accounts.modal.authError.passRequired')
+        return this.$tn('accounts.modal.authError.passRequired')
       }
 
       return null

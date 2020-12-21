@@ -11,8 +11,8 @@ export const en = {
       wrong_client_directory: 'Please, select correct directory',
     },
   },
-  "start_on_system_startup": "Start app on system startup",
-  "start_in_minimized_mode": "Start in minimized mode",
+  start_on_system_startup: 'Start app on system startup',
+  start_in_minimized_mode: 'Start in minimized mode',
   accounts: {
     add_account: 'Add account',
     remove_account: 'Remove account',

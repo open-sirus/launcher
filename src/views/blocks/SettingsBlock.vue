@@ -142,7 +142,7 @@ export default defineComponent({
     handleChangeLocale(locale) {
       this.setLocale(locale)
     },
-    async choose() {
+    choose() {
       this.errors.clientDirectory = null
 
       eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG)
@@ -150,7 +150,7 @@ export default defineComponent({
         LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
         new CallbackListener<LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED>(
           () => {
-            this.errors.clientDirectory = this.$t(
+            this.errors.clientDirectory = this.$tn(
               'settings.errors.wrong_client_directory'
             ) as string
           },

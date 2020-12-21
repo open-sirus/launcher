@@ -57,7 +57,7 @@ export default defineComponent({
       eventService.on(
         LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
         new CallbackListener(() => {
-          this.errors.clientDirectory = this.$t(
+          this.errors.clientDirectory = this.$tn(
             'settings.errors.wrong_client_directory'
           ) as string
         }, true)

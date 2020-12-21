@@ -11,8 +11,8 @@ export const ru = {
       wrong_client_directory: 'Пожалуйста, выберите папку с клиентом',
     },
   },
-  "start_on_system_startup": "Запускать вместе с операционной системой",
-  "start_in_minimized_mode": "Запускать в свернутом виде",
+  start_on_system_startup: 'Запускать вместе с операционной системой',
+  start_in_minimized_mode: 'Запускать в свернутом виде',
   accounts: {
     add_account: 'Добавить аккаунт',
     remove_account: 'Удалить аккаунт',
