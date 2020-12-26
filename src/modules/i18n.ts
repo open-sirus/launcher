@@ -46,7 +46,7 @@ export const i18n = new VueI18n({
 
 function $i18n<P extends Path<Locales>>(
   path: P,
-  values?
+  values?: VueI18n.Values
 ): I18nValue<Locales, P> {
   return i18n.t(path, values) as I18nValue<Locales, P>
 }

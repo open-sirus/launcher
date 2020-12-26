@@ -94,11 +94,11 @@ export default defineComponent<ITfaModalProps>({
   },
   computed: {
     isTfaModalShown: {
-      get() {
+      get(): boolean {
         // @ts-ignore
         return this.tfa.needTfa
       },
-      set(val) {
+      set(val: boolean) {
         if (val) {
           // @ts-ignore
           this.$emit('tfa-was-entered', this.tfaToken)

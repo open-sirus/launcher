@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow, protocol } from 'electron'
+import { app, BrowserWindow, protocol, Tray } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { autoUpdater } from 'electron-updater'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
@@ -12,7 +12,7 @@ import { IS_DEVELOPMENT } from './constants'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win, tray
+let win: BrowserWindow, tray: Tray
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([

@@ -18,13 +18,14 @@ const expectedPlural = {
   1005: '1005 человек',
   1011: '1011 человек',
   1012: '1012 человек',
-}
+} as const
+
 const getExpectedPlural = (currentCase: number): string =>
   expectedPlural[currentCase]
 
 describe('Status bar component', () => {
   const localVue = createLocalVue()
-  let vuetify
+  let vuetify: Vuetify
 
   beforeEach(() => {
     vuetify = new Vuetify()

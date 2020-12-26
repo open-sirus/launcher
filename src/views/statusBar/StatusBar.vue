@@ -20,6 +20,8 @@
 import { defineComponent } from '@vue/composition-api'
 import { mdiCircle } from '@mdi/js'
 
+import { IRealm } from '@/store/modules/statusBar/types'
+
 export default defineComponent({
   name: 'StatusBar',
   props: {
@@ -41,9 +43,9 @@ export default defineComponent({
     version() {
       return `0.0.0` // TODO: need fix this.$interop.getAppVersion()
     },
-    mappedRealms() {
+    mappedRealms(): Array<IRealm> {
       // @ts-ignore
-      return this.realms.map((realm) => {
+      return this.realms.map((realm: IRealm) => {
         return {
           id: realm.id,
           isOnline: realm.isOnline,
@@ -54,7 +56,7 @@ export default defineComponent({
     },
   },
   methods: {
-    getColor(realm) {
+    getColor(realm: IRealm) {
       return realm.isOnline ? 'green' : 'red'
     },
   },

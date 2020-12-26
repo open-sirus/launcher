@@ -130,7 +130,11 @@ export class TorrentClient {
     })
   }
 
-  startTorrenting(torrentId, torrentUrl, directionPath) {
+  startTorrenting(
+    torrentId: string,
+    torrentUrl: string,
+    directionPath: string
+  ) {
     if (this.status === TorrentClientStatus.IN_PROGRESS) {
       console.warn('Torrent already in progress')
       if (this.downloadProcess) {

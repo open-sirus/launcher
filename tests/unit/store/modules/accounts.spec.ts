@@ -15,10 +15,19 @@ import accountWithTfaStub from './stubs/defaultAccountWithTfa.json'
 import normalizedAccountStub from './stubs/normalizedAccount.json'
 import normalizedAccountWithTfaStub from './stubs/normalizedAccountWithTfa.json'
 
+interface IStubs {
+  tokensStub: typeof tokensStub
+  accountInfoStub: typeof accountInfoStub
+  accountStub: typeof accountStub
+  accountWithTfaStub: typeof accountWithTfaStub
+  normalizedAccountStub: typeof normalizedAccountStub
+  normalizedAccountWithTfaStub: typeof normalizedAccountWithTfaStub
+}
+
 describe('accounts module', () => {
   let store: Store<{ accounts: IAccountsState }>
-  let localVue
-  let stubs
+  let localVue: ReturnType<typeof createLocalVue>
+  let stubs: IStubs
   const baseURL = 'https://api.sirus.su'
 
   beforeEach(() => {
