@@ -13,9 +13,9 @@ import * as clientActions from '@/events/ClientActions'
 
 import { i18n } from './modules/i18n'
 import { initVuetify } from './modules/vuetify'
-import App from './views/App.vue'
-import router from './router'
 import store from './store'
+import router from './router'
+import App from './views/App.vue'
 
 Vue.config.productionTip = false
 

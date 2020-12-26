@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import _Vue from 'vue'
+import * as Vuex from 'vuex'
 
 import { INotification } from '@/types/notification'
+import { INotificationState } from '@/store/modules/notification'
 
 export interface INotificationPlugin {
   getAll: () => Array<INotification>
@@ -11,7 +13,10 @@ export interface INotificationPlugin {
   getPayload: (id: string) => INotification['payload']
 }
 
-export function Notification(Vue: typeof _Vue, { store }): void {
+export function Notification(
+  Vue: typeof _Vue,
+  { store }: { store: Vuex.Store<{ notification: INotificationState }> }
+): void {
   const notification: INotificationPlugin = {
     getAll() {
       return store.getters['notification/notifications']

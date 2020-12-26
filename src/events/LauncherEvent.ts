@@ -16,6 +16,15 @@ export enum LauncherEvent {
   LAUNCH_GAME = 'LAUNCH_GAME',
   SET_START_ON_SYSTEM_STARTUP = 'SET_START_ON_SYSTEM_STARTUP',
   SET_START_IN_MINIMIZED_MODE = 'SET_START_IN_MINIMIZED_MODE',
+  START_TORRENT = 'START_TORRENT',
+  PAUSE_TORRENT = 'PAUSE_TORRENT',
+  STOP_TORRENT = 'STOP_TORRENT', // stop torrent process and need to download from scratch
+  TORRENT_DOWNLOAD_STARTED = 'TORRENT_DOWNLOAD_STARTED',
+  TORRENT_DOWNLOAD_DONE = 'TORRENT_DOWNLOAD_DONE',
+  TORRENT_DOWNLOAD_PROGRESS = 'TORRENT_DOWNLOAD_PROGRESS',
+  TORRENT_DOWNLOAD_ERROR = 'TORRENT_DOWNLOAD_ERROR',
+  TORRENT_DOWNLOAD_SETUP = 'TORRENT_DOWNLOAD_STARTED',
+  TORRENT_GET_ERROR = 'TORRENT_GET_ERROR',
 }
 
 export interface IWrongGameDirectorySelectedData {
@@ -51,17 +60,30 @@ export interface IFileManagerStatusChanged {
 
 export interface IFileListUpdated extends Array<IFile> {}
 
+export interface IStartTorrent {
+  torrentId: string
+  torrentUrl: string
+  directionPath: string
+}
+
 export type EventData = {
-  // TODO: implement Data by Event correctly
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [e in LauncherEvent]?:
-    | IWrongGameDirectorySelectedData
-    | ISelectGameDirectoryData
-    | IStartOnSystemStartupData
-    | IHasClientReadyData
-    | ILaunchGame
-    | IFileStatusUpdated
-    | IFileManagerStatusChanged
-    | IFileListUpdated
-    | null
+  [LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG]: null
+  [LauncherEvent.SELECT_GAME_DIRECTORY]: ISelectGameDirectoryData
+  [LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED]: IWrongGameDirectorySelectedData
+  [LauncherEvent.FILE_LIST_UPDATED]: IFileListUpdated
+  [LauncherEvent.FILE_STATUS_UPDATED]: IFileStatusUpdated
+  [LauncherEvent.FILE_MANAGER_STATUS_CHANGED]: IFileManagerStatusChanged
+  [LauncherEvent.CAN_LAUNCH_GAME]: null
+  [LauncherEvent.LAUNCH_GAME]: ILaunchGame
+  [LauncherEvent.SET_START_ON_SYSTEM_STARTUP]: IStartOnSystemStartupData
+  [LauncherEvent.SET_START_IN_MINIMIZED_MODE]: IStartOnSystemStartupData
+  [LauncherEvent.START_TORRENT]: IStartTorrent
+  [LauncherEvent.PAUSE_TORRENT]: null
+  [LauncherEvent.STOP_TORRENT]: null
+  [LauncherEvent.TORRENT_DOWNLOAD_STARTED]: null
+  [LauncherEvent.TORRENT_DOWNLOAD_DONE]: null
+  [LauncherEvent.TORRENT_DOWNLOAD_PROGRESS]: null
+  [LauncherEvent.TORRENT_DOWNLOAD_ERROR]: null
+  [LauncherEvent.TORRENT_DOWNLOAD_SETUP]: null
+  [LauncherEvent.TORRENT_GET_ERROR]: null
 }
