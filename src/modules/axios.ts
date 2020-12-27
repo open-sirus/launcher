@@ -1,14 +1,14 @@
 import Axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import humps from 'humps'
+// @ts-ignore
 import isArrayBuffer from 'is-array-buffer'
-import httpAdapter from 'axios/lib/adapters/http'
 
 const config = {
   baseURL: process.env.VUE_APP_API_URL,
   headers: {
     'User-Agent': `sirus-launcher`, // TODO: add version
   },
-  adapter: httpAdapter,
+  adapter: global.require('axios/lib/adapters/http'), // Required for set user-agent header
 }
 
 const axios = Axios.create(config)
@@ -18,7 +18,7 @@ const axios = Axios.create(config)
  */
 const camelizeKeysInterceptor = (response: AxiosResponse) => {
   if (response.data && !isArrayBuffer(response.data)) {
-    return humps.camelizeKeys(response.data)
+    return { ...response, data: humps.camelizeKeys(response.data) }
   }
 
   return response

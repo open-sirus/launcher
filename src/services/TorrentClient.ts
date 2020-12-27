@@ -3,6 +3,7 @@ import {
   spawn as spawnChildProcess,
 } from 'child_process'
 import { resolve as resolvePath } from 'path'
+// @ts-ignore
 import TorrentDownloader from '@sirussu/torrent-downloader'
 
 import { replaceLast } from '@/utils/replaceLast'

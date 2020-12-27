@@ -168,17 +168,17 @@ export default defineComponent<IAccountsModalProps>({
       return null
     },
     isModalShown: {
-      get() {
+      get(): boolean {
         // @ts-ignore
         return this.canShowModal
       },
-      set(val) {
-        if (val) {
+      set(canShowModal: boolean) {
+        if (canShowModal) {
           // @ts-ignore
-          this.$emit('open-accounts-modal', val)
+          this.$emit('open-accounts-modal', canShowModal)
         } else {
           // @ts-ignore
-          this.$emit('close-accounts-modal', val)
+          this.$emit('close-accounts-modal', canShowModal)
         }
       },
     },

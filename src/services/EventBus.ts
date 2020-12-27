@@ -7,7 +7,7 @@ export type IpcCallback = ({
   event,
   data,
 }: {
-  event: string
+  event: LauncherEvent
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any
 }) => void
@@ -16,6 +16,7 @@ export abstract class Ipc {
   private onCallback: IpcCallback | null = null
 
   protected constructor(electronIpc: IpcMain | IpcRenderer) {
+    // @ts-ignore
     electronIpc?.on(EventBus.CHANNEL_NAME, (event, args) => {
       if (this.onCallback) {
         this.onCallback(args)
@@ -28,7 +29,7 @@ export abstract class Ipc {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  abstract send(event: string, data?: any)
+  abstract send(event: string, data?: any): any
 }
 
 export class EventBus {

@@ -42,7 +42,9 @@ const actions: IStatusActions = {
     commit('SET_STATUS', RequestStatus.PENDING)
 
     try {
-      const realms: Array<IRealm> = await axios.get('/server/status')
+      const { data: realms }: { data: Array<IRealm> } = await axios.get(
+        '/server/status'
+      )
 
       const summaryOnline = getSummaryOnline(realms)
 

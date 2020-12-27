@@ -101,7 +101,9 @@ describe('File list receive', () => {
 
   it.skip('load file list from server', async () => {
     // TODO: Remove cases to separated file store
-    nock(baseURL).get('/api/client/patches').reply(200, { data: RESPONSE })
+    nock(baseURL)
+      .get('/api/client/patches')
+      .reply(200, { data: { data: RESPONSE } })
 
     await store.dispatch('app/loadFiles', null, { root: true })
     expect(store.state.app.files).toStrictEqual(
@@ -150,7 +152,7 @@ describe('File list receive', () => {
 
     nock('https://api.sirus.su/')
       .get('/api/client/patches')
-      .reply(200, { data: RESPONSE })
+      .reply(200, RESPONSE)
 
     await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).not.toBeCalled()
@@ -161,7 +163,7 @@ describe('File list receive', () => {
 
     nock('https://api.sirus.su/')
       .get('/api/client/patches')
-      .reply(200, { data: RESPONSE })
+      .reply(200, RESPONSE)
 
     await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).toBeCalledWith(
@@ -178,7 +180,7 @@ describe('File list receive', () => {
 
     nock('https://api.sirus.su/')
       .get('/api/client/patches')
-      .reply(200, { data: { patches, delete: RESPONSE.delete } })
+      .reply(200, { patches, delete: RESPONSE.delete })
 
     await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).toBeCalledWith(
@@ -196,7 +198,7 @@ describe('File list receive', () => {
 
     nock('https://api.sirus.su/')
       .get('/api/client/patches')
-      .reply(200, { data: { patches, delete: RESPONSE.delete } })
+      .reply(200, { patches, delete: RESPONSE.delete })
 
     await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).toBeCalledWith(

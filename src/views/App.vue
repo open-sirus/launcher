@@ -54,9 +54,6 @@ export default defineComponent({
     StatusBarBlock,
     WelcomeScreen,
   },
-  created() {
-    console.log('created!!!', this)
-  },
   setup() {
     const { isCompleted: isWelcomeScreenCompleted } = useWelcomeGetters([
       'isCompleted',

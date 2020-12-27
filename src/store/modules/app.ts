@@ -88,7 +88,7 @@ const actions: IAppActions = {
     }
 
     const { data } = await axios.get('client/patches')
-    const patches = data.patches.map(LauncherFile.fromObject)
+    const patches: Array<IFile> = data.patches.map(LauncherFile.fromObject)
 
     commit('SET_FILES_TO_REMOVE', data.delete)
 
@@ -96,6 +96,7 @@ const actions: IAppActions = {
     if (
       state.files &&
       patches.length === state.files.length &&
+      // @ts-ignore
       differentWith(patches, state.files, isPatchEqual).length === 0
     ) {
       return

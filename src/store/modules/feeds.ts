@@ -62,7 +62,9 @@ const actions: IFeedsActions = {
   async getFeeds({ commit, dispatch }) {
     commit('SET_STATUS', RequestStatus.PENDING)
     try {
-      const { data: feeds } = await axios.get('/news')
+      const {
+        data: { data: feeds },
+      } = await axios.get('/news')
 
       commit('SET_FEEDS', { feeds })
       commit('SET_STATUS', RequestStatus.LOADED)

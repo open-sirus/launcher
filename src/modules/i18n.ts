@@ -52,7 +52,7 @@ function $i18n<P extends Path<Locales>>(
 }
 
 export const initI18n = () => {
-  _Vue.prototype.$i18n = $i18n
+  _Vue.prototype.$tn = $i18n
 }
 
 declare module 'vue/types/vue' {

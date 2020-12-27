@@ -178,7 +178,7 @@ const actions: IAccountsActions = {
     })
 
     try {
-      const authResponse: IAuthResponse = await axios.post(
+      const { data: authResponse }: { data: IAuthResponse } = await axios.post(
         'https://api.sirus.su/oauth/token',
         userDataToRequestParams
       )
@@ -211,7 +211,9 @@ const actions: IAccountsActions = {
   },
   async loadAccountInfo({ dispatch, commit }, adaptedAuthResponse) {
     try {
-      const accountInfo: { id: number } = await axios.get('/user')
+      const { data: accountInfo }: { data: { id: number } } = await axios.get(
+        '/user'
+      )
 
       const account = adaptExtendedAccount(accountInfo, adaptedAuthResponse)
 

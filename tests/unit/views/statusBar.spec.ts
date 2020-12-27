@@ -7,7 +7,7 @@ import { i18n } from '@/modules/i18n'
 
 Vue.use(Vuetify)
 
-const pluralCases = [0, 1, 2, 5, 1001, 1002, 1005, 1011, 1012]
+const pluralCases = [0, 1, 2, 5, 1001, 1002, 1005, 1011, 1012] as const
 const expectedPlural = {
   0: '0 человек',
   1: '1 человек',
@@ -20,7 +20,7 @@ const expectedPlural = {
   1012: '1012 человек',
 } as const
 
-const getExpectedPlural = (currentCase: number): string =>
+const getExpectedPlural = (currentCase: keyof typeof expectedPlural): string =>
   expectedPlural[currentCase]
 
 describe('Status bar component', () => {

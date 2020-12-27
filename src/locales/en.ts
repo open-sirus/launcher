@@ -7,12 +7,12 @@ export const en = {
   settings: {
     choose_lang: 'Choose language',
     choose_client_directory: 'Select game client directory',
+    start_on_system_startup: 'Start app on system startup',
+    start_in_minimized_mode: 'Start in minimized mode',
     errors: {
       wrong_client_directory: 'Please, select correct directory',
     },
   },
-  start_on_system_startup: 'Start app on system startup',
-  start_in_minimized_mode: 'Start in minimized mode',
   accounts: {
     add_account: 'Add account',
     remove_account: 'Remove account',

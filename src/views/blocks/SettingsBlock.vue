@@ -57,6 +57,7 @@ import {
   ISettingsGetters,
   ISettingsState,
 } from '@/store/modules/settings'
+import { Langs } from '@/types/lang'
 
 const { useGetters: useAppGetters } = createNamespacedHelpers<
   IAppState,
@@ -139,7 +140,7 @@ export default defineComponent({
     },
   },
   methods: {
-    handleChangeLocale(locale) {
+    handleChangeLocale(locale: Langs) {
       this.setLocale(locale)
     },
     choose() {

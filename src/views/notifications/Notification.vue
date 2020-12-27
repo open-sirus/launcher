@@ -24,7 +24,7 @@ export default defineComponent({
     },
   },
   computed: {
-    alertType() {
+    alertType(): string {
       // @ts-ignore
       return alertTypeByNotificationType[this.notification.type]
     },
