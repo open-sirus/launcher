@@ -7,6 +7,7 @@
         :class="{ 'row-active': setActiveClass(account) }"
         dense
         v-ripple
+        class="mb-1"
         justify="space-around"
         align="center"
       >
