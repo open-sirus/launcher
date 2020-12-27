@@ -30,7 +30,9 @@ export class TorrentClient {
 
   constructor(eventBus: EventBus) {
     this.eventBus = eventBus
+  }
 
+  init() {
     const executablePath = replaceLast(
       'app.asar',
       'app.asar.unpacked',
@@ -97,33 +99,44 @@ export class TorrentClient {
         switch (message.type) {
           case 'download-started': {
             // Name of directory in message
-            // Send start event
+            this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_STARTED, {
+              message: message.message,
+            })
             break
           }
           case 'download-done': {
-            // Send done event
             this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_DONE)
             break
           }
           case 'progress':
           case 'checking': {
-            // Send progress event
+            this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_PROGRESS, {
+              message,
+            })
             break
           }
           case 'torrent-get-error': {
-            // Send error event with possible retry
+            this.eventBus.emit(LauncherEvent.TORRENT_GET_ERROR, {
+              message,
+            })
             break
           }
           case 'download-error': {
-            // Send error event
+            this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_ERROR, {
+              message,
+            })
             break
           }
           case 'download-setup': {
-            console.log('Unhandled message', message)
+            this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_SETUP, {
+              message,
+            })
             break
           }
           default: {
-            // Send error event
+            this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_ERROR, {
+              message,
+            })
             break
           }
         }
@@ -131,7 +144,7 @@ export class TorrentClient {
     })
   }
 
-  startTorrenting(
+  private startTorrenting(
     torrentId: string,
     torrentUrl: string,
     directionPath: string
@@ -184,7 +197,7 @@ export class TorrentClient {
     console.log(torrentId, torrentUrl, directionPath)
   }
 
-  stopTorrenting() {
+  private stopTorrenting() {
     this.status = TorrentClientStatus.CANCELLED
 
     if (!this.downloadProcess) {

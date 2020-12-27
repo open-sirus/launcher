@@ -8,6 +8,7 @@ import {
 import { eventService } from '@/background/EventService'
 import LauncherFile from '@/entities/LauncherFile'
 import fileManageService from '@/services/FileManageService'
+import { TorrentClient } from '@/services/TorrentClient'
 
 export class SelectDirectory extends LauncherListener {
   async handle() {
@@ -52,4 +53,7 @@ export function init() {
     new StartOnSystemStartup()
   )
   eventService.on(LauncherEvent.FILE_LIST_UPDATED, new ValidateFileList())
+
+  const torrentClient = new TorrentClient(eventService)
+  torrentClient.init()
 }

@@ -66,6 +66,15 @@ export interface IStartTorrent {
   directionPath: string
 }
 
+export interface ITorrentData {
+  message: string
+}
+
+export interface ITorrentDownloadError extends ITorrentData {
+  isDisabled?: boolean
+  message: string
+}
+
 export type EventData = {
   [LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG]: null
   [LauncherEvent.SELECT_GAME_DIRECTORY]: ISelectGameDirectoryData
@@ -80,10 +89,10 @@ export type EventData = {
   [LauncherEvent.START_TORRENT]: IStartTorrent
   [LauncherEvent.PAUSE_TORRENT]: null
   [LauncherEvent.STOP_TORRENT]: null
-  [LauncherEvent.TORRENT_DOWNLOAD_STARTED]: null
+  [LauncherEvent.TORRENT_DOWNLOAD_STARTED]: ITorrentData
   [LauncherEvent.TORRENT_DOWNLOAD_DONE]: null
-  [LauncherEvent.TORRENT_DOWNLOAD_PROGRESS]: null
-  [LauncherEvent.TORRENT_DOWNLOAD_ERROR]: null
-  [LauncherEvent.TORRENT_DOWNLOAD_SETUP]: null
-  [LauncherEvent.TORRENT_GET_ERROR]: null
+  [LauncherEvent.TORRENT_DOWNLOAD_PROGRESS]: ITorrentData
+  [LauncherEvent.TORRENT_DOWNLOAD_ERROR]: ITorrentDownloadError
+  [LauncherEvent.TORRENT_DOWNLOAD_SETUP]: ITorrentData
+  [LauncherEvent.TORRENT_GET_ERROR]: ITorrentData
 }

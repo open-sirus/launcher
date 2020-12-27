@@ -11,7 +11,7 @@ import { Interop } from '@/plugins/interop'
 import { Notification } from '@/plugins/norifications'
 import * as clientActions from '@/events/ClientActions'
 
-import { i18n } from './modules/i18n'
+import { i18n, initI18n } from './modules/i18n'
 import { initVuetify } from './modules/vuetify'
 import store from './store'
 import router from './router'
@@ -23,6 +23,8 @@ Vue.use(VueCompositionAPI)
 Vue.use(Interop)
 Vue.use(Notification, { store })
 Vue.use(Vuelidate)
+
+initI18n()
 
 new Vue({
   router,
