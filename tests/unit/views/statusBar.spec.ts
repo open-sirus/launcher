@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import { createLocalVue, mount } from '@vue/test-utils'
-
 import StatusBar from '@/views/statusBar/StatusBar.vue'
-import { i18n } from '@/modules/i18n'
+
+import { i18n } from '@/views/modules/i18n'
 
 Vue.use(Vuetify)
 

@@ -4,9 +4,9 @@ import cloneDeep from 'lodash/cloneDeep'
 import nock from 'nock'
 import { advanceBy, advanceTo, clear } from 'jest-date-mock'
 
-import { accountsModule } from '@/store/modules/accounts'
-import { notificationModule } from '@/store/modules/notification'
-import { IAccountsState } from '@/store/modules/accounts/types'
+import { accountsModule } from '@/views/store/modules/accounts'
+import { notificationModule } from '@/views/store/modules/notification'
+import { IAccountsState } from '@/views/store/modules/accounts/types'
 
 import tokensStub from './stubs/tokens.json'
 import accountInfoStub from './stubs/accountInfo.json'

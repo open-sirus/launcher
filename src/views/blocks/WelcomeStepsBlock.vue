@@ -27,13 +27,13 @@
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { defineComponent } from '@vue/composition-api'
 
+import SelectFolderStep from '@/views/components/welcomeSteps/SelectFolder.vue'
 import {
   IWelcomeActions,
   IWelcomeGetters,
   IWelcomeState,
-} from '@/store/modules/welcome'
-import SelectFolderStep from '@/views/welcomeSteps/SelectFolder.vue'
-import LoginStep from '@/views/welcomeSteps/Login.vue'
+} from '@/views/store/modules/welcome'
+import LoginStep from '@/views/components/welcomeSteps/Login.vue'
 import { WelcomeSteps } from '@/types/welcomeSteps'
 
 const {

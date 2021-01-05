@@ -1,15 +1,15 @@
 import { MutationTree } from 'vuex'
 
-import { IRootState } from '@/store/types'
+import { IRootState } from '@/views/store/types'
 import {
   IRealm,
   IStatusActions,
   IStatusGetters,
   IStatusState,
-} from '@/store/modules/statusBar/types'
+} from '@/views/store/modules/statusBar/types'
 import { RequestStatus } from '@/types/network'
-import { axios } from '@/modules/axios'
-import { getSummaryOnline } from '@/store/modules/statusBar/lib'
+import { axios } from '@/views/modules/axios'
+import { getSummaryOnline } from '@/views/store/modules/statusBar/lib'
 import { modulesFactory } from '@/utils/modulesFactory'
 
 const state: IStatusState = {

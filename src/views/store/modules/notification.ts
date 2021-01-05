@@ -3,7 +3,7 @@ import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import { PROJECT_TITLE, REMOVE_NOTIFICATION_TIMEOUT } from '@/constants'
 import { modulesFactory } from '@/utils/modulesFactory'
-import { i18n as i18nModule } from '@/modules/i18n'
+import { i18n as i18nModule } from '@/views/modules/i18n'
 import type { INotification } from '@/types/notification'
 
 import { IRootState } from '../types'

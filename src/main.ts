@@ -7,14 +7,14 @@ import Vue from 'vue'
 import VueCompositionAPI from '@vue/composition-api'
 import Vuelidate from 'vuelidate'
 
-import { Interop } from '@/plugins/interop'
-import { Notification } from '@/plugins/norifications'
+import { Interop } from '@/views/plugins/interop'
+import { Notification } from '@/views/plugins/norifications'
 import * as clientActions from '@/events/ClientActions'
 
-import { i18n, initI18n } from './modules/i18n'
-import { initVuetify } from './modules/vuetify'
-import store from './store'
-import router from './router'
+import { i18n, initI18n } from './views/modules/i18n'
+import { initVuetify } from './views/modules/vuetify'
+import store from './views/store'
+import router from './views/router'
 import App from './views/App.vue'
 
 Vue.config.productionTip = false

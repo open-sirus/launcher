@@ -4,7 +4,7 @@ import { createLocalVue } from '@vue/test-utils'
 import Vuex, { Store } from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 
-import { ISettingsState, settingsModule } from '@/store/modules/settings'
+import { ISettingsState, settingsModule } from '@/views/store/modules/settings'
 
 jest.mock('electron', () => {
   return {

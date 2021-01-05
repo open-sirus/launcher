@@ -3,8 +3,8 @@ import Vuex, { Store } from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import nock from 'nock'
 
-import { statusBarModule } from '@/store/modules/statusBar'
-import { IStatusState } from '@/store/modules/statusBar/types'
+import { IStatusState } from '@/views/store/modules/statusBar/types'
+import { statusBarModule } from '@/views/store/modules/statusBar'
 
 import realmsStub from './stubs/realms.json'
 import realmsRawStub from './stubs/realmsRaw.json'

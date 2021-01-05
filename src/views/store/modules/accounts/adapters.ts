@@ -1,4 +1,7 @@
-import { IAdaptedResponse, IAuthResponse } from '@/store/modules/accounts/types'
+import {
+  IAdaptedResponse,
+  IAuthResponse,
+} from '@/views/store/modules/accounts/types'
 
 export const adaptUserDataToRequestParams = ({
   username,

@@ -20,16 +20,19 @@
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { defineComponent } from '@vue/composition-api'
 
-import { IWelcomeGetters, IWelcomeState } from '@/store/modules/welcome'
+import { IWelcomeGetters, IWelcomeState } from '@/views/store/modules/welcome'
 import {
   IAccountsActions,
   IAccountsState,
-} from '@/store/modules/accounts/types'
-import { ISettingsActions, ISettingsState } from '@/store/modules/settings'
+} from '@/views/store/modules/accounts/types'
+import {
+  ISettingsActions,
+  ISettingsState,
+} from '@/views/store/modules/settings'
 
-import Navigation from './common/Navigation.vue'
+import Navigation from './components/common/Navigation.vue'
 import StatusBarBlock from './blocks/StatusBarBlock.vue'
-import Notifications from './notifications/Notifications.vue'
+import Notifications from './components/notifications/Notifications.vue'
 import WelcomeScreen from './WelcomeScreen.vue'
 
 const { useGetters: useWelcomeGetters } = createNamespacedHelpers<

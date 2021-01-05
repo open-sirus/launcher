@@ -2,9 +2,9 @@ import { createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 
-import { appModule } from '@/store/modules/app'
-import { vuexPersist } from '@/store/persistance'
-import { settingsModule } from '@/store/modules/settings'
+import { appModule } from '@/views/store/modules/app'
+import { vuexPersist } from '@/views/store/persistance'
+import { settingsModule } from '@/views/store/modules/settings'
 
 describe('File list receive', () => {
   let store

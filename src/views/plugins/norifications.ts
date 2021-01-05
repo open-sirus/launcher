@@ -3,7 +3,7 @@ import _Vue from 'vue'
 import * as Vuex from 'vuex'
 
 import { INotification } from '@/types/notification'
-import { INotificationState } from '@/store/modules/notification'
+import { INotificationState } from '@/views/store/modules/notification'
 
 export interface INotificationPlugin {
   getAll: () => Array<INotification>

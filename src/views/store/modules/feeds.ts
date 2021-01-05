@@ -1,7 +1,7 @@
 import { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
 
 import { RequestStatus } from '@/types/network'
-import { axios } from '@/modules/axios'
+import { axios } from '@/views/modules/axios'
 import { normalizeData } from '@/utils/normalizeData'
 import { denormalizeData } from '@/utils/denormalizeData'
 import { modulesFactory } from '@/utils/modulesFactory'

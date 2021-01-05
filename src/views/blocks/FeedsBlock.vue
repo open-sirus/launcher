@@ -33,14 +33,14 @@ import chunk from 'lodash/chunk'
 import { defineComponent, ref } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
-import FeedsSkeleton from '@/views/feeds/FeedsSkeleton.vue'
-import FeedCard from '@/views/feeds/FeedCard.vue'
 import {
   IFeedState,
   IFeedsGetters,
   IFeedsActions,
   IFeed,
-} from '@/store/modules/feeds'
+} from '@/views/store/modules/feeds'
+import FeedCard from '@/views/components/feeds/FeedCard.vue'
+import FeedsSkeleton from '@/views/components/feeds/FeedsSkeleton.vue'
 
 const { useActions, useGetters } = createNamespacedHelpers<
   IFeedState,

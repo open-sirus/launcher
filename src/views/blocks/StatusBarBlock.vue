@@ -10,9 +10,12 @@
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { defineComponent } from '@vue/composition-api'
 
-import StatusBar from '@/views/statusBar/StatusBar.vue'
-import WindowControls from '@/views/statusBar/WindowControls.vue'
-import { IStatusGetters, IStatusActions } from '@/store/modules/statusBar/types'
+import StatusBar from '@/views/components/statusBar/StatusBar.vue'
+import WindowControls from '@/views/components/statusBar/WindowControls.vue'
+import {
+  IStatusGetters,
+  IStatusActions,
+} from '@/views/store/modules/statusBar/types'
 
 const {
   useActions: useStatusActions,

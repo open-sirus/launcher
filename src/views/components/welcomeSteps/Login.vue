@@ -72,7 +72,7 @@ import {
   IAccountsActions,
   IAccountsGetters,
   IAccountsState,
-} from '@/store/modules/accounts/types'
+} from '@/views/store/modules/accounts/types'
 import { RequestStatus } from '@/types/network'
 import { validateAccountFields } from '@/utils/validate'
 

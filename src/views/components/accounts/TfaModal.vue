@@ -59,7 +59,7 @@
 import { defineComponent, ref } from '@vue/composition-api'
 import useVuelidate from '@vuelidate/core'
 
-import { INeedTfa } from '@/store/modules/accounts/types'
+import { INeedTfa } from '@/views/store/modules/accounts/types'
 import { validateTfa } from '@/utils/validate'
 
 interface ITfaModalProps {

@@ -1,6 +1,6 @@
 import { ActionContext, ActionTree, GetterTree } from 'vuex'
 
-import { IRootState } from '@/store/types'
+import { IRootState } from '@/views/store/types'
 import { RequestStatus } from '@/types/network'
 
 export interface IRealm {

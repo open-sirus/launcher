@@ -75,16 +75,15 @@
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { defineComponent } from '@vue/composition-api'
 
+import AccountsModal from '@/views/components/accounts/AccountsModal.vue'
+import TfaModal from '@/views/components/accounts/TfaModal.vue'
 import {
   IAccount,
   IAccountsActions,
   IAccountsGetters,
   IAccountsState,
-} from '@/store/modules/accounts/types'
+} from '@/views/store/modules/accounts/types'
 import { RequestStatus } from '@/types/network'
-
-import AccountsModal from '../accounts/AccountsModal.vue'
-import TfaModal from '../accounts/TfaModal.vue'
 
 const {
   useGetters: useAccountsGetters,

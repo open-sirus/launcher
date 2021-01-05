@@ -1,35 +1,19 @@
 import { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
 import differentWith from 'lodash/differenceWith'
 
-import { axios } from '@/modules/axios'
+import { axios } from '@/views/modules/axios'
 import { modulesFactory } from '@/utils/modulesFactory'
-import { Langs } from '@/types/lang'
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import LauncherFile from '@/entities/LauncherFile'
 import { isPatchEqual } from '@/utils/patches'
+import { Langs } from '@/types/lang'
+import { IFile } from '@/types/files'
 
 import { IRootState } from '../types'
 
 enum DownloadErrors {
   ALREADY_IN_PROGRESS = 'ALREADY_IN_PROGRESS',
-}
-
-export interface IFile {
-  id?: number | string
-  isDownloading?: boolean
-  isIncomplete?: boolean
-  path?: string
-  md5?: string
-  size?: number
-  filename?: string
-  host?: string
-  storagePath?: string
-  updatedAt?: string
-  createdAt?: string
-  new?: boolean // TODO: use isNew everywhere
-  isNew?: boolean // TODO: use isNew everywhere
-  status?: number // TODO: make enum
 }
 
 export interface IAvailableLocale {

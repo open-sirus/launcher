@@ -1,6 +1,6 @@
 import nodePath from 'path'
 
-import { IFile } from '@/store/modules/app'
+import { IFile } from '@/types/files'
 
 export interface IValidatableFile {
   filePath: string

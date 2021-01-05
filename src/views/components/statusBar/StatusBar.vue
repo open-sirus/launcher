@@ -6,7 +6,7 @@
     </v-col>
     <v-col v-for="realm in mappedRealms" :key="realm.id" cols="auto">
       {{ realm.name }}
-      <v-icon :color="getColor(realm)" class="mr-0" size="22">
+      <v-icon :color="realm.color" class="mr-0" size="22">
         {{ mdiCircle }}
       </v-icon>
     </v-col>
@@ -20,7 +20,7 @@
 import { defineComponent } from '@vue/composition-api'
 import { mdiCircle } from '@mdi/js'
 
-import { IRealm } from '@/store/modules/statusBar/types'
+import { IRealm } from '@/views/store/modules/statusBar/types'
 
 export default defineComponent({
   name: 'StatusBar',
@@ -48,16 +48,11 @@ export default defineComponent({
       return this.realms.map((realm: IRealm) => {
         return {
           id: realm.id,
-          isOnline: realm.isOnline,
           online: realm.online,
           name: realm.name.split(' -')[0],
+          color: realm.isOnline ? 'green' : 'red',
         }
       })
-    },
-  },
-  methods: {
-    getColor(realm: IRealm) {
-      return realm.isOnline ? 'green' : 'red'
     },
   },
 })

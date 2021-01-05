@@ -3,7 +3,7 @@ import Vuex, { Store } from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import nock from 'nock'
 
-import { feedsModule, IFeedState } from '@/store/modules/feeds'
+import { feedsModule, IFeedState } from '@/views/store/modules/feeds'
 
 import feedsStub from './stubs/feeds.json'
 

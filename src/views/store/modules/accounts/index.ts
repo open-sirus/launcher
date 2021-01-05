@@ -1,5 +1,6 @@
 import { MutationTree } from 'vuex'
 
+import { IRootState } from '@/views/store/types'
 import { RequestStatus } from '@/types/network'
 import {
   IAccountsActions,
@@ -8,11 +9,10 @@ import {
   IAuthResponse,
   INormalizedAccount,
   IValidationTimestamp,
-} from '@/store/modules/accounts/types'
-import { axios } from '@/modules/axios'
+} from '@/views/store/modules/accounts/types'
+import { axios } from '@/views/modules/axios'
 import { denormalizeData } from '@/utils/denormalizeData'
 import { modulesFactory } from '@/utils/modulesFactory'
-import { IRootState } from '@/store/types'
 import { NotificationTypes } from '@/types/notification'
 
 import {

@@ -4,10 +4,11 @@ import cloneDeep from 'lodash/cloneDeep'
 import nock from 'nock'
 import { mocked } from 'ts-jest/utils'
 
-import { appModule, IAppState, IFile } from '@/store/modules/app'
-import LauncherFile from '@/entities/LauncherFile'
+import { appModule, IAppState } from '@/views/store/modules/app'
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
+import { IFile } from '@/types/files'
+import LauncherFile from '@/entities/LauncherFile'
 
 jest.mock('@/services/EventService')
 
