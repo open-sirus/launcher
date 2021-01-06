@@ -100,7 +100,7 @@ export class DownloadManager {
     return this.queue.get(url)
   }
 
-  getConfigById(id): IDownloadRequest | undefined {
+  getConfigById(id: number): IDownloadRequest | undefined {
     return Object.values(this.queue.values()).find((c) => c.requestId === id)
   }
 
