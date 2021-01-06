@@ -7,6 +7,7 @@ import {
   removeFile,
   getFileHash,
   FileCheckProgress,
+  getFilesWithPrefix,
 } from '@/utils/files'
 
 describe('File helper', () => {
@@ -20,6 +21,8 @@ describe('File helper', () => {
     mock({
       '/home/user/Name Of Directory/Data/ruRU': {
         'patch-9.zip': FILE,
+        'patch-10.zip': FILE,
+        'file.zip': FILE,
       },
     })
   })
@@ -83,6 +86,15 @@ describe('File helper', () => {
     await expect(
       getFileHash('/home/user/Name Of Directory/Data/ruRU/patch-9.zip')
     ).resolves.toBe('f9e71fe2c41a10c0a78218e98a025520')
+  })
+
+  it('get list files with prefix', async () => {
+    await expect(
+      getFilesWithPrefix('/home/user/Name Of Directory/Data/ruRU', 'PATCH')
+    ).resolves.toStrictEqual([
+      'patch-10.zip',
+      'patch-9.zip',
+    ])
   })
 
   it('get file hash', async () => {

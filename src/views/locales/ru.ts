@@ -3,6 +3,7 @@ export const ru = {
     news: 'Новости',
     settings: 'Настройки',
     accounts: 'Аккаунты',
+    updates: 'Обновления',
   },
   settings: {
     choose_lang: 'Выберите язык',
@@ -13,6 +14,8 @@ export const ru = {
       existed: 'Выбрать клиент',
       new: 'Загрузить клиент',
     },
+    set_up_client_directory:
+      'Пожалуйста укажите в настройках деррикторию с клиентом игры',
     errors: {
       wrong_client_directory: 'Пожалуйста, выберите папку с клиентом',
     },
@@ -87,5 +90,12 @@ export const ru = {
     stop: 'Остановить загрузку',
     checked_count: 'Проверенно {count} Мб',
     downloaded_count: 'Загруженно {count} Мб {speed} Мб/с',
+  },
+  update: {
+    'no-updates': 'Новых обновлений нет.',
+    validation_in_progress: 'Валидация файлов...',
+    client: {
+      'force-check': 'Проверить клиент',
+    },
   },
 } as const
