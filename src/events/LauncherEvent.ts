@@ -1,5 +1,6 @@
 import type { LauncherFile, FileStatus } from '@/entities/LauncherFile'
 import type {
+  FileDownloadProgress,
   FileManageStatus,
   FileValidationProgress,
 } from '@/services/FileManageService'
@@ -63,7 +64,7 @@ export interface IFileStatusUpdated {
 
 export interface IFileManagerStatusChanged {
   status: FileManageStatus
-  progress: FileValidationProgress
+  progress: FileValidationProgress | FileDownloadProgress
 }
 
 export interface IFileListUpdated {

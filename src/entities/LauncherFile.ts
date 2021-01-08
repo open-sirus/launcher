@@ -1,6 +1,8 @@
 import nodePath from 'path'
 
 import type { IFile } from '@/types/files'
+import type { DownloadRequestProgress } from '@/services/DownloadManager'
+import { DownloadRequestStatus } from '@/services/DownloadManager'
 
 export interface IValidatableFile {
   filePath: string
@@ -32,6 +34,7 @@ export class LauncherFile
   hash: string
   filename: string
   filePath: string
+  downloadProgress: DownloadRequestProgress | null
 
   static fromObject({ filename, md5, host, size, path }: IFile) {
     return new LauncherFile(
@@ -56,21 +59,20 @@ export class LauncherFile
     this.hash = hash
     this.filename = filename
     this.filePath = nodePath.normalize(this.path + this.filename)
+    this.downloadProgress = null
   }
 
   downloadAttributes = {
-    isDownloading: false,
     isIncomplete: false,
     isValid: false,
     isValidating: false,
   }
 
   get isDownloading() {
-    return this.downloadAttributes.isDownloading
-  }
-
-  set isDownloading(isDownloading: boolean) {
-    this.downloadAttributes.isDownloading = isDownloading
+    return (
+      this.downloadProgress != null &&
+      this.downloadProgress.status === DownloadRequestStatus.PROGRESS
+    )
   }
 
   get isIncomplete() {

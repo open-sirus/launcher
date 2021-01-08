@@ -1,4 +1,30 @@
-import { BrowserWindow, session } from 'electron'
+import { BrowserWindow, DownloadItem, session } from 'electron'
+
+export enum DownloadRequestStatus {
+  DONE = 'DONE',
+  FAILED = 'FAILED',
+  PROGRESS = 'PROGRESS',
+}
+
+export class DownloadRequestProgress {
+  totalBytes: number
+  doneBytes: number
+  status: DownloadRequestStatus
+
+  constructor(
+    totalBytes: number,
+    doneBytes: number,
+    status: DownloadRequestStatus
+  ) {
+    this.totalBytes = totalBytes
+    this.doneBytes = doneBytes
+    this.status = status
+  }
+}
+
+export type DownloadRequestCallback = (
+  progress: DownloadRequestProgress
+) => void
 
 export interface IDownloadRequest {
   filename: string
@@ -7,6 +33,7 @@ export interface IDownloadRequest {
   range?: string
   requestId?: number
   inProgress: boolean
+  callback?: DownloadRequestCallback
 }
 
 export class DownloadManager {
@@ -35,11 +62,13 @@ export class DownloadManager {
       item.on('updated', (event, state) => {
         if (state === 'interrupted') {
           config.inProgress = false
+          this.updateStatus(config, DownloadRequestStatus.FAILED, item)
         } else if (state === 'progressing') {
           if (item.isPaused()) {
-            console.log('Download is paused')
+            console.debug('Download is paused')
           } else {
-            console.log(`Received bytes: ${item.getReceivedBytes()}`)
+            console.debug(`Received bytes: ${item.getReceivedBytes()}`)
+            this.updateStatus(config, DownloadRequestStatus.PROGRESS, item)
           }
         }
       })
@@ -47,9 +76,11 @@ export class DownloadManager {
       item.once('done', (event, state) => {
         if (state === 'completed') {
           config.inProgress = false
+          this.updateStatus(config, DownloadRequestStatus.DONE, item)
         } else {
           // @ts-ignore
-          console.warn(`Download failed: ${state}`, event.error)
+          console.debug(`Download failed: ${state}`, event.error)
+          this.updateStatus(config, DownloadRequestStatus.FAILED, item)
         }
       })
     })
@@ -108,6 +139,31 @@ export class DownloadManager {
     request.inProgress = true
     this.queue.set(request.url, request)
     this.window.webContents.downloadURL(request.url)
+  }
+
+  updateStatus(
+    request: IDownloadRequest,
+    status: DownloadRequestStatus,
+    item: DownloadItem
+  ) {
+    const progress = new DownloadRequestProgress(
+      item.getTotalBytes(),
+      item.getReceivedBytes(),
+      DownloadRequestStatus.DONE
+    )
+    console.debug(progress)
+
+    // Remove item from queue
+    if (
+      status === DownloadRequestStatus.FAILED ||
+      status === DownloadRequestStatus.DONE
+    ) {
+      this.queue.delete(request.url)
+    }
+
+    if (request.callback) {
+      request.callback(progress)
+    }
   }
 }
 

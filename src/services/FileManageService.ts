@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 import path from 'path'
-import { promises as fs, existsSync } from 'fs'
+import { existsSync, promises as fs } from 'fs'
 
 import type { LauncherFile, IValidatableFile } from '@/entities/LauncherFile'
 import { FileStatus } from '@/entities/LauncherFile'
@@ -33,6 +33,15 @@ export class FileValidationProgress {
     this._validCount = validCount
     this._validatedCount = validatedCount
     this._filesCount = filesCount
+  }
+}
+
+export class FileDownloadProgress {
+  doneBytes: number
+  totalBytes: number
+  constructor(doneBytes: number, totalBytes: number) {
+    this.doneBytes = doneBytes
+    this.totalBytes = totalBytes
   }
 }
 
@@ -126,12 +135,35 @@ export class FileManageService {
         ? FileManageStatus.VALID
         : FileManageStatus.INVALID
     )
+    await this.startDownloadIfNeeded()
+  }
+
+  private async startDownloadIfNeeded() {
+    let filesToDownload = 0
     for (const file of this.files) {
       if (!file.isValid) {
+        filesToDownload++
+        file.downloadProgress = null
         const request = await this.generateRequestFor(file)
+        request.callback = (progress) => {
+          file.downloadProgress = progress
+        }
         console.log(request)
         getDownloadManager().startDownload(request)
       }
+    }
+    if (filesToDownload) {
+      const progressUpdateInterval = setInterval(() => {
+        const downloading = this.files.filter((file) => !file.isValid)
+        const completed = downloading.filter(
+          (file) => file.downloadProgress != null && !file.isDownloading
+        )
+        this.updateDownloadStatus(downloading)
+
+        if (completed.length === downloading.length) {
+          clearInterval(progressUpdateInterval)
+        }
+      }, 500)
     }
   }
 
@@ -191,6 +223,31 @@ export class FileManageService {
     }
 
     return request
+  }
+
+  private updateDownloadStatus(downloading: LauncherFile[]) {
+    const completed = downloading.filter(
+      (file) => file.downloadProgress != null && !file.isDownloading
+    )
+    this.status =
+      completed.length === downloading.length
+        ? FileManageStatus.VALIDATING
+        : FileManageStatus.DOWNLOADING
+
+    const total = downloading.reduce(
+      (size, file) => size + (file.downloadProgress?.totalBytes || 0),
+      0
+    )
+
+    const downloaded = completed.reduce(
+      (size, file) => size + (file.downloadProgress?.doneBytes || 0),
+      0
+    )
+
+    eventService.emit(LauncherEvent.FILE_MANAGER_STATUS_CHANGED, {
+      status: this.status,
+      progress: new FileDownloadProgress(downloaded, total),
+    })
   }
 }
 

@@ -15,10 +15,25 @@
         </template>
       </v-progress-linear>
     </v-card-text>
+    <v-card-text v-else-if="isDownloadingInProgress">
+      <div class="mb-2">{{ $t('update.downloading-in-progress') }}</div>
+      <v-progress-linear
+        :value="downloadProgress.progress"
+        color="success"
+        height="25"
+      >
+        <template v-slot:default>
+          <strong>{{ downloadProgress.status }}</strong>
+        </template>
+      </v-progress-linear>
+    </v-card-text>
     <v-card-actions>
-      <v-btn color="warning" @click="forceClientCheck">{{
-        $t('update.client.force-check')
-      }}</v-btn>
+      <v-btn
+        color="warning"
+        @click="forceClientCheck"
+        :disabled="isDownloadingInProgress || isValidationInProgress"
+        >{{ $t('update.client.force-check') }}</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -52,10 +67,16 @@ export default defineComponent({
     const { addNotification } = useNotificationActions(['addNotification'])
     const { loadFiles } = useAppActions(['loadFiles'])
     const { validationStatus } = useAppGetters(['validationStatus'])
+
     const isValidationInProgress = computed(
       () =>
         validationStatus.value &&
         validationStatus.value.status === FileManageStatus.VALIDATING
+    )
+    const isDownloadingInProgress = computed(
+      () =>
+        validationStatus.value &&
+        validationStatus.value.status === FileManageStatus.DOWNLOADING
     )
     const validationProgress = computed(() => {
       const progress = {
@@ -84,6 +105,28 @@ export default defineComponent({
       return progress
     })
 
+    const downloadProgress = computed(() => {
+      const progress = {
+        progress: 0,
+        status: 'update.calculating',
+      }
+
+      if (!validationStatus.value) {
+        return progress
+      }
+
+      const { doneBytes, totalBytes } = validationStatus.value.progress
+
+      if (totalBytes > 0) {
+        progress.progress = doneBytes / totalBytes
+        progress.status = `${doneBytes / 1024 / 1024}/${
+          totalBytes / 1024 / 1024
+        }`
+      }
+
+      return progress
+    })
+
     const forceClientCheck = () => {
       if (!clientDirectory) {
         addNotification({
@@ -98,7 +141,9 @@ export default defineComponent({
     return {
       forceClientCheck,
       isValidationInProgress,
+      isDownloadingInProgress,
       validationProgress,
+      downloadProgress,
     }
   },
 })
