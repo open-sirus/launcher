@@ -1,6 +1,6 @@
 import { text, number } from '@storybook/addon-knobs'
 
-import FeedCard from '@/views/feeds/FeedCard.vue'
+import FeedCard from '@/views/components/feeds/FeedCard.vue'
 
 export default {
   title: 'FeedCard',
