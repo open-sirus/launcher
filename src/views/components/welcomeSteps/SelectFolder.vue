@@ -3,7 +3,7 @@
     <v-col>
       <v-row>
         <v-col align-self="center">
-          <v-btn @click="selectFolder">
+          <v-btn @click="selectFolder" :disabled="isButtonsDisabled">
             {{ $t('steps.select_folder.select_existed') }}
           </v-btn>
         </v-col>
@@ -11,7 +11,7 @@
       <v-spacer />
       <v-row>
         <v-col align-self="center">
-          <v-btn @click="downloadGame">
+          <v-btn @click="downloadGame" :disabled="isButtonsDisabled">
             {{ $t('steps.select_folder.download') }}
           </v-btn>
         </v-col>
@@ -29,11 +29,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, computed } from '@vue/composition-api'
+import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
+import {
+  IDownloadGameActions,
+  IDownloadGameState,
+} from '@/views/store/modules/downloadGame'
+import {
+  ISettingsGetters,
+  ISettingsState,
+} from '@/views/store/modules/settings'
+
+const { useActions: useDownloadGameActions } = createNamespacedHelpers<
+  IDownloadGameState,
+  Record<string, unknown>,
+  IDownloadGameActions
+>('downloadGame')
+
+const { useGetters: useSettingsGetters } = createNamespacedHelpers<
+  ISettingsState,
+  ISettingsGetters
+>('settings')
 
 export interface ISelectFolderState {
   errors: {
@@ -49,6 +69,17 @@ export default defineComponent({
       },
     }
   },
+  setup() {
+    const { startDownload } = useDownloadGameActions(['startDownload'])
+    const { clientDirectory } = useSettingsGetters(['clientDirectory'])
+
+    const isButtonsDisabled = computed(() => Boolean(clientDirectory.value))
+
+    return {
+      startDownload,
+      isButtonsDisabled,
+    }
+  },
   methods: {
     selectFolder() {
       this.errors.clientDirectory = null
@@ -59,13 +90,12 @@ export default defineComponent({
         new CallbackListener(() => {
           this.errors.clientDirectory = this.$tn(
             'settings.errors.wrong_client_directory'
-          ) as string
+          )
         }, true)
       )
     },
     downloadGame() {
-      // TODO: implement after add download game logic
-      console.log('downloadGame')
+      this.startDownload()
     },
   },
 })

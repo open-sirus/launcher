@@ -9,6 +9,7 @@ export enum LauncherEvent {
   OPEN_SELECT_GAME_DIRECTORY_DIALOG = 'OPEN_SELECT_GAME_DIRECTORY_DIALOG',
   SELECT_GAME_DIRECTORY = 'SELECT_GAME_DIRECTORY',
   WRONG_GAME_DIRECTORY_SELECTED = 'WRONG_GAME_DIRECTORY_SELECTED',
+  CORRECT_GAME_DIRECTORY_SELECTED = 'CORRECT_GAME_DIRECTORY_SELECTED',
   FILE_LIST_UPDATED = 'FILE_LIST_UPDATED',
   FILE_STATUS_UPDATED = 'FILE_STATUS_UPDATED',
   FILE_MANAGER_STATUS_CHANGED = 'FILE_MANAGER_STATUS_CHANGED',
@@ -20,6 +21,7 @@ export enum LauncherEvent {
   PAUSE_TORRENT = 'PAUSE_TORRENT',
   STOP_TORRENT = 'STOP_TORRENT', // stop torrent process and need to download from scratch
   TORRENT_DOWNLOAD_STARTED = 'TORRENT_DOWNLOAD_STARTED',
+  TORRENT_SELECT_FOLDER_ERROR = 'TORRENT_SELECT_FOLDER_ERROR',
   TORRENT_DOWNLOAD_DONE = 'TORRENT_DOWNLOAD_DONE',
   TORRENT_DOWNLOAD_PROGRESS = 'TORRENT_DOWNLOAD_PROGRESS',
   TORRENT_DOWNLOAD_ERROR = 'TORRENT_DOWNLOAD_ERROR',
@@ -33,6 +35,10 @@ export interface IWrongGameDirectorySelectedData {
 
 export interface ISelectGameDirectoryData {
   directory: string | null
+}
+
+export interface ICorrectGameDirectoryData {
+  directory: string
 }
 
 export interface IHasClientReadyData {
@@ -60,10 +66,12 @@ export interface IFileManagerStatusChanged {
 
 export interface IFileListUpdated extends Array<IFile> {}
 
+export interface ITorrentSelectFolderErrorData {
+  directory: string | null
+}
 export interface IStartTorrent {
   torrentId: string
   torrentUrl: string
-  directionPath: string
 }
 
 export interface ITorrentData {
@@ -79,6 +87,7 @@ export type EventData = {
   [LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG]: null
   [LauncherEvent.SELECT_GAME_DIRECTORY]: ISelectGameDirectoryData
   [LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED]: IWrongGameDirectorySelectedData
+  [LauncherEvent.CORRECT_GAME_DIRECTORY_SELECTED]: ICorrectGameDirectoryData
   [LauncherEvent.FILE_LIST_UPDATED]: IFileListUpdated
   [LauncherEvent.FILE_STATUS_UPDATED]: IFileStatusUpdated
   [LauncherEvent.FILE_MANAGER_STATUS_CHANGED]: IFileManagerStatusChanged
@@ -90,6 +99,7 @@ export type EventData = {
   [LauncherEvent.PAUSE_TORRENT]: null
   [LauncherEvent.STOP_TORRENT]: null
   [LauncherEvent.TORRENT_DOWNLOAD_STARTED]: ITorrentData
+  [LauncherEvent.TORRENT_SELECT_FOLDER_ERROR]: ITorrentSelectFolderErrorData
   [LauncherEvent.TORRENT_DOWNLOAD_DONE]: null
   [LauncherEvent.TORRENT_DOWNLOAD_PROGRESS]: ITorrentData
   [LauncherEvent.TORRENT_DOWNLOAD_ERROR]: ITorrentDownloadError

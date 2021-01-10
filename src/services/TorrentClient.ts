@@ -5,6 +5,7 @@ import {
 import { resolve as resolvePath } from 'path'
 // @ts-ignore
 import TorrentDownloader from '@sirussu/torrent-downloader'
+import { dialog } from 'electron'
 
 import { replaceLast } from '@/utils/replaceLast'
 import { LauncherEvent } from '@/events/LauncherEvent'
@@ -64,8 +65,8 @@ export class TorrentClient {
     this.eventBus.on(
       LauncherEvent.START_TORRENT,
       new CallbackListener<LauncherEvent.START_TORRENT>((_, data) => {
-        const { torrentId, torrentUrl, directionPath } = data
-        this.startTorrenting(torrentId, torrentUrl, directionPath)
+        const { torrentId, torrentUrl } = data
+        this.startTorrenting(torrentId, torrentUrl)
       }, true)
     )
 
@@ -144,11 +145,20 @@ export class TorrentClient {
     })
   }
 
-  private startTorrenting(
-    torrentId: string,
-    torrentUrl: string,
-    directionPath: string
-  ) {
+  private async startTorrenting(torrentId: string, torrentUrl: string) {
+    const selection = await dialog.showOpenDialog({
+      properties: ['openDirectory'],
+    })
+
+    if (!selection || selection.canceled || !selection.filePaths[0]) {
+      this.eventBus.emit(LauncherEvent.TORRENT_SELECT_FOLDER_ERROR, {
+        directory: selection.filePaths[0],
+      })
+      return
+    }
+
+    const directionPath = selection.filePaths[0]
+
     if (this.status === TorrentClientStatus.IN_PROGRESS) {
       console.warn('Torrent already in progress')
       if (this.downloadProcess) {

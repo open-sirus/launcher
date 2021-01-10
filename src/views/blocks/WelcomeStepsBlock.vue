@@ -35,6 +35,9 @@ import {
 } from '@/views/store/modules/welcome'
 import LoginStep from '@/views/components/welcomeSteps/Login.vue'
 import { WelcomeSteps } from '@/types/welcomeSteps'
+import { eventService } from '@/background/EventService'
+import { LauncherEvent } from '@/events/LauncherEvent'
+import { CallbackListener } from '@/events/CallbackListener'
 
 const {
   useActions: useWelcomeActions,
@@ -64,6 +67,22 @@ export default defineComponent({
       'currentStepIndex',
       'stepsCount',
     ])
+
+    eventService.on(
+      LauncherEvent.CORRECT_GAME_DIRECTORY_SELECTED,
+      new CallbackListener<LauncherEvent.CORRECT_GAME_DIRECTORY_SELECTED>(
+        () => {
+          nextStep()
+        }
+      )
+    )
+
+    eventService.on(
+      LauncherEvent.TORRENT_DOWNLOAD_STARTED,
+      new CallbackListener<LauncherEvent.TORRENT_DOWNLOAD_STARTED>(() => {
+        nextStep()
+      })
+    )
 
     return {
       currentStep,

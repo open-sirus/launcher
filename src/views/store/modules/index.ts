@@ -5,6 +5,7 @@ import { accountsModule as accounts } from './accounts'
 import { statusBarModule as status } from './statusBar'
 import { notificationModule as notification } from './notification'
 import { welcomeModule as welcome } from './welcome'
+import { downloadGameModule as downloadGame } from './downloadGame'
 
 export const modules = {
   app,
@@ -14,4 +15,5 @@ export const modules = {
   accounts,
   notification,
   welcome,
-}
+  downloadGame,
+} as const

@@ -5,6 +5,7 @@ import type { IStatusState } from './modules/statusBar/types'
 import type { IAccountsState } from './modules/accounts/types'
 import type { IWelcomeState } from './modules/welcome'
 import type { INotificationState } from './modules/notification'
+import type { IDownloadGameState } from './modules/downloadGame'
 
 export interface IRootState {
   app: IAppState
@@ -14,4 +15,5 @@ export interface IRootState {
   accounts: IAccountsState
   welcome: IWelcomeState
   norification: INotificationState
+  downloadGame: IDownloadGameState
 }
