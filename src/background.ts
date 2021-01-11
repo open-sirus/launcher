@@ -1,6 +1,7 @@
 'use strict'
 
-import { app, BrowserWindow, protocol, Tray } from 'electron'
+import type { Tray } from 'electron'
+import { app, BrowserWindow, protocol } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { autoUpdater } from 'electron-updater'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'

@@ -1,7 +1,7 @@
 import _Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
-import { I18nValue, Path } from '@/types/i18n'
+import type { I18nValue, Path } from '@/types/i18n'
 
 import { en } from '../locales/en'
 import { ru } from '../locales/ru'

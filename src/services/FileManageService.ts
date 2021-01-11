@@ -1,9 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep'
 
-import LauncherFile, {
-  FileStatus,
-  IValidatableFile,
-} from '@/entities/LauncherFile'
+import type { LauncherFile, IValidatableFile } from '@/entities/LauncherFile'
+import { FileStatus } from '@/entities/LauncherFile'
 import { eventService } from '@/background/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { getFileHash, isCorrectFile } from '@/utils/files'

@@ -1,10 +1,11 @@
-import { app, BrowserWindow, Menu, MenuItem, Tray } from 'electron'
+import type { BrowserWindow, Tray } from 'electron'
+import { app, Menu, MenuItem } from 'electron'
 
-import {
+import type {
   IMenuItem,
   IMenuItemConstructorOptions,
-  menuComponentTypes,
 } from '@/background/tray/types'
+import { menuComponentTypes } from '@/background/tray/types'
 import { eventService } from '@/background/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { MENU_ORDER } from '@/constants'

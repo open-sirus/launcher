@@ -1,14 +1,14 @@
-import { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
+import type { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
 
 import { RequestStatus } from '@/types/network'
 import { axios } from '@/views/modules/axios'
 import { normalizeData } from '@/utils/normalizeData'
 import { denormalizeData } from '@/utils/denormalizeData'
 import { modulesFactory } from '@/utils/modulesFactory'
-import { NormalizedSchema, NormalizedAdditional } from '@/types/normalze'
+import type { NormalizedSchema, NormalizedAdditional } from '@/types/normalze'
 import { NotificationTypes } from '@/types/notification'
 
-import { IRootState } from '../types'
+import type { IRootState } from '../types'
 
 export interface IFeed {
   id: number

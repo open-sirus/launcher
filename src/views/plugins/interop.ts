@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import _Vue from 'vue'
+import type _Vue from 'vue'
 
-import { ElectronInterop, interop } from '@/utils/electronInterop'
+import type { ElectronInterop } from '@/utils/electronInterop'
+import { interop } from '@/utils/electronInterop'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
 export function Interop(Vue: typeof _Vue): void {

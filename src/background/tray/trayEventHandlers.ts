@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu, Tray } from 'electron'
+import type { BrowserWindow, Menu, Tray } from 'electron'
 
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { menuComponentTypes } from '@/background/tray/types'

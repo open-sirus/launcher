@@ -1,16 +1,16 @@
-import { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
+import type { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
 import differentWith from 'lodash/differenceWith'
 
 import { axios } from '@/views/modules/axios'
 import { modulesFactory } from '@/utils/modulesFactory'
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
-import LauncherFile from '@/entities/LauncherFile'
+import { LauncherFile } from '@/entities/LauncherFile'
 import { isPatchEqual } from '@/utils/patches'
 import { Langs } from '@/types/lang'
-import { IFile } from '@/types/files'
+import type { IFile } from '@/types/files'
 
-import { IRootState } from '../types'
+import type { IRootState } from '../types'
 
 enum DownloadErrors {
   ALREADY_IN_PROGRESS = 'ALREADY_IN_PROGRESS',

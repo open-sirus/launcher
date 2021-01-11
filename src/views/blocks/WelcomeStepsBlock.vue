@@ -28,7 +28,7 @@ import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { defineComponent } from '@vue/composition-api'
 
 import SelectFolderStep from '@/views/components/welcomeSteps/SelectFolder.vue'
-import {
+import type {
   IWelcomeActions,
   IWelcomeGetters,
   IWelcomeState,

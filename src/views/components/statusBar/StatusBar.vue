@@ -20,7 +20,7 @@
 import { defineComponent } from '@vue/composition-api'
 import { mdiCircle } from '@mdi/js'
 
-import { IRealm } from '@/views/store/modules/statusBar/types'
+import type { IRealm } from '@/views/store/modules/statusBar/types'
 
 export default defineComponent({
   name: 'StatusBar',

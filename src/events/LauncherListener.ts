@@ -1,4 +1,4 @@
-import { LauncherEvent } from '@/events/LauncherEvent'
+import type { LauncherEvent } from '@/events/LauncherEvent'
 
 export abstract class LauncherListener {
   once = false

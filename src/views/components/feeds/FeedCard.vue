@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import { IFeed } from '@/views/store/modules/feeds'
+import type { IFeed } from '@/views/store/modules/feeds'
 
 interface IFeedCardProps {
   feed: IFeed

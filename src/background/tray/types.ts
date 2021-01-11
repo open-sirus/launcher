@@ -1,4 +1,4 @@
-import { MenuItem, MenuItemConstructorOptions } from 'electron'
+import type { MenuItem, MenuItemConstructorOptions } from 'electron'
 
 export const enum menuComponentTypes {
   LAUNCH_GAME = 'LAUNCH_GAME',

@@ -12,7 +12,7 @@ import { defineComponent } from '@vue/composition-api'
 
 import StatusBar from '@/views/components/statusBar/StatusBar.vue'
 import WindowControls from '@/views/components/statusBar/WindowControls.vue'
-import {
+import type {
   IStatusGetters,
   IStatusActions,
 } from '@/views/store/modules/statusBar/types'

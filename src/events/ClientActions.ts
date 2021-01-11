@@ -1,5 +1,6 @@
 import { eventService } from '@/services/EventService'
-import { LauncherEvent, ISelectGameDirectoryData } from '@/events/LauncherEvent'
+import type { ISelectGameDirectoryData } from '@/events/LauncherEvent'
+import { LauncherEvent } from '@/events/LauncherEvent'
 import { LauncherListener } from '@/events/LauncherListener'
 import store from '@/views/store'
 

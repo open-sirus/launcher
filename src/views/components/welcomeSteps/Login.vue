@@ -68,7 +68,7 @@ import { defineComponent, reactive } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import useVuelidate from '@vuelidate/core'
 
-import {
+import type {
   IAccountsActions,
   IAccountsGetters,
   IAccountsState,

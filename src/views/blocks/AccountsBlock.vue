@@ -77,7 +77,7 @@ import { defineComponent } from '@vue/composition-api'
 
 import AccountsModal from '@/views/components/accounts/AccountsModal.vue'
 import TfaModal from '@/views/components/accounts/TfaModal.vue'
-import {
+import type {
   IAccount,
   IAccountsActions,
   IAccountsGetters,

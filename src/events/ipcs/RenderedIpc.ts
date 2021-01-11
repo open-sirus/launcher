@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron'
 
 import { Ipc, EventBus } from '@/services/EventBus'
-import { EventData, LauncherEvent } from '@/events/LauncherEvent'
+import type { EventData, LauncherEvent } from '@/events/LauncherEvent'
 
 export class RenderedIpc<E extends LauncherEvent> extends Ipc {
   constructor() {

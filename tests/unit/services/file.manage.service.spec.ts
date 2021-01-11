@@ -1,6 +1,6 @@
 import { mocked } from 'ts-jest/utils'
 
-import LauncherFile from '@/entities/LauncherFile'
+import { LauncherFile } from '@/entities/LauncherFile'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import {
   FileManageService,

@@ -1,4 +1,4 @@
-import { IValidationTimestamp } from '@/views/store/modules/accounts/types'
+import type { IValidationTimestamp } from '@/views/store/modules/accounts/types'
 import { VERIFY_ACCOUNTS_TIMEOUT } from '@/constants'
 
 export const getTimestamp = (): IValidationTimestamp => {

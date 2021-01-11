@@ -1,7 +1,5 @@
-import {
-  ChildProcessWithoutNullStreams,
-  spawn as spawnChildProcess,
-} from 'child_process'
+import type { ChildProcessWithoutNullStreams } from 'child_process'
+import { spawn as spawnChildProcess } from 'child_process'
 import { resolve as resolvePath } from 'path'
 // @ts-ignore
 import TorrentDownloader from '@sirussu/torrent-downloader'
@@ -11,7 +9,7 @@ import { replaceLast } from '@/utils/replaceLast'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
 
-import { EventBus } from './EventBus'
+import type { EventBus } from './EventBus'
 
 const enum TorrentClientStatus {
   IDLE = 'IDLE',

@@ -1,10 +1,12 @@
 import { ipcRenderer } from 'electron'
 import { mocked } from 'ts-jest/utils'
 import { createLocalVue } from '@vue/test-utils'
-import Vuex, { Store } from 'vuex'
+import type { Store } from 'vuex'
+import Vuex from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 
-import { ISettingsState, settingsModule } from '@/views/store/modules/settings'
+import type { ISettingsState } from '@/views/store/modules/settings'
+import { settingsModule } from '@/views/store/modules/settings'
 
 jest.mock('electron', () => {
   return {

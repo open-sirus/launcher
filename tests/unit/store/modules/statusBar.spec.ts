@@ -1,9 +1,10 @@
 import { createLocalVue } from '@vue/test-utils'
-import Vuex, { Store } from 'vuex'
+import type { Store } from 'vuex'
+import Vuex from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import nock from 'nock'
 
-import { IStatusState } from '@/views/store/modules/statusBar/types'
+import type { IStatusState } from '@/views/store/modules/statusBar/types'
 import { statusBarModule } from '@/views/store/modules/statusBar'
 
 import realmsStub from './stubs/realms.json'

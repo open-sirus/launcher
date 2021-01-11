@@ -20,12 +20,15 @@
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { defineComponent } from '@vue/composition-api'
 
-import { IWelcomeGetters, IWelcomeState } from '@/views/store/modules/welcome'
-import {
+import type {
+  IWelcomeGetters,
+  IWelcomeState,
+} from '@/views/store/modules/welcome'
+import type {
   IAccountsActions,
   IAccountsState,
 } from '@/views/store/modules/accounts/types'
-import {
+import type {
   ISettingsActions,
   ISettingsState,
 } from '@/views/store/modules/settings'

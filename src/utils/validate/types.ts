@@ -1,4 +1,4 @@
-import { ValidationRule } from 'vuelidate/lib/validators'
+import type { ValidationRule } from 'vuelidate/lib/validators'
 
 export interface IAccountFieldsValidator {
   authForm: {

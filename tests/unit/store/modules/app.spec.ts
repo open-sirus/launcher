@@ -1,14 +1,16 @@
 import { createLocalVue } from '@vue/test-utils'
-import Vuex, { Store } from 'vuex'
+import type { Store } from 'vuex'
+import Vuex from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import nock from 'nock'
 import { mocked } from 'ts-jest/utils'
 
-import { appModule, IAppState } from '@/views/store/modules/app'
+import type { IAppState } from '@/views/store/modules/app'
+import { appModule } from '@/views/store/modules/app'
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
-import { IFile } from '@/types/files'
-import LauncherFile from '@/entities/LauncherFile'
+import type { IFile } from '@/types/files'
+import { LauncherFile } from '@/entities/LauncherFile'
 
 jest.mock('@/services/EventService')
 

@@ -1,6 +1,6 @@
 import nodePath from 'path'
 
-import { IFile } from '@/types/files'
+import type { IFile } from '@/types/files'
 
 export interface IValidatableFile {
   filePath: string
@@ -24,7 +24,7 @@ export enum FileStatus {
   DOWNLOAD_FAILED,
 }
 
-export default class LauncherFile
+export class LauncherFile
   implements IValidatableFile, IDownloadableFile, IFile {
   host: string
   path: string

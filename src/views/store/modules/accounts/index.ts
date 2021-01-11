@@ -1,8 +1,8 @@
-import { MutationTree } from 'vuex'
+import type { MutationTree } from 'vuex'
 
-import { IRootState } from '@/views/store/types'
+import type { IRootState } from '@/views/store/types'
 import { RequestStatus } from '@/types/network'
-import {
+import type {
   IAccountsActions,
   IAccountsGetters,
   IAccountsState,

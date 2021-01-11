@@ -1,12 +1,13 @@
 import { createLocalVue } from '@vue/test-utils'
-import Vuex, { Store } from 'vuex'
+import type { Store } from 'vuex'
+import Vuex from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import nock from 'nock'
 import { advanceBy, advanceTo, clear } from 'jest-date-mock'
 
 import { accountsModule } from '@/views/store/modules/accounts'
 import { notificationModule } from '@/views/store/modules/notification'
-import { IAccountsState } from '@/views/store/modules/accounts/types'
+import type { IAccountsState } from '@/views/store/modules/accounts/types'
 
 import tokensStub from './stubs/tokens.json'
 import accountInfoStub from './stubs/accountInfo.json'

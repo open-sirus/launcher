@@ -51,13 +51,13 @@ import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
-import { IAppGetters, IAppState } from '@/views/store/modules/app'
-import {
+import type { IAppGetters, IAppState } from '@/views/store/modules/app'
+import type {
   ISettingsActions,
   ISettingsGetters,
   ISettingsState,
 } from '@/views/store/modules/settings'
-import { Langs } from '@/types/lang'
+import type { Langs } from '@/types/lang'
 
 const { useGetters: useAppGetters } = createNamespacedHelpers<
   IAppState,

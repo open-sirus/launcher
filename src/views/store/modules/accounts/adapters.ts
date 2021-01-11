@@ -1,4 +1,4 @@
-import {
+import type {
   IAdaptedResponse,
   IAuthResponse,
 } from '@/views/store/modules/accounts/types'

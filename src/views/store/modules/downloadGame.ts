@@ -1,10 +1,10 @@
-import { ActionContext, ActionTree } from 'vuex'
+import type { ActionContext, ActionTree } from 'vuex'
 
 import { modulesFactory } from '@/utils/modulesFactory'
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 
-import { IRootState } from '../types'
+import type { IRootState } from '../types'
 
 export interface IDownloadGameState {}
 

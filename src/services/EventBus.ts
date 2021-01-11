@@ -1,7 +1,8 @@
-import { IpcMain, IpcRenderer } from 'electron'
+import type { IpcMain, IpcRenderer } from 'electron'
 
-import { LauncherEvent, EventData } from '@/events/LauncherEvent'
-import { LauncherListener } from '@/events/LauncherListener'
+import type { EventData } from '@/events/LauncherEvent'
+import { LauncherEvent } from '@/events/LauncherEvent'
+import type { LauncherListener } from '@/events/LauncherListener'
 
 export type IpcCallback = ({
   event,

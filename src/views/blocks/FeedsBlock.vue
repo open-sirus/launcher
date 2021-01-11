@@ -33,7 +33,7 @@ import chunk from 'lodash/chunk'
 import { defineComponent, ref } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
-import {
+import type {
   IFeedState,
   IFeedsGetters,
   IFeedsActions,

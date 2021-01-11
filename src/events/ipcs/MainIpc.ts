@@ -1,7 +1,7 @@
 import { ipcMain, BrowserWindow } from 'electron'
 
 import { EventBus, Ipc } from '@/services/EventBus'
-import { EventData, LauncherEvent } from '@/events/LauncherEvent'
+import type { EventData, LauncherEvent } from '@/events/LauncherEvent'
 
 export class MainIpc<E extends LauncherEvent> extends Ipc {
   constructor() {

@@ -1,9 +1,9 @@
-import { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
+import type { MutationTree, ActionTree, GetterTree, ActionContext } from 'vuex'
 
 import { WelcomeSteps } from '@/types/welcomeSteps'
 import { modulesFactory } from '@/utils/modulesFactory'
 
-import { IRootState } from '../types'
+import type { IRootState } from '../types'
 
 export interface IWelcomeState {
   isCompleted: boolean

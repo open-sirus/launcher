@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import _Vue from 'vue'
-import * as Vuex from 'vuex'
+import type _Vue from 'vue'
+import type * as Vuex from 'vuex'
 
-import { INotification } from '@/types/notification'
-import { INotificationState } from '@/views/store/modules/notification'
+import type { INotification } from '@/types/notification'
+import type { INotificationState } from '@/views/store/modules/notification'
 
 export interface INotificationPlugin {
   getAll: () => Array<INotification>

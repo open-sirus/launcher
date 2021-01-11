@@ -1,4 +1,5 @@
-import { BrowserWindow, Tray } from 'electron'
+import type { BrowserWindow } from 'electron'
+import { Tray } from 'electron'
 
 import { initContextMenu } from '@/background/tray/contextMenu'
 import { registerTrayEventListeners } from '@/background/tray/trayEventListeners'

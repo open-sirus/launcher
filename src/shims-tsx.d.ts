@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/naming-convention */
-import Vue, { VNode } from 'vue'
-import { ComponentRenderProxy } from '@vue/composition-api'
+import type { VNode } from 'vue'
+import Vue from 'vue'
+import type { ComponentRenderProxy } from '@vue/composition-api'
 
 declare global {
   namespace JSX {

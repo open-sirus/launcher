@@ -1,4 +1,5 @@
-import Axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import type { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import Axios from 'axios'
 import humps from 'humps'
 // @ts-ignore
 import isArrayBuffer from 'is-array-buffer'

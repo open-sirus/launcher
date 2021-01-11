@@ -1,7 +1,7 @@
-import { MutationTree } from 'vuex'
+import type { MutationTree } from 'vuex'
 
-import { IRootState } from '@/views/store/types'
-import {
+import type { IRootState } from '@/views/store/types'
+import type {
   IRealm,
   IStatusActions,
   IStatusGetters,

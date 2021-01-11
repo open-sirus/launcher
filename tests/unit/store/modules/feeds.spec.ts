@@ -1,9 +1,11 @@
 import { createLocalVue } from '@vue/test-utils'
-import Vuex, { Store } from 'vuex'
+import type { Store } from 'vuex'
+import Vuex from 'vuex'
 import cloneDeep from 'lodash/cloneDeep'
 import nock from 'nock'
 
-import { feedsModule, IFeedState } from '@/views/store/modules/feeds'
+import type { IFeedState } from '@/views/store/modules/feeds'
+import { feedsModule } from '@/views/store/modules/feeds'
 
 import feedsStub from './stubs/feeds.json'
 

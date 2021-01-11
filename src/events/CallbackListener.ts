@@ -1,4 +1,4 @@
-import { LauncherEvent, EventData } from '@/events/LauncherEvent'
+import type { LauncherEvent, EventData } from '@/events/LauncherEvent'
 import { LauncherListener } from '@/events/LauncherListener'
 
 export class CallbackListener<
