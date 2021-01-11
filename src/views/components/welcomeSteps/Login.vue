@@ -2,7 +2,7 @@
   <v-card class="login-step">
     <template v-if="hasSettedAccount">
       <v-card-title>
-        {{ $t('steps.login.loggined', { username: defaultAccount.username }) }}
+        {{ $t('steps.login.logged_in', { username: defaultAccount.username }) }}
       </v-card-title>
     </template>
     <template v-else>

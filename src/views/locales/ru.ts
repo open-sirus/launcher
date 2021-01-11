@@ -64,7 +64,7 @@ export const ru = {
       tfa_code: 'Введите 2FA код',
       req_fields: '* - обязательные поля',
       login: 'Войти',
-      loggined: 'Вы вошли под {username}',
+      logged_in: 'Вы вошли под {username}',
     },
     'next-step': 'Далее',
     'prev-step': 'Назад',
