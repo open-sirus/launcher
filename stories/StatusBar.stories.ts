@@ -1,6 +1,6 @@
 import { object, number } from '@storybook/addon-knobs'
 
-import { IRealm } from '@/views/store/modules/statusBar/types'
+import type { IRealm } from '@/views/store/modules/statusBar/types'
 import StatusBar from '@/views/components/statusBar/StatusBar.vue'
 import WindowControls from '@/views/components/statusBar/WindowControls.vue'
 

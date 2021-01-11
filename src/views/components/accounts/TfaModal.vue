@@ -62,7 +62,7 @@ import useVuelidate from '@vuelidate/core'
 import type { INeedTfa } from '@/views/store/modules/accounts/types'
 import { validateTfa } from '@/utils/validate'
 
-interface ITfaModalProps {
+export interface ITfaModalProps {
   tfa: INeedTfa
   canShowProgressBar: boolean
 }

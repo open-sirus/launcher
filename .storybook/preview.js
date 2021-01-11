@@ -12,7 +12,7 @@ import en from 'vuetify/es5/locale/en'
 
 import '@/assets/app.scss'
 
-import i18nConfig from '../src/modules/i18n'
+import { i18n } from '../src/views/modules/i18n'
 
 const Vuetify = _Vuetify.default
 
@@ -51,7 +51,7 @@ Vue.use((Vue) => {
 
 const appDecorator = () => {
   return {
-    i18n: i18nConfig(),
+    i18n,
     vuetify: new Vuetify({
       lang: {
         locales: { ru, en },
