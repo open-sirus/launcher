@@ -6,9 +6,18 @@ import { LauncherEvent } from '@/events/LauncherEvent'
 
 import type { IRootState } from '../types'
 
-export interface IDownloadGameState {}
+enum DownloadGameStatus {
+  IDLE = 'IDlE',
+  STARTED = 'STARTED',
+}
 
-const state: IDownloadGameState = {}
+export interface IDownloadGameState {
+  status: DownloadGameStatus
+}
+
+const state: IDownloadGameState = {
+  status: DownloadGameStatus.IDLE,
+}
 
 export interface IDownloadGameActions
   extends ActionTree<IDownloadGameState, IRootState> {
