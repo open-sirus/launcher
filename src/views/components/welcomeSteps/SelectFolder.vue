@@ -43,6 +43,11 @@ import type {
   ISettingsGetters,
   ISettingsState,
 } from '@/views/store/modules/settings'
+import type {
+  IWelcomeActions,
+  IWelcomeGetters,
+  IWelcomeState,
+} from '@/views/store/modules/welcome'
 
 const { useActions: useDownloadGameActions } = createNamespacedHelpers<
   IDownloadGameState,
@@ -54,6 +59,12 @@ const { useGetters: useSettingsGetters } = createNamespacedHelpers<
   ISettingsState,
   ISettingsGetters
 >('settings')
+
+const { useActions: useWelcomeActions } = createNamespacedHelpers<
+  IWelcomeState,
+  IWelcomeGetters,
+  IWelcomeActions
+>('welcome')
 
 export interface ISelectFolderState {
   errors: {
@@ -72,6 +83,27 @@ export default defineComponent({
   setup() {
     const { startDownload } = useDownloadGameActions(['startDownload'])
     const { clientDirectory } = useSettingsGetters(['clientDirectory'])
+    const { nextStep } = useWelcomeActions([
+      'nextStep',
+      'prevStep',
+      'setIsCompleted',
+    ])
+
+    eventService.on(
+      LauncherEvent.CORRECT_GAME_DIRECTORY_SELECTED,
+      new CallbackListener<LauncherEvent.CORRECT_GAME_DIRECTORY_SELECTED>(
+        () => {
+          nextStep()
+        }
+      )
+    )
+
+    eventService.on(
+      LauncherEvent.TORRENT_DOWNLOAD_STARTED,
+      new CallbackListener<LauncherEvent.TORRENT_DOWNLOAD_STARTED>(() => {
+        nextStep()
+      })
+    )
 
     const isButtonsDisabled = computed(() => Boolean(clientDirectory.value))
 

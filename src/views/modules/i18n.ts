@@ -44,11 +44,13 @@ export const i18n = new VueI18n({
   pluralizationRules,
 })
 
-function $i18n<P extends Path<Locales>>(
-  path: P,
+type InfPath<P> = P extends Path<Locales> ? I18nValue<Locales, P> : string
+
+function $i18n<P extends string>(
+  path: P extends Path<Locales> ? P : string,
   values?: VueI18n.Values
-): I18nValue<Locales, P> {
-  return i18n.t(path, values) as I18nValue<Locales, P>
+): InfPath<P> {
+  return i18n.t(path, values) as InfPath<P>
 }
 
 export const initI18n = () => {

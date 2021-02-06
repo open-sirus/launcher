@@ -5,11 +5,9 @@
       <navigation />
       <notifications />
       <v-main>
-        <v-container fluid>
-          <transition name="slide">
-            <router-view />
-          </transition>
-        </v-container>
+        <transition name="slide">
+          <router-view />
+        </transition>
       </v-main>
     </template>
     <welcome-screen v-else />

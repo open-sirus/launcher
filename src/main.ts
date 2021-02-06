@@ -5,7 +5,6 @@ import '@/assets/app.scss'
 
 import Vue from 'vue'
 import VueCompositionAPI from '@vue/composition-api'
-import Vuelidate from 'vuelidate'
 
 import { Interop } from '@/views/plugins/interop'
 import { Notification } from '@/views/plugins/norifications'
@@ -22,7 +21,6 @@ Vue.config.productionTip = false
 Vue.use(VueCompositionAPI)
 Vue.use(Interop)
 Vue.use(Notification, { store })
-Vue.use(Vuelidate)
 
 initI18n()
 

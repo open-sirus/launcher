@@ -14,3 +14,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.feeds {
+  height: 100%;
+}
+</style>

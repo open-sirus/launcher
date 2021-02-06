@@ -9,14 +9,17 @@ import type { IRootState } from '../types'
 enum DownloadGameStatus {
   IDLE = 'IDlE',
   STARTED = 'STARTED',
+  ERRORED = 'ERRORED',
 }
 
 export interface IDownloadGameState {
   status: DownloadGameStatus
+  progress: number
 }
 
 const state: IDownloadGameState = {
   status: DownloadGameStatus.IDLE,
+  progress: 0,
 }
 
 export interface IDownloadGameActions

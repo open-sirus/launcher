@@ -1,5 +1,5 @@
 <template>
-  <v-card-text>
+  <v-card-text class="progress-bar">
     <div class="mb-2">{{ title }}</div>
     <v-progress-linear :value="progress" color="success" height="25">
       <template v-slot:default>
@@ -32,3 +32,10 @@ export default defineComponent<IProgressBarProps>({
   },
 })
 </script>
+
+<style scoped>
+.progress-bar {
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+}
+</style>

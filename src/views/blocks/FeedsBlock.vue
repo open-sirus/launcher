@@ -25,6 +25,7 @@
         </v-carousel-item>
       </v-carousel>
     </v-container>
+    <download-game-block />
   </div>
 </template>
 
@@ -42,6 +43,8 @@ import type {
 import FeedCard from '@/views/components/feeds/FeedCard.vue'
 import FeedsSkeleton from '@/views/components/feeds/FeedsSkeleton.vue'
 
+import DownloadGameBlock from './DownloadGameBlock.vue'
+
 const { useActions, useGetters } = createNamespacedHelpers<
   IFeedState,
   IFeedsGetters,
@@ -52,6 +55,7 @@ export default defineComponent({
   components: {
     FeedCard,
     FeedsSkeleton,
+    DownloadGameBlock,
   },
   name: 'FeedsBlock',
   setup() {
@@ -82,6 +86,14 @@ export default defineComponent({
 </script>
 
 <style>
+.feed-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-around;
+  height: 100%;
+}
+
 .feed-block .v-window__next,
 .feed-block .v-window__prev {
   top: 180px !important;

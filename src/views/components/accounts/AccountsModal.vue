@@ -109,9 +109,9 @@ export default defineComponent<IAccountsModalProps>({
     })
 
     const validate = useVuelidate(
-      // @ts-ignore
       validateAccountFields,
       { authForm },
+      // @ts-ignore
       { $autoDirty: true }
     )
 
@@ -157,7 +157,7 @@ export default defineComponent<IAccountsModalProps>({
 
       // @ts-ignore
       if (this.validate.authForm.pass.minLength.$invalid) {
-        return this.$tn('accounts.modal.authError.passMinLength')
+        return this.$tn(`accounts.modal.authError.passMinLength`)
       }
 
       // @ts-ignore

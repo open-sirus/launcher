@@ -63,7 +63,6 @@
 </template>
 
 <script lang="ts">
-// TODO: Fix typescript for validators here
 import { defineComponent, reactive } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import useVuelidate from '@vuelidate/core'
@@ -110,9 +109,9 @@ export default defineComponent({
     ])
 
     const validate = useVuelidate(
-      // @ts-ignore
       validateAccountFields,
       { authForm },
+      // @ts-ignore
       { $autoDirty: true }
     )
 
@@ -132,17 +131,14 @@ export default defineComponent({
       return this.requestStatus === RequestStatus.PENDING
     },
     loginError() {
-      // @ts-ignore
       if (!this.validate.authForm.login.$dirty) {
         return
       }
 
-      // @ts-ignore
       if (this.validate.authForm.login.minLength.$invalid) {
         return this.$tn('accounts.modal.authError.loginMinLength')
       }
 
-      // @ts-ignore
       if (this.validate.authForm.login.required.$invalid) {
         return this.$tn('accounts.modal.authError.loginRequired')
       }
@@ -150,17 +146,14 @@ export default defineComponent({
       return null
     },
     passwordError() {
-      // @ts-ignore
       if (!this.validate.authForm.pass.$dirty) {
         return
       }
 
-      // @ts-ignore
       if (this.validate.authForm.pass.minLength.$invalid) {
         return this.$tn('accounts.modal.authError.passMinLength')
       }
 
-      // @ts-ignore
       if (this.validate.authForm.pass.required.$invalid) {
         return this.$tn('accounts.modal.authError.passRequired')
       }

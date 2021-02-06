@@ -71,9 +71,9 @@ export default defineComponent<ITfaModalProps>({
   setup() {
     const tfaToken = ref('')
     const validate = useVuelidate(
-      // @ts-ignore
       validateTfa,
       { tfaToken },
+      // @ts-ignore
       { $autoDirty: true }
     )
 
