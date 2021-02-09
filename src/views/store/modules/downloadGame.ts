@@ -1,8 +1,10 @@
-import type { ActionContext, ActionTree } from 'vuex'
+import type { ActionContext, ActionTree, MutationTree } from 'vuex'
 
 import { modulesFactory } from '@/utils/modulesFactory'
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
+import { CallbackListener } from '@/events/CallbackListener'
+import { TORRENT_KEY, TORRENT_URL } from '@/constants'
 
 import type { IRootState } from '../types'
 
@@ -24,31 +26,45 @@ const state: IDownloadGameState = {
 
 export interface IDownloadGameActions
   extends ActionTree<IDownloadGameState, IRootState> {
-  startDownload: (
+  subscribeToTorrentEvents: (
     ctx: ActionContext<IDownloadGameState, IRootState>
-  ) => Promise<void>
+  ) => void
+  startDownload: (ctx: ActionContext<IDownloadGameState, IRootState>) => void
   continueDownloadIfResumable: (
     ctx: ActionContext<IDownloadGameState, IRootState>
-  ) => Promise<void>
-  stopDownload: (
-    ctx: ActionContext<IDownloadGameState, IRootState>
-  ) => Promise<void>
+  ) => void
+  stopDownload: (ctx: ActionContext<IDownloadGameState, IRootState>) => void
 }
 
 const actions: IDownloadGameActions = {
-  async startDownload() {
+  subscribeToTorrentEvents({ commit }) {
+    eventService.on(
+      LauncherEvent.TORRENT_DOWNLOAD_STARTED,
+      new CallbackListener(() => {
+        commit('SET_STATUS', DownloadGameStatus)
+      })
+    )
+  },
+  startDownload() {
     eventService.emit(LauncherEvent.START_TORRENT, {
-      torrentId: '',
-      torrentUrl: '',
+      torrentId: TORRENT_KEY,
+      torrentUrl: TORRENT_URL,
     })
+  },
+  continueDownloadIfResumable() {
+    eventService.emit(LauncherEvent.START_TORRENT, {
+      torrentId: TORRENT_KEY,
+      torrentUrl: TORRENT_URL,
+    })
+  },
+  stopDownload() {
+    eventService.emit(LauncherEvent.STOP_TORRENT)
+  },
+}
 
-    console.log('startDownloadGame')
-  },
-  async continueDownloadIfResumable() {
-    console.log('continueDownloadGameIfResumable')
-  },
-  async stopDownload() {
-    console.log('stopDownloadGame')
+const mutations: MutationTree<IDownloadGameState> = {
+  SET_STATUS(state, status: DownloadGameStatus) {
+    state.status = status
   },
 }
 
@@ -58,4 +74,5 @@ export const downloadGameModule = modulesFactory<
 >({
   state,
   actions,
+  mutations,
 })

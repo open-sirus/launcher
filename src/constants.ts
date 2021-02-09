@@ -19,3 +19,7 @@ export const MENU_ORDER = [
   menuComponentTypes.SHOW_HIDE_APP,
   menuComponentTypes.CLOSE_APP,
 ]
+
+// torrent
+export const TORRENT_KEY = 'sirius-client'
+export const TORRENT_URL = 'https://api.sirus.su/sirus.torrent'
