@@ -22,6 +22,7 @@ export enum LauncherEvent {
   STOP_TORRENT = 'STOP_TORRENT', // stop torrent process and need to download from scratch
   TORRENT_DOWNLOAD_STARTED = 'TORRENT_DOWNLOAD_STARTED',
   TORRENT_SELECT_FOLDER_ERROR = 'TORRENT_SELECT_FOLDER_ERROR',
+  TORRENT_SELECT_FOLDER_SUCCESS = 'TORRENT_SELECT_FOLDER_SUCCESS',
   TORRENT_DOWNLOAD_DONE = 'TORRENT_DOWNLOAD_DONE',
   TORRENT_DOWNLOAD_PROGRESS = 'TORRENT_DOWNLOAD_PROGRESS',
   TORRENT_DOWNLOAD_ERROR = 'TORRENT_DOWNLOAD_ERROR',
@@ -66,7 +67,7 @@ export interface IFileManagerStatusChanged {
 
 export interface IFileListUpdated extends Array<IFile> {}
 
-export interface ITorrentSelectFolderErrorData {
+export interface ITorrentSelectFolderData {
   directory: string | null
 }
 export interface IStartTorrent {
@@ -99,7 +100,8 @@ export type EventData = {
   [LauncherEvent.PAUSE_TORRENT]: null
   [LauncherEvent.STOP_TORRENT]: null
   [LauncherEvent.TORRENT_DOWNLOAD_STARTED]: ITorrentData
-  [LauncherEvent.TORRENT_SELECT_FOLDER_ERROR]: ITorrentSelectFolderErrorData
+  [LauncherEvent.TORRENT_SELECT_FOLDER_ERROR]: ITorrentSelectFolderData
+  [LauncherEvent.TORRENT_SELECT_FOLDER_SUCCESS]: ITorrentSelectFolderData
   [LauncherEvent.TORRENT_DOWNLOAD_DONE]: null
   [LauncherEvent.TORRENT_DOWNLOAD_PROGRESS]: ITorrentData
   [LauncherEvent.TORRENT_DOWNLOAD_ERROR]: ITorrentDownloadError

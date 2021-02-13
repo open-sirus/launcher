@@ -20,7 +20,7 @@
       <v-row v-if="errors.clientDirectory">
         <v-col align-self="center">
           <v-alert border="top" color="red lighten-2" dark>
-            {{ errors.clientDirectory }}
+            {{ $t(errors.clientDirectory) }}
           </v-alert>
         </v-col>
       </v-row>
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api'
+import { defineComponent, computed, reactive } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
 import { eventService } from '@/services/EventService'
@@ -66,21 +66,16 @@ const { useActions: useWelcomeActions } = createNamespacedHelpers<
   IWelcomeActions
 >('welcome')
 
-export interface ISelectFolderState {
-  errors: {
-    clientDirectory: string | null
-  }
+export interface ISelectFolderError {
+  clientDirectory: string | null
 }
 
 export default defineComponent({
-  data(): ISelectFolderState {
-    return {
-      errors: {
-        clientDirectory: null,
-      },
-    }
-  },
   setup() {
+    const errors = reactive<ISelectFolderError>({
+      clientDirectory: null,
+    })
+
     const { startDownload } = useDownloadGameActions(['startDownload'])
     const { clientDirectory } = useSettingsGetters(['clientDirectory'])
     const { nextStep } = useWelcomeActions([
@@ -105,6 +100,20 @@ export default defineComponent({
       })
     )
 
+    eventService.on(
+      LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
+      new CallbackListener(() => {
+        errors.clientDirectory = 'settings.errors.wrong_client_directory'
+      }, true)
+    )
+
+    eventService.on(
+      LauncherEvent.TORRENT_SELECT_FOLDER_ERROR,
+      new CallbackListener(() => {
+        errors.clientDirectory = 'settings.errors.wrong_client_directory'
+      }, true)
+    )
+
     const isButtonsDisabled = computed(() => Boolean(clientDirectory.value))
 
     return {
@@ -114,17 +123,7 @@ export default defineComponent({
   },
   methods: {
     selectFolder() {
-      this.errors.clientDirectory = null
-
       eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG)
-      eventService.on(
-        LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
-        new CallbackListener(() => {
-          this.errors.clientDirectory = this.$tn(
-            'settings.errors.wrong_client_directory'
-          )
-        }, true)
-      )
     },
     downloadGame() {
       this.startDownload()

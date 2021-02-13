@@ -148,14 +148,14 @@ export class TorrentClient {
       properties: ['openDirectory'],
     })
 
+    const directory = selection.filePaths[0]
+
     if (!selection || selection.canceled || !selection.filePaths[0]) {
       this.eventBus.emit(LauncherEvent.TORRENT_SELECT_FOLDER_ERROR, {
-        directory: selection.filePaths[0],
+        directory,
       })
       return
     }
-
-    const directionPath = selection.filePaths[0]
 
     if (this.status === TorrentClientStatus.IN_PROGRESS) {
       console.warn('Torrent already in progress')
@@ -164,14 +164,19 @@ export class TorrentClient {
           this.downloadProcess.kill()
         } catch (e) {
           console.error('Couldn`t kill process', e)
+          // Should we continue?
         }
       }
     }
 
+    this.eventBus.emit(LauncherEvent.TORRENT_SELECT_FOLDER_SUCCESS, {
+      directory,
+    })
+
     this.downloadProcess = spawnChildProcess(this.torrentDownloaderPath, [
       'torrent',
       torrentUrl,
-      directionPath,
+      directory,
     ])
 
     this.downloadProcess.on('error', (e) => {
@@ -202,7 +207,7 @@ export class TorrentClient {
 
     this.subscribeToStdoutData()
 
-    console.log(torrentId, torrentUrl, directionPath)
+    console.log(torrentId, torrentUrl, directory)
   }
 
   private stopTorrenting() {

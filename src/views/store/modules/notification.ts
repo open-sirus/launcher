@@ -3,7 +3,7 @@ import type { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import { PROJECT_TITLE, REMOVE_NOTIFICATION_TIMEOUT } from '@/constants'
 import { modulesFactory } from '@/utils/modulesFactory'
-import { i18n as i18nModule } from '@/views/modules/i18n'
+import { $i18n } from '@/views/modules/i18n'
 import type { INotification } from '@/types/notification'
 
 import type { IRootState } from '../types'
@@ -49,7 +49,7 @@ const actions: INotificationActions = {
     { type, text, withSystemNotification, payload, i18n }
   ) {
     // @ts-ignore
-    text = i18n ? i18nModule.t(`notification.${i18n}`) : text
+    text = i18n ? $i18n(`notification.${i18n}`) : text
 
     const newNotification = {
       id: nanoid(),

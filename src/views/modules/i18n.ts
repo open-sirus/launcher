@@ -46,7 +46,7 @@ export const i18n = new VueI18n({
 
 type InfPath<P> = P extends Path<Locales> ? I18nValue<Locales, P> : string
 
-function $i18n<P extends string>(
+export function $i18n<P extends string>(
   path: P extends Path<Locales> ? P : string,
   values?: VueI18n.Values
 ): InfPath<P> {
