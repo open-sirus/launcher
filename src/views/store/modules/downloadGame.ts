@@ -14,14 +14,24 @@ enum DownloadGameStatus {
   ERRORED = 'ERRORED',
 }
 
+export interface IDownloadGameProgress {
+  downloaded: number
+  progress: number
+  speed: number
+}
+
 export interface IDownloadGameState {
   status: DownloadGameStatus
-  progress: number
+  progress: IDownloadGameProgress
 }
 
 const state: IDownloadGameState = {
   status: DownloadGameStatus.IDLE,
-  progress: 0,
+  progress: {
+    downloaded: 0,
+    progress: 0,
+    speed: 0,
+  },
 }
 
 export interface IDownloadGameActions
@@ -41,7 +51,19 @@ const actions: IDownloadGameActions = {
     eventService.on(
       LauncherEvent.TORRENT_DOWNLOAD_STARTED,
       new CallbackListener(() => {
-        commit('SET_STATUS', DownloadGameStatus)
+        commit('SET_STATUS', DownloadGameStatus.STARTED)
+      })
+    )
+    eventService.on(
+      LauncherEvent.TORRENT_DOWNLOAD_PROGRESS,
+      new CallbackListener((progress) => {
+        commit('SET_PROGRESS', progress)
+      })
+    )
+    eventService.on(
+      LauncherEvent.TORRENT_DOWNLOAD_ERROR,
+      new CallbackListener(() => {
+        commit('SET_STATUS', DownloadGameStatus.ERRORED)
       })
     )
   },
@@ -65,6 +87,9 @@ const actions: IDownloadGameActions = {
 const mutations: MutationTree<IDownloadGameState> = {
   SET_STATUS(state, status: DownloadGameStatus) {
     state.status = status
+  },
+  SET_PROGRESS(state, progress: IDownloadGameProgress) {
+    state.progress = progress
   },
 }
 

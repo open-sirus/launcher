@@ -79,6 +79,15 @@ export interface ITorrentData {
   message: string
 }
 
+export interface ITorrentProgressData {
+  message: {
+    progress: number
+    // eslint-disable-next-line camelcase
+    bytes_done: number
+    speed: number
+  }
+}
+
 export interface ITorrentDownloadError extends ITorrentData {
   isDisabled?: boolean
   message: string
@@ -103,7 +112,7 @@ export type EventData = {
   [LauncherEvent.TORRENT_SELECT_FOLDER_ERROR]: ITorrentSelectFolderData
   [LauncherEvent.TORRENT_SELECT_FOLDER_SUCCESS]: ITorrentSelectFolderData
   [LauncherEvent.TORRENT_DOWNLOAD_DONE]: null
-  [LauncherEvent.TORRENT_DOWNLOAD_PROGRESS]: ITorrentData
+  [LauncherEvent.TORRENT_DOWNLOAD_PROGRESS]: ITorrentProgressData
   [LauncherEvent.TORRENT_DOWNLOAD_ERROR]: ITorrentDownloadError
   [LauncherEvent.TORRENT_DOWNLOAD_SETUP]: ITorrentData
   [LauncherEvent.TORRENT_GET_ERROR]: ITorrentData
