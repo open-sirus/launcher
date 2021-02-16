@@ -43,9 +43,9 @@ import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { computed, defineComponent } from '@vue/composition-api'
 
 import { NotificationTypes } from '@/types/notification'
-import { ISettingsGetters } from '@/views/store/modules/settings'
-import { INotificationActions } from '@/views/store/modules/notification'
-import { IAppActions, IAppGetters } from '@/views/store/modules/app'
+import type { ISettingsGetters } from '@/views/store/modules/settings'
+import type { INotificationActions } from '@/views/store/modules/notification'
+import type { IAppActions, IAppGetters } from '@/views/store/modules/app'
 import { FileManageStatus } from '@/services/FileManageService'
 const {
   useGetters: useSettingsGetters,

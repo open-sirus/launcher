@@ -1,4 +1,5 @@
-import { BrowserWindow, DownloadItem, session } from 'electron'
+import type { BrowserWindow, DownloadItem } from 'electron'
+import { session } from 'electron'
 
 export enum DownloadRequestStatus {
   DONE = 'DONE',

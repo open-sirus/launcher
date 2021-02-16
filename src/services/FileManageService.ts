@@ -7,10 +7,8 @@ import { FileStatus } from '@/entities/LauncherFile'
 import { eventService } from '@/background/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { getFileHash, getFilesWithPrefix, isCorrectFile } from '@/utils/files'
-import {
-  getDownloadManager,
-  IDownloadRequest,
-} from '@/services/DownloadManager'
+import type { IDownloadRequest } from '@/services/DownloadManager'
+import { getDownloadManager } from '@/services/DownloadManager'
 
 export class FileValidationProgress {
   get filesCount(): number {
