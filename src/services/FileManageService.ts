@@ -189,8 +189,8 @@ export class FileManageService {
     if (!existsSync(tempDownloadDir)) {
       await fs.mkdir(tempDownloadDir)
     }
-    const fileName = file.filename + '_' + file.hash + '.part'
-    const filePath = path.resolve(tempDownloadDir, fileName)
+    const fileName = file.filename + '_' + file.hash
+    const filePath = path.resolve(tempDownloadDir, fileName + '.part')
 
     const request = new DownloadRequest(
       filePath,
@@ -204,21 +204,20 @@ export class FileManageService {
     if (parts.length) {
       const stats = await Promise.all(
         parts.map(
-          async (filename) =>
-            await fs.stat(path.resolve(tempDownloadDir, filename))
+          async (name) => await fs.stat(path.resolve(tempDownloadDir, name))
         )
       )
-      const size: number = stats.reduce((size, stat) => {
+      const allPartsSize: number = stats.reduce((size, stat) => {
         return size + stat.size
       }, 0)
 
       // Size of previous parts is more than expected file size, so we will start from scratch
-      if (size > file.size) {
+      if (allPartsSize > file.size) {
         for (const filePart of parts) {
           await fs.unlink(path.resolve(tempDownloadDir, filePart))
         }
       } else {
-        request.range = `${size}-`
+        request.range = `${allPartsSize}-`
       }
     }
 

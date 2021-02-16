@@ -149,7 +149,7 @@ export class DownloadManager {
     const progress = new DownloadRequestProgress(
       item.getTotalBytes(),
       item.getReceivedBytes(),
-      DownloadRequestStatus.DONE
+      status
     )
     console.debug(progress)
 
