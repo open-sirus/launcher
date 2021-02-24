@@ -35,7 +35,6 @@ export default defineComponent<IProgressBarProps>({
 
 <style scoped>
 .progress-bar {
-  -webkit-app-region: drag;
   -webkit-user-select: none;
 }
 </style>
