@@ -4,6 +4,7 @@ import { EventBus } from '@/services/EventBus'
 import { RenderedIpc } from '@/events/ipcs/RenderedIpc'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { DirectorySelected } from '@/events/ClientActions'
+import { getStore } from '@/views/store'
 
 jest.mock('@/events/ipcs/RenderedIpc')
 jest.mock('@/events/ClientActions')
@@ -21,7 +22,8 @@ describe('Event Bus', () => {
   it('event registration and emit', () => {
     const ipc = new RenderedIpc()
     const bus = new EventBus(ipc)
-    const listener = new DirectorySelected()
+    const store = getStore()
+    const listener = new DirectorySelected(store)
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
     bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
     expect(listener.handle).toBeCalled()
@@ -30,8 +32,8 @@ describe('Event Bus', () => {
   it('multiple events called', () => {
     const ipc = new RenderedIpc()
     const bus = new EventBus(ipc)
-    const listener = new DirectorySelected()
-    const listener2 = new DirectorySelected()
+    const listener = new DirectorySelected(getStore())
+    const listener2 = new DirectorySelected(getStore())
 
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener2)
@@ -45,8 +47,8 @@ describe('Event Bus', () => {
   it('correct listener used', () => {
     const ipc = new RenderedIpc()
     const bus = new EventBus(ipc)
-    const listener = new DirectorySelected()
-    const listener2 = new DirectorySelected()
+    const listener = new DirectorySelected(getStore())
+    const listener2 = new DirectorySelected(getStore())
 
     bus.on(LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED, listener)
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener2)
@@ -60,7 +62,7 @@ describe('Event Bus', () => {
   it('data passed correctly', () => {
     const ipc = new RenderedIpc()
     const bus = new EventBus(ipc)
-    const listener = new DirectorySelected()
+    const listener = new DirectorySelected(getStore())
 
     const data = { directory: 'bar' }
 
@@ -77,7 +79,7 @@ describe('Event Bus', () => {
   it('once listener called once', () => {
     const ipc = new RenderedIpc()
     const bus = new EventBus(ipc)
-    const listener = new DirectorySelected()
+    const listener = new DirectorySelected(getStore())
     listener.once = true
 
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
@@ -91,7 +93,7 @@ describe('Event Bus', () => {
   it('correctly called more then one time', () => {
     const ipc = new RenderedIpc()
     const bus = new EventBus(ipc)
-    const listener = new DirectorySelected()
+    const listener = new DirectorySelected(getStore())
 
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
 

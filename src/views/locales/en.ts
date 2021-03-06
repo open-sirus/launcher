@@ -9,6 +9,10 @@ export const en = {
     choose_client_directory: 'Select game client directory',
     start_on_system_startup: 'Start app on system startup',
     start_in_minimized_mode: 'Start in minimized mode',
+    folder: {
+      existed: 'Select existed',
+      new: 'Download new',
+    },
     errors: {
       wrong_client_directory: 'Please, select correct directory',
     },

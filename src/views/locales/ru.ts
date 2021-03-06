@@ -9,6 +9,10 @@ export const ru = {
     choose_client_directory: 'Выберите папку с игрой',
     start_on_system_startup: 'Запускать вместе с операционной системой',
     start_in_minimized_mode: 'Запускать в свернутом виде',
+    folder: {
+      existed: 'Выбрать клиент',
+      new: 'Загрузить клиент',
+    },
     errors: {
       wrong_client_directory: 'Пожалуйста, выберите папку с клиентом',
     },

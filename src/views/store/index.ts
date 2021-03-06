@@ -7,8 +7,11 @@ import type { IRootState } from './types'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store<IRootState>({
-  modules,
-  strict: true,
-  plugins: [vuexPersist.plugin],
-})
+export const getStore = () =>
+  new Vuex.Store<IRootState>({
+    modules,
+    strict: true,
+    plugins: [vuexPersist.plugin],
+  })
+
+export type Store = ReturnType<typeof getStore>

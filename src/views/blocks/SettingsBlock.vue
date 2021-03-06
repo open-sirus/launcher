@@ -14,16 +14,36 @@
         outlined
       ></v-select>
       <v-text-field
-        @click.native.prevent="choose"
-        :value="clientDirectory"
-        :label="$t('settings.choose_client_directory')"
         outlined
         readonly
-        append-outer-icon="mdi-folder"
-        @click:append-outer="choose"
+        disabled
+        :value="clientDirectory"
+        :label="$t('settings.choose_client_directory')"
         :error="!!errors.clientDirectory"
         :error-messages="errors.clientDirectory"
       >
+        <template #append-outer>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn @click="chooseFolder" icon v-bind="attrs" v-on="on">
+                <v-icon color="white" class="mr-0" size="22">
+                  {{ mdiFolder }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span> {{ $t('settings.folder.existed') }}</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn @click="downloadNewGame" icon v-bind="attrs" v-on="on">
+                <v-icon color="white" class="mr-0" size="22">
+                  {{ mdiDownload }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span> {{ $t('settings.folder.new') }}</span>
+          </v-tooltip>
+        </template>
       </v-text-field>
       <v-checkbox v-model="hasStartOnSystemStartup" dense class="mt-0">
         <template #label>
@@ -45,6 +65,7 @@
 </template>
 
 <script lang="ts">
+import { mdiFolder, mdiDownload } from '@mdi/js'
 import { defineComponent } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
@@ -57,6 +78,10 @@ import type {
   ISettingsGetters,
   ISettingsState,
 } from '@/views/store/modules/settings'
+import type {
+  IDownloadGameActions,
+  IDownloadGameState,
+} from '@/views/store/modules/downloadGame'
 import type { Langs } from '@/types/lang'
 
 const { useGetters: useAppGetters } = createNamespacedHelpers<
@@ -70,6 +95,12 @@ const {
 } = createNamespacedHelpers<ISettingsState, ISettingsGetters, ISettingsActions>(
   'settings'
 )
+
+const { useActions: useDownloadGameActions } = createNamespacedHelpers<
+  IDownloadGameState,
+  Record<string, unknown>,
+  IDownloadGameActions
+>('downloadGame')
 
 export interface ISettingsBlockState {
   errors: {
@@ -108,6 +139,7 @@ export default defineComponent({
       'setStartOnSystemStartup',
       'setStartInMinimizedMode',
     ])
+    const { startDownload } = useDownloadGameActions(['startDownload'])
 
     return {
       setStartInMinimizedMode,
@@ -118,6 +150,9 @@ export default defineComponent({
       clientDirectory,
       locale,
       setLocale,
+      mdiFolder,
+      mdiDownload,
+      startDownload,
     }
   },
   computed: {
@@ -143,7 +178,7 @@ export default defineComponent({
     handleChangeLocale(locale: Langs) {
       this.setLocale(locale)
     },
-    choose() {
+    chooseFolder() {
       this.errors.clientDirectory = null
 
       eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG)
@@ -158,6 +193,9 @@ export default defineComponent({
           true
         )
       )
+    },
+    downloadNewGame() {
+      this.startDownload()
     },
   },
 })

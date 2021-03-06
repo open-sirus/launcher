@@ -25,10 +25,9 @@ const routes = [
   },
 ]
 
-const router = new VueRouter({
-  mode: process.env.IS_ELECTRON ? 'hash' : 'history',
-  base: process.env.BASE_URL,
-  routes,
-})
-
-export default router
+export const getRouter = () =>
+  new VueRouter({
+    mode: process.env.IS_ELECTRON ? 'hash' : 'history',
+    base: process.env.BASE_URL,
+    routes,
+  })

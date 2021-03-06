@@ -2,20 +2,28 @@ import { eventService } from '@/services/EventService'
 import type { ISelectGameDirectoryData } from '@/events/LauncherEvent'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { LauncherListener } from '@/events/LauncherListener'
-import store from '@/views/store'
+import type { Store } from '@/views/store'
 
+// TODO: try to move it to client (view) folder
 export class DirectorySelected extends LauncherListener {
-  // TODO: try to move it to client (view) folder
+  store: Store
+
+  constructor(store: Store) {
+    super()
+
+    this.store = store
+  }
+
   async handle(event: LauncherEvent, { directory }: ISelectGameDirectoryData) {
     if (!directory) {
       return
     }
 
-    await store.dispatch('settings/setClientDirectory', directory, {
+    await this.store.dispatch('settings/setClientDirectory', directory, {
       root: true,
     })
 
-    const clientDirectory = store.getters['settings/clientDirectory']
+    const clientDirectory = this.store.getters['settings/clientDirectory']
 
     if (!clientDirectory) {
       eventService.emit(LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED, {
@@ -32,6 +40,9 @@ export class DirectorySelected extends LauncherListener {
   }
 }
 
-export function init() {
-  eventService.on(LauncherEvent.SELECT_GAME_DIRECTORY, new DirectorySelected())
+export function init(store: Store) {
+  eventService.on(
+    LauncherEvent.SELECT_GAME_DIRECTORY,
+    new DirectorySelected(store)
+  )
 }

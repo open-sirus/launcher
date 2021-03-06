@@ -4,6 +4,7 @@ import { EventBus } from '@/services/EventBus'
 import { RenderedIpc } from '@/events/ipcs/RenderedIpc'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { DirectorySelected } from '@/events/ClientActions'
+import { getStore } from '@/views/store'
 
 jest.mock('@/events/ipcs/RenderedIpc')
 jest.mock('@/events/ClientActions')
@@ -29,7 +30,7 @@ describe('event service', () => {
   it('ipc send on even emit', () => {
     const ipc = new RenderedIpc()
     const bus = new EventBus(ipc)
-    const listener = new DirectorySelected()
+    const listener = new DirectorySelected(getStore())
     bus.on(LauncherEvent.SELECT_GAME_DIRECTORY, listener)
     bus.emit(LauncherEvent.SELECT_GAME_DIRECTORY, { directory: null })
     expect(ipc.send).toBeCalled()
