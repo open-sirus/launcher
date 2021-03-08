@@ -48,6 +48,9 @@ export interface IDownloadGameActions
     ctx: ActionContext<IDownloadGameState, IRootState>
   ) => void
   stopDownload: (ctx: ActionContext<IDownloadGameState, IRootState>) => void
+  startDownloadOnStartUp: (
+    ctx: ActionContext<IDownloadGameState, IRootState>
+  ) => void
 }
 
 const actions: IDownloadGameActions = {
@@ -140,6 +143,21 @@ const actions: IDownloadGameActions = {
   },
   stopDownload() {
     eventService.emit(LauncherEvent.STOP_TORRENT)
+  },
+  startDownloadOnStartUp({ state, rootGetters }) {
+    if (
+      ![DownloadGameStatus.CHECKING, DownloadGameStatus.IN_PROGRESS].includes(
+        state.status
+      )
+    ) {
+      return
+    }
+
+    eventService.emit(LauncherEvent.START_TORRENT, {
+      torrentId: TORRENT_KEY,
+      torrentUrl: TORRENT_URL,
+      directory: rootGetters['settings/clientDirectory'],
+    })
   },
 }
 

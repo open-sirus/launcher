@@ -75,6 +75,7 @@ export interface ITorrentSelectFolderData {
 export interface IStartTorrent {
   torrentId: string
   torrentUrl: string
+  directory?: string
 }
 
 export interface ITorrentData {

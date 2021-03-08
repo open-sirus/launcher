@@ -72,8 +72,12 @@ export default defineComponent({
     const { isCompleted: isWelcomeScreenCompleted } = useWelcomeGetters([
       'isCompleted',
     ])
-    const { subscribeToTorrentEvents } = useDownloadGameActions([
+    const {
+      subscribeToTorrentEvents,
+      startDownloadOnStartUp,
+    } = useDownloadGameActions([
       'subscribeToTorrentEvents',
+      'startDownloadOnStartUp',
     ])
 
     const { validateAccounts } = useAccountsActions(['validateAccounts'])
@@ -83,6 +87,7 @@ export default defineComponent({
     validateAccounts()
     setIsFirstStart()
     subscribeToTorrentEvents()
+    startDownloadOnStartUp()
 
     return {
       isWelcomeScreenCompleted,

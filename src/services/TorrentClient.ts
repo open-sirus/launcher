@@ -65,8 +65,8 @@ export class TorrentClient {
     this.eventBus.on(
       LauncherEvent.START_TORRENT,
       new CallbackListener<LauncherEvent.START_TORRENT>((_, data) => {
-        const { torrentId, torrentUrl } = data
-        this.startTorrenting(torrentId, torrentUrl)
+        const { torrentId, torrentUrl, directory } = data
+        this.startTorrenting(torrentId, torrentUrl, directory)
       })
     )
 
@@ -149,23 +149,37 @@ export class TorrentClient {
     })
   }
 
-  private async startTorrenting(torrentId: string, torrentUrl: string) {
+  private async startTorrenting(
+    torrentId: string,
+    torrentUrl: string,
+    folderPath?: string
+  ) {
     if (process.platform === 'darwin') {
       this.eventBus.emit(LauncherEvent.SYSTEM_NOT_SUPPORTED_ERROR)
       return
     }
 
-    const selection = await dialog.showOpenDialog({
-      properties: ['openDirectory'],
-    })
+    // Get path without client folder
+    let directory = resolvePath(folderPath || '', '..')
 
-    const directory = selection.filePaths[0]
-
-    if (!selection || selection.canceled || !selection.filePaths[0]) {
-      this.eventBus.emit(LauncherEvent.TORRENT_SELECT_FOLDER_ERROR, {
-        directory,
+    if (!directory) {
+      const selection = await dialog.showOpenDialog({
+        properties: ['openDirectory'],
       })
-      return
+
+      directory = selection.filePaths[0]
+
+      if (!selection || selection.canceled || !selection.filePaths[0]) {
+        this.eventBus.emit(LauncherEvent.TORRENT_SELECT_FOLDER_ERROR, {
+          directory,
+        })
+        return
+      }
+
+      const CLIENT_FOLDER_NAME = 'World of Warcraft Sirus' // TODO: get from torrent event
+      this.eventBus.emit(LauncherEvent.TORRENT_SELECT_FOLDER_SUCCESS, {
+        directory: resolvePath(directory, CLIENT_FOLDER_NAME),
+      })
     }
 
     if (this.status === TorrentClientStatus.IN_PROGRESS) {
@@ -179,11 +193,6 @@ export class TorrentClient {
         }
       }
     }
-
-    const CLIENT_FOLDER_NAME = 'World of Warcraft Sirus' // TODO: get from torrent event
-    this.eventBus.emit(LauncherEvent.TORRENT_SELECT_FOLDER_SUCCESS, {
-      directory: resolvePath(directory, CLIENT_FOLDER_NAME),
-    })
 
     const torrentFilePath = resolvePath(
       app.getPath('userData'),
