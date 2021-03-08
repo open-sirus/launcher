@@ -54,7 +54,7 @@ export interface IDownloadGameActions
 }
 
 const actions: IDownloadGameActions = {
-  subscribeToTorrentEvents({ commit, dispatch, rootGetters }) {
+  subscribeToTorrentEvents({ commit, dispatch }) {
     eventService.on(
       LauncherEvent.TORRENT_SELECT_FOLDER_SUCCESS,
       new CallbackListener<LauncherEvent.TORRENT_SELECT_FOLDER_SUCCESS>(

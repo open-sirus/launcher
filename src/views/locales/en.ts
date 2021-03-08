@@ -82,5 +82,7 @@ export const en = {
       checking: 'File checking',
       in_progress: 'Downloading',
     },
+    checked_count: 'Checked {count} Mb',
+    downloaded_count: 'Downloaded {count} Mb {speed} Mb/s',
   },
 } as const

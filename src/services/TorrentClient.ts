@@ -12,19 +12,9 @@ import { downloadFile } from '@/utils/downloadFile'
 
 import type { EventBus } from './EventBus'
 
-const enum TorrentClientStatus {
-  IDLE = 'IDLE',
-  IN_PROGRESS = 'IN_PROGRESS',
-  PAUSED = 'PAUSED',
-  CANCELLED = 'CANCELLED',
-  DONE = 'DONE',
-  ERROR = 'ERROR',
-}
-
 const torrentDownloaderPath: string = TorrentDownloader.path
 
 export class TorrentClient {
-  private status = TorrentClientStatus.IDLE
   private downloadProcess: ChildProcessWithoutNullStreams | null = null
   private torrentDownloaderPath = ''
   private eventBus: EventBus
@@ -182,15 +172,13 @@ export class TorrentClient {
       })
     }
 
-    if (this.status === TorrentClientStatus.IN_PROGRESS) {
-      console.warn('Torrent already in progress')
-      if (this.downloadProcess) {
-        try {
-          this.downloadProcess.kill()
-        } catch (e) {
-          console.error('Couldn`t kill process', e)
-          // Should we continue?
-        }
+    // Relaunch torrent
+    if (this.downloadProcess) {
+      try {
+        this.downloadProcess.kill()
+      } catch (e) {
+        console.error('Couldn`t kill process', e)
+        // Should we continue?
       }
     }
 
@@ -207,32 +195,21 @@ export class TorrentClient {
     ])
 
     this.downloadProcess.on('error', (e) => {
-      this.status = TorrentClientStatus.ERROR
       console.error(e)
       // Send error event with possible retry
     })
 
     this.downloadProcess.stderr.on('data', (e) => {
-      this.status = TorrentClientStatus.ERROR
       console.error(e.toString())
     })
 
     this.downloadProcess.on('exit', (code, signal) => {
-      if (this.status === TorrentClientStatus.CANCELLED) {
-        return
-      }
-
-      this.status = TorrentClientStatus.IDLE
       if (code === 0) {
-        // Send done event
-        this.status = TorrentClientStatus.DONE
+        this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_DONE)
       } else {
         console.warn(`Process exit with ${code} ${signal}`)
-        // Send error event
       }
     })
-
-    this.status = TorrentClientStatus.IN_PROGRESS
 
     this.subscribeToStdoutData()
 
@@ -240,8 +217,6 @@ export class TorrentClient {
   }
 
   private stopTorrenting() {
-    this.status = TorrentClientStatus.CANCELLED
-
     if (!this.downloadProcess) {
       return
     }
