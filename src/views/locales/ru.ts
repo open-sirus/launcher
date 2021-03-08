@@ -55,6 +55,8 @@ export const ru = {
     token_has_expired:
       'Пароль был сменен или токен устарел, авторизуйтесь повторно',
     account_duplicate: 'Аккаунт уже внесен в список',
+    system_not_supported:
+      'Загрузка игры поддерживатеся только для Windows и Linux',
   },
   steps: {
     select_folder: {

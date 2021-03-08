@@ -104,14 +104,14 @@ export default defineComponent({
       LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
       new CallbackListener(() => {
         errors.clientDirectory = 'settings.errors.wrong_client_directory'
-      }, true)
+      })
     )
 
     eventService.on(
       LauncherEvent.TORRENT_SELECT_FOLDER_ERROR,
       new CallbackListener(() => {
         errors.clientDirectory = 'settings.errors.wrong_client_directory'
-      }, true)
+      })
     )
 
     const isButtonsDisabled = computed(() => Boolean(clientDirectory.value))
@@ -119,6 +119,7 @@ export default defineComponent({
     return {
       startDownload,
       isButtonsDisabled,
+      errors,
     }
   },
   methods: {

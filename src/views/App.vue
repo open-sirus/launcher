@@ -30,6 +30,10 @@ import type {
   ISettingsActions,
   ISettingsState,
 } from '@/views/store/modules/settings'
+import type {
+  IDownloadGameActions,
+  IDownloadGameState,
+} from '@/views/store/modules/downloadGame'
 
 import Navigation from './components/common/Navigation.vue'
 import StatusBarBlock from './blocks/StatusBarBlock.vue'
@@ -51,6 +55,12 @@ const { useActions: useSettingsActions } = createNamespacedHelpers<
   ISettingsActions
 >('settings')
 
+const { useActions: useDownloadGameActions } = createNamespacedHelpers<
+  IDownloadGameState,
+  Record<string, unknown>,
+  IDownloadGameActions
+>('downloadGame')
+
 export default defineComponent({
   components: {
     Notifications,
@@ -62,6 +72,9 @@ export default defineComponent({
     const { isCompleted: isWelcomeScreenCompleted } = useWelcomeGetters([
       'isCompleted',
     ])
+    const { subscribeToTorrentEvents } = useDownloadGameActions([
+      'subscribeToTorrentEvents',
+    ])
 
     const { validateAccounts } = useAccountsActions(['validateAccounts'])
 
@@ -69,6 +82,7 @@ export default defineComponent({
 
     validateAccounts()
     setIsFirstStart()
+    subscribeToTorrentEvents()
 
     return {
       isWelcomeScreenCompleted,

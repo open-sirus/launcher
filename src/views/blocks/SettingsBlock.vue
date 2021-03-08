@@ -16,11 +16,11 @@
       <v-text-field
         outlined
         readonly
-        disabled
+        @click.native.prevent="chooseFolder"
         :value="clientDirectory"
         :label="$t('settings.choose_client_directory')"
         :error="!!errors.clientDirectory"
-        :error-messages="errors.clientDirectory"
+        :error-messages="$t(errors.clientDirectory)"
       >
         <template #append-outer>
           <v-tooltip bottom>
@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import { mdiFolder, mdiDownload } from '@mdi/js'
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, reactive } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
 import { eventService } from '@/services/EventService'
@@ -102,21 +102,16 @@ const { useActions: useDownloadGameActions } = createNamespacedHelpers<
   IDownloadGameActions
 >('downloadGame')
 
-export interface ISettingsBlockState {
-  errors: {
-    clientDirectory: string | null
-  }
+export interface ISettingsBlockErrors {
+  clientDirectory: string | null
 }
 
 export default defineComponent({
-  data(): ISettingsBlockState {
-    return {
-      errors: {
-        clientDirectory: null,
-      },
-    }
-  },
   setup() {
+    const errors = reactive<ISettingsBlockErrors>({
+      clientDirectory: null,
+    })
+
     const { availableLocales } = useAppGetters(['availableLocales'])
 
     const {
@@ -141,6 +136,19 @@ export default defineComponent({
     ])
     const { startDownload } = useDownloadGameActions(['startDownload'])
 
+    eventService.on(
+      LauncherEvent.TORRENT_SELECT_FOLDER_ERROR,
+      new CallbackListener(() => {
+        errors.clientDirectory = 'settings.errors.wrong_client_directory'
+      })
+    )
+    eventService.on(
+      LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
+      new CallbackListener(() => {
+        errors.clientDirectory = 'settings.errors.wrong_client_directory'
+      })
+    )
+
     return {
       setStartInMinimizedMode,
       startInMinimizedMode,
@@ -153,6 +161,7 @@ export default defineComponent({
       mdiFolder,
       mdiDownload,
       startDownload,
+      errors,
     }
   },
   computed: {
@@ -182,19 +191,10 @@ export default defineComponent({
       this.errors.clientDirectory = null
 
       eventService.emit(LauncherEvent.OPEN_SELECT_GAME_DIRECTORY_DIALOG)
-      eventService.on(
-        LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED,
-        new CallbackListener<LauncherEvent.WRONG_GAME_DIRECTORY_SELECTED>(
-          () => {
-            this.errors.clientDirectory = this.$tn(
-              'settings.errors.wrong_client_directory'
-            ) as string
-          },
-          true
-        )
-      )
     },
     downloadNewGame() {
+      this.errors.clientDirectory = null
+
       this.startDownload()
     },
   },

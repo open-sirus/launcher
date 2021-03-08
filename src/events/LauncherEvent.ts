@@ -17,6 +17,7 @@ export enum LauncherEvent {
   LAUNCH_GAME = 'LAUNCH_GAME',
   SET_START_ON_SYSTEM_STARTUP = 'SET_START_ON_SYSTEM_STARTUP',
   SET_START_IN_MINIMIZED_MODE = 'SET_START_IN_MINIMIZED_MODE',
+  SYSTEM_NOT_SUPPORTED_ERROR = 'SYSTEM_NOT_SUPPORTED_ERROR',
   START_TORRENT = 'START_TORRENT',
   PAUSE_TORRENT = 'PAUSE_TORRENT',
   STOP_TORRENT = 'STOP_TORRENT', // stop torrent process and need to download from scratch
@@ -116,4 +117,5 @@ export type EventData = {
   [LauncherEvent.TORRENT_DOWNLOAD_ERROR]: ITorrentDownloadError
   [LauncherEvent.TORRENT_DOWNLOAD_SETUP]: ITorrentData
   [LauncherEvent.TORRENT_GET_ERROR]: ITorrentData
+  [LauncherEvent.SYSTEM_NOT_SUPPORTED_ERROR]: null
 }

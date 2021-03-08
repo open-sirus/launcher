@@ -55,6 +55,7 @@ export const en = {
     token_has_expired:
       'Account password has been changed or auth token has expired, re-login please',
     account_duplicate: 'Account already exist in account list',
+    system_not_supported: 'Your system is not supported for download game',
   },
   steps: {
     select_folder: {

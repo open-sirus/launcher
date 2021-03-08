@@ -4,12 +4,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 
 module.exports = {
   lintOnSave: isDevelopment,
-  devServer: {
-    overlay: {
-      warnings: true,
-      errors: true,
-    },
-  },
   pluginOptions: {
     electronBuilder: {
       nodeIntegration: true,

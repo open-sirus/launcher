@@ -5,13 +5,14 @@ import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
 import { TORRENT_KEY, TORRENT_URL } from '@/constants'
+import { NotificationTypes } from '@/types/notification'
 
 import type { IRootState } from '../types'
 
 enum DownloadGameStatus {
   IDLE = 'IDlE',
-  STARTED = 'STARTED',
-  ERRORED = 'ERRORED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  FAILED = 'FAILED',
 }
 
 export interface IDownloadGameProgress {
@@ -47,11 +48,11 @@ export interface IDownloadGameActions
 }
 
 const actions: IDownloadGameActions = {
-  subscribeToTorrentEvents({ commit }) {
+  subscribeToTorrentEvents({ commit, dispatch }) {
     eventService.on(
       LauncherEvent.TORRENT_DOWNLOAD_STARTED,
       new CallbackListener(() => {
-        commit('SET_STATUS', DownloadGameStatus.STARTED)
+        commit('SET_STATUS', DownloadGameStatus.IN_PROGRESS)
       })
     )
     eventService.on(
@@ -63,7 +64,20 @@ const actions: IDownloadGameActions = {
     eventService.on(
       LauncherEvent.TORRENT_DOWNLOAD_ERROR,
       new CallbackListener(() => {
-        commit('SET_STATUS', DownloadGameStatus.ERRORED)
+        commit('SET_STATUS', DownloadGameStatus.IN_PROGRESS)
+      })
+    )
+    eventService.on(
+      LauncherEvent.SYSTEM_NOT_SUPPORTED_ERROR,
+      new CallbackListener(() => {
+        dispatch(
+          'notification/addNotification',
+          {
+            type: NotificationTypes.ERROR,
+            i18n: 'system_not_supported',
+          },
+          { root: true }
+        )
       })
     )
   },

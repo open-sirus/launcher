@@ -4,6 +4,7 @@ import { resolve as resolvePath } from 'path'
 // @ts-ignore
 import TorrentDownloader from '@sirussu/torrent-downloader'
 import { dialog } from 'electron'
+import { is } from 'electron-util'
 
 import { replaceLast } from '@/utils/replaceLast'
 import { LauncherEvent } from '@/events/LauncherEvent'
@@ -17,6 +18,7 @@ const enum TorrentClientStatus {
   PAUSED = 'PAUSED',
   CANCELLED = 'CANCELLED',
   DONE = 'DONE',
+  ERROR = 'ERROR',
 }
 
 const torrentDownloaderPath: string = TorrentDownloader.path
@@ -65,7 +67,7 @@ export class TorrentClient {
       new CallbackListener<LauncherEvent.START_TORRENT>((_, data) => {
         const { torrentId, torrentUrl } = data
         this.startTorrenting(torrentId, torrentUrl)
-      }, true)
+      })
     )
 
     this.eventBus.on(
@@ -144,6 +146,11 @@ export class TorrentClient {
   }
 
   private async startTorrenting(torrentId: string, torrentUrl: string) {
+    if (is.macos) {
+      this.eventBus.emit(LauncherEvent.SYSTEM_NOT_SUPPORTED_ERROR)
+      return
+    }
+
     const selection = await dialog.showOpenDialog({
       properties: ['openDirectory'],
     })
@@ -180,11 +187,13 @@ export class TorrentClient {
     ])
 
     this.downloadProcess.on('error', (e) => {
+      this.status = TorrentClientStatus.ERROR
       console.error(e)
       // Send error event with possible retry
     })
 
     this.downloadProcess.stderr.on('data', (e) => {
+      this.status = TorrentClientStatus.ERROR
       console.error(e.toString())
     })
 

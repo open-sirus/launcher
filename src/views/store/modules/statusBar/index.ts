@@ -42,7 +42,7 @@ const actions: IStatusActions = {
     commit('SET_STATUS', RequestStatus.PENDING)
 
     try {
-      const { data: realms }: { data: Array<IRealm> } = await axios.get(
+      const { data: realms = [] }: { data: Array<IRealm> } = await axios.get(
         '/server/status'
       )
 
