@@ -98,6 +98,12 @@ export class TorrentClient {
         }
 
         switch (message.type) {
+          case 'download-setup': {
+            this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_SETUP, {
+              message,
+            })
+            break
+          }
           case 'download-started': {
             // Name of directory in message
             this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_STARTED, {
@@ -128,12 +134,6 @@ export class TorrentClient {
           }
           case 'download-error': {
             this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_ERROR, {
-              message,
-            })
-            break
-          }
-          case 'download-setup': {
-            this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_SETUP, {
               message,
             })
             break
@@ -180,8 +180,9 @@ export class TorrentClient {
       }
     }
 
+    const CLIENT_FOLDER_NAME = 'World of Warcraft Sirus' // TODO: get from torrent event
     this.eventBus.emit(LauncherEvent.TORRENT_SELECT_FOLDER_SUCCESS, {
-      directory,
+      directory: resolvePath(directory, CLIENT_FOLDER_NAME),
     })
 
     const torrentFilePath = resolvePath(

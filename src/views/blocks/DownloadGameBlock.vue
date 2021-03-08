@@ -1,5 +1,10 @@
 <template>
-  <progress-bar :progress="progress" :status="statusText" :title="title" />
+  <progress-bar
+    v-if="showBlock"
+    :progress="progress"
+    :status="statusText"
+    :title="title"
+  />
 </template>
 
 <script lang="ts">
