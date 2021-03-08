@@ -1,32 +1,22 @@
 import axios from 'axios'
+import * as stream from 'stream'
 import { createWriteStream } from 'fs'
+import { promisify } from 'util'
+
+const finished = promisify(stream.finished)
 
 export async function downloadFile(
   fileUrl: string,
   outputLocationPath: string
-): Promise<undefined> {
+): Promise<void> {
   const writer = createWriteStream(outputLocationPath)
 
   return axios({
     method: 'get',
     url: fileUrl,
     responseType: 'stream',
-  }).then((response) => {
-    return new Promise((resolve, reject) => {
-      response.data.pipe(writer)
-      let error: Error | null = null
-
-      writer.on('error', (err) => {
-        error = err
-        writer.close()
-        reject(err)
-      })
-
-      writer.on('close', () => {
-        if (!error) {
-          resolve(undefined)
-        }
-      })
-    })
+  }).then(async (response) => {
+    response.data.pipe(writer)
+    return finished(writer)
   })
 }

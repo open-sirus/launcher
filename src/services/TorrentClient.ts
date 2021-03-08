@@ -110,8 +110,12 @@ export class TorrentClient {
             break
           }
           case 'progress':
-          case 'checking': {
             this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_PROGRESS, {
+              message,
+            })
+            break
+          case 'checking': {
+            this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_CHECKING, {
               message,
             })
             break

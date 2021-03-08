@@ -57,6 +57,8 @@ export const ru = {
     account_duplicate: 'Аккаунт уже внесен в список',
     system_not_supported:
       'Загрузка игры поддерживатеся только для Windows и Linux',
+    download_game_error: 'Во время загрузки произошла ошибка',
+    download_game_started: 'Началась загрузка игры',
   },
   steps: {
     select_folder: {
@@ -75,5 +77,13 @@ export const ru = {
     'next-step': 'Далее',
     'prev-step': 'Назад',
     skip: 'Пропустить',
+  },
+  torrent: {
+    status: {
+      checking: 'Проверка файлов',
+      in_progress: 'Загрузка',
+    },
+    checked_count: 'Проверенно {count} Мб',
+    downloaded_count: 'Загруженно {count} Мб {speed} Мб/с',
   },
 } as const

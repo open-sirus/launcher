@@ -56,6 +56,8 @@ export const en = {
       'Account password has been changed or auth token has expired, re-login please',
     account_duplicate: 'Account already exist in account list',
     system_not_supported: 'Your system is not supported for download game',
+    download_game_error: 'An error occurred while downloading',
+    download_game_started: 'Game downloading was started',
   },
   steps: {
     select_folder: {
@@ -74,5 +76,11 @@ export const en = {
     'next-step': 'Next',
     'prev-step': 'Back',
     skip: 'Skip',
+  },
+  torrent: {
+    status: {
+      checking: 'File checking',
+      in_progress: 'Downloading',
+    },
   },
 } as const

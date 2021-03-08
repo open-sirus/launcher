@@ -25,6 +25,7 @@ export enum LauncherEvent {
   TORRENT_SELECT_FOLDER_ERROR = 'TORRENT_SELECT_FOLDER_ERROR',
   TORRENT_SELECT_FOLDER_SUCCESS = 'TORRENT_SELECT_FOLDER_SUCCESS',
   TORRENT_DOWNLOAD_DONE = 'TORRENT_DOWNLOAD_DONE',
+  TORRENT_DOWNLOAD_CHECKING = 'TORRENT_DOWNLOAD_CHECKING',
   TORRENT_DOWNLOAD_PROGRESS = 'TORRENT_DOWNLOAD_PROGRESS',
   TORRENT_DOWNLOAD_ERROR = 'TORRENT_DOWNLOAD_ERROR',
   TORRENT_DOWNLOAD_SETUP = 'TORRENT_DOWNLOAD_STARTED',
@@ -82,6 +83,7 @@ export interface ITorrentData {
 
 export interface ITorrentProgressData {
   message: {
+    bytes: number
     progress: number
     // eslint-disable-next-line camelcase
     bytes_done: number
@@ -89,6 +91,15 @@ export interface ITorrentProgressData {
   }
 }
 
+export interface ITorrentCheckingData {
+  message: {
+    bytes: number
+    progress: number
+    // eslint-disable-next-line camelcase
+    bytes_done: number
+    speed: number
+  }
+}
 export interface ITorrentDownloadError extends ITorrentData {
   isDisabled?: boolean
   message: string
@@ -113,6 +124,7 @@ export type EventData = {
   [LauncherEvent.TORRENT_SELECT_FOLDER_ERROR]: ITorrentSelectFolderData
   [LauncherEvent.TORRENT_SELECT_FOLDER_SUCCESS]: ITorrentSelectFolderData
   [LauncherEvent.TORRENT_DOWNLOAD_DONE]: null
+  [LauncherEvent.TORRENT_DOWNLOAD_CHECKING]: ITorrentCheckingData
   [LauncherEvent.TORRENT_DOWNLOAD_PROGRESS]: ITorrentProgressData
   [LauncherEvent.TORRENT_DOWNLOAD_ERROR]: ITorrentDownloadError
   [LauncherEvent.TORRENT_DOWNLOAD_SETUP]: ITorrentData
