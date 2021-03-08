@@ -1,14 +1,14 @@
-import type { ChildProcessWithoutNullStreams } from 'child_process'
-import { spawn as spawnChildProcess } from 'child_process'
-import { resolve as resolvePath } from 'path'
 // @ts-ignore
 import TorrentDownloader from '@sirussu/torrent-downloader'
-import { dialog } from 'electron'
-import { is } from 'electron-util'
+import { spawn as spawnChildProcess } from 'child_process'
+import type { ChildProcessWithoutNullStreams } from 'child_process'
+import { resolve as resolvePath } from 'path'
+import { dialog, app } from 'electron'
 
 import { replaceLast } from '@/utils/replaceLast'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { CallbackListener } from '@/events/CallbackListener'
+import { downloadFile } from '@/utils/downloadFile'
 
 import type { EventBus } from './EventBus'
 
@@ -146,7 +146,7 @@ export class TorrentClient {
   }
 
   private async startTorrenting(torrentId: string, torrentUrl: string) {
-    if (is.macos) {
+    if (process.platform === 'darwin') {
       this.eventBus.emit(LauncherEvent.SYSTEM_NOT_SUPPORTED_ERROR)
       return
     }
@@ -180,9 +180,15 @@ export class TorrentClient {
       directory,
     })
 
+    const torrentFilePath = resolvePath(
+      app.getPath('userData'),
+      'sirus.torrent'
+    )
+    await downloadFile(torrentUrl, torrentFilePath)
+
     this.downloadProcess = spawnChildProcess(this.torrentDownloaderPath, [
       'torrent',
-      torrentUrl,
+      torrentFilePath,
       directory,
     ])
 

@@ -1,5 +1,3 @@
-'use strict'
-
 import type { Tray } from 'electron'
 import { app, BrowserWindow, protocol } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'

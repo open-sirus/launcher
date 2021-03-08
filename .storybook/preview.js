@@ -10,8 +10,6 @@ import * as _Vuetify from 'vuetify/lib'
 import ru from 'vuetify/es5/locale/ru'
 import en from 'vuetify/es5/locale/en'
 
-import '@/assets/app.scss'
-
 import { i18n } from '../src/views/modules/i18n'
 
 const Vuetify = _Vuetify.default

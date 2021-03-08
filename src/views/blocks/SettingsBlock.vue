@@ -25,7 +25,12 @@
         <template #append-outer>
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn @click="chooseFolder" icon v-bind="attrs" v-on="on">
+              <v-btn
+                @click.native.stop="chooseFolder"
+                icon
+                v-bind="attrs"
+                v-on="on"
+              >
                 <v-icon color="white" class="mr-0" size="22">
                   {{ mdiFolder }}
                 </v-icon>
@@ -35,7 +40,12 @@
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn @click="downloadNewGame" icon v-bind="attrs" v-on="on">
+              <v-btn
+                @click.native.stop="downloadNewGame"
+                icon
+                v-bind="attrs"
+                v-on="on"
+              >
                 <v-icon color="white" class="mr-0" size="22">
                   {{ mdiDownload }}
                 </v-icon>
