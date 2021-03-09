@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Feeds from '@/views/pages/Feeds.vue'
 import Settings from '@/views/pages/Settings.vue'
 import Accounts from '@/views/pages/Accounts.vue'
+import Profile from '@/views/pages/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,11 @@ const routes = [
     path: '/accounts',
     name: 'Accounts',
     component: Accounts,
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
   },
 ]
 

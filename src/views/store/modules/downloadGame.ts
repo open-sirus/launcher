@@ -101,6 +101,22 @@ const actions: IDownloadGameActions = {
     )
 
     eventService.on(
+      LauncherEvent.TORRENT_DOWNLOAD_DONE,
+      new CallbackListener<LauncherEvent.TORRENT_DOWNLOAD_DONE>(() => {
+        commit('SET_STATUS', DownloadGameStatus.IDLE)
+
+        dispatch(
+          'notification/addNotification',
+          {
+            type: NotificationTypes.INFO,
+            i18n: 'download_game_done',
+          },
+          { root: true }
+        )
+      })
+    )
+
+    eventService.on(
       LauncherEvent.TORRENT_DOWNLOAD_ERROR,
       new CallbackListener(() => {
         commit('SET_STATUS', DownloadGameStatus.FAILED)
@@ -115,6 +131,7 @@ const actions: IDownloadGameActions = {
         )
       })
     )
+
     eventService.on(
       LauncherEvent.SYSTEM_NOT_SUPPORTED_ERROR,
       new CallbackListener(() => {

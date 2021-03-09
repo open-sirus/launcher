@@ -1,10 +1,21 @@
 <template>
-  <progress-bar
-    v-if="showBlock"
-    :progress="progress"
-    :status="statusText"
-    :title="title"
-  />
+  <div v-if="showBlock" class="download-game-block">
+    <progress-bar :progress="progress" :status="statusText" :title="title" />
+    <v-tooltip left>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          icon
+          @click="stopDownload"
+          class="stop-download"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon color="white">mdi-stop</v-icon>
+        </v-btn>
+      </template>
+      <span> {{ $t('torrent.stop') }}</span>
+    </v-tooltip>
+  </div>
 </template>
 
 <script lang="ts">
@@ -18,10 +29,12 @@ import type {
   IDownloadGameState,
 } from '@/views/store/modules/downloadGame'
 
-const { useGetters: downloadGameGetters } = createNamespacedHelpers<
-  IDownloadGameState,
-  IDownloadGameGetters
->('downloadGame')
+const {
+  useGetters: downloadGameGetters,
+  useActions: downloadGameActions,
+} = createNamespacedHelpers<IDownloadGameState, IDownloadGameGetters>(
+  'downloadGame'
+)
 
 const i18nKeyByStatus = {
   [DownloadGameStatus.CHECKING]: 'checking',
@@ -40,8 +53,9 @@ export default defineComponent({
       'downloaded',
       'status',
     ])
+    const { stopDownload } = downloadGameActions(['stopDownload'])
 
-    return { progress, speed, total, status, downloaded }
+    return { progress, speed, total, status, downloaded, stopDownload }
   },
   computed: {
     showBlock() {
@@ -70,3 +84,18 @@ export default defineComponent({
   },
 })
 </script>
+
+<style scoped>
+.download-game-block {
+  display: flex;
+  align-items: flex-end;
+}
+
+.progress-bar {
+  padding-right: 0;
+}
+
+.stop-download {
+  bottom: 10px;
+}
+</style>

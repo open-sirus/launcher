@@ -12,6 +12,76 @@ export interface IAuthResponse {
   tokenIsExpired: boolean
 }
 
+export interface ILoyaltyInfo {
+  percent: number
+  next: number
+  current: number
+  level: number
+  nextLevel: number
+}
+
+export interface IShards {
+  id: number
+  shard: number
+  mmotop: number
+  total: number
+  total2: number
+  referrals: number
+  updatedAt: Date
+  loyaltyInfo: ILoyaltyInfo
+}
+
+export interface IPremium {
+  id: number
+  setdate: number
+  unsetdate: number
+  active: number
+}
+
+export interface IAccountAccess {
+  id: number
+  gmlevel: number
+  realmID: number
+  comment: string
+}
+
+export interface IAccountInfo {
+  id: number
+  username: string
+  email: string
+  joindate: Date
+  lastIp: string
+  failedLogins: number
+  locked: number
+  lastLogin: Date
+  online: number
+  mutetime: number
+  mutereason: string
+  locale: number
+  timezoneBias?: Date
+  os: string
+  isSuspect: number
+  createdAt: string
+  updatedAt: Date
+  fromAds: string
+  gmRestrictExcluded: number
+  regMail: string
+  lastAttemptIp: string
+  muteby: string
+  passwordTime?: Date
+  flags: number
+  emailVerifiedAt?: Date
+  hasTfa: boolean
+  currentIp: string
+  spentTime: number
+  allowEmailChange: boolean
+  bannedIp?: boolean
+  banned?: boolean
+  shards: IShards
+  premium: IPremium
+  accountAccess: IAccountAccess
+}
+
 export interface IAccount {
   id: number
   username: string
@@ -19,6 +89,7 @@ export interface IAccount {
   tfaToken?: string
   tokens: IAuthResponse
   tokenIsExpired: boolean
+  accountInfo: IAccountInfo
 }
 
 export interface INormalizedAccount {

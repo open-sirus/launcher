@@ -24,6 +24,14 @@
           <v-list-item-title>{{ $t('sidebar.accounts') }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item v-if="hasDefaultAccount" to="/profile">
+        <v-list-item-action>
+          <v-icon>mdi-account</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>{{ $t('sidebar.profile') }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
       <v-list-item to="/settings">
         <v-list-item-action>
           <v-icon>mdi-cog</v-icon>
@@ -35,3 +43,34 @@
     </v-list>
   </v-navigation-drawer>
 </template>
+<script lang="ts">
+import { createNamespacedHelpers } from 'vuex-composition-helpers'
+import { defineComponent } from '@vue/composition-api'
+
+import type {
+  IAccountsActions,
+  IAccountsGetters,
+  IAccountsState,
+} from '@/views/store/modules/accounts/types'
+
+const { useGetters: useAccountsGetters } = createNamespacedHelpers<
+  IAccountsState,
+  IAccountsGetters,
+  IAccountsActions
+>('accounts')
+
+export default defineComponent({
+  setup() {
+    const { defaultAccount } = useAccountsGetters(['defaultAccount'])
+
+    return {
+      defaultAccount,
+    }
+  },
+  computed: {
+    hasDefaultAccount() {
+      return Boolean(this.defaultAccount)
+    },
+  },
+})
+</script>

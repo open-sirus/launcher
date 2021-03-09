@@ -3,6 +3,7 @@ export const ru = {
     news: 'Новости',
     settings: 'Настройки',
     accounts: 'Аккаунты',
+    profile: 'Профиль',
   },
   settings: {
     choose_lang: 'Выберите язык',
@@ -59,6 +60,7 @@ export const ru = {
       'Загрузка игры поддерживатеся только для Windows и Linux',
     download_game_error: 'Во время загрузки произошла ошибка',
     download_game_started: 'Началась загрузка игры',
+    download_game_done: 'Загрузка игры завершена',
   },
   steps: {
     select_folder: {
@@ -83,6 +85,7 @@ export const ru = {
       checking: 'Проверка файлов',
       in_progress: 'Загрузка',
     },
+    stop: 'Остановить загрузку',
     checked_count: 'Проверенно {count} Мб',
     downloaded_count: 'Загруженно {count} Мб {speed} Мб/с',
   },

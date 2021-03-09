@@ -3,6 +3,7 @@ export const en = {
     news: 'News',
     settings: 'Settings',
     accounts: 'Accounts',
+    profile: 'Profile',
   },
   settings: {
     choose_lang: 'Choose language',
@@ -58,6 +59,7 @@ export const en = {
     system_not_supported: 'Your system is not supported for download game',
     download_game_error: 'An error occurred while downloading',
     download_game_started: 'Game downloading was started',
+    download_game_done: 'Game downloading is done',
   },
   steps: {
     select_folder: {
@@ -82,6 +84,7 @@ export const en = {
       checking: 'File checking',
       in_progress: 'Downloading',
     },
+    stop: 'Stop download',
     checked_count: 'Checked {count} Mb',
     downloaded_count: 'Downloaded {count} Mb {speed} Mb/s',
   },
