@@ -103,6 +103,8 @@ export class TorrentClient {
           }
           case 'download-done': {
             this.eventBus.emit(LauncherEvent.TORRENT_DOWNLOAD_DONE)
+
+            this.stopTorrenting()
             break
           }
           case 'progress':
@@ -222,5 +224,6 @@ export class TorrentClient {
     }
 
     this.downloadProcess.kill()
+    this.downloadProcess = null
   }
 }

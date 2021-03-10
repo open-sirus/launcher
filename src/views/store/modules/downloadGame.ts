@@ -44,9 +44,6 @@ export interface IDownloadGameActions
     ctx: ActionContext<IDownloadGameState, IRootState>
   ) => void
   startDownload: (ctx: ActionContext<IDownloadGameState, IRootState>) => void
-  continueDownloadIfResumable: (
-    ctx: ActionContext<IDownloadGameState, IRootState>
-  ) => void
   stopDownload: (ctx: ActionContext<IDownloadGameState, IRootState>) => void
   startDownloadOnStartUp: (
     ctx: ActionContext<IDownloadGameState, IRootState>
@@ -152,14 +149,10 @@ const actions: IDownloadGameActions = {
       torrentUrl: TORRENT_URL,
     })
   },
-  continueDownloadIfResumable() {
-    eventService.emit(LauncherEvent.START_TORRENT, {
-      torrentId: TORRENT_KEY,
-      torrentUrl: TORRENT_URL,
-    })
-  },
-  stopDownload() {
+  stopDownload({ commit }) {
     eventService.emit(LauncherEvent.STOP_TORRENT)
+
+    commit('SET_STATUS', DownloadGameStatus.IDLE)
   },
   startDownloadOnStartUp({ state, rootGetters }) {
     if (

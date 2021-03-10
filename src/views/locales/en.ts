@@ -3,7 +3,6 @@ export const en = {
     news: 'News',
     settings: 'Settings',
     accounts: 'Accounts',
-    profile: 'Profile',
   },
   settings: {
     choose_lang: 'Choose language',

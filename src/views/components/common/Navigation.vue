@@ -29,7 +29,7 @@
           <v-icon>mdi-account</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>{{ $t('sidebar.profile') }}</v-list-item-title>
+          <v-list-item-title>{{ username }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-list-item to="/settings">
@@ -44,10 +44,12 @@
   </v-navigation-drawer>
 </template>
 <script lang="ts">
+import upperFirst from 'lodash/upperFirst'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 import { defineComponent } from '@vue/composition-api'
 
 import type {
+  IAccount,
   IAccountsActions,
   IAccountsGetters,
   IAccountsState,
@@ -70,6 +72,9 @@ export default defineComponent({
   computed: {
     hasDefaultAccount() {
       return Boolean(this.defaultAccount)
+    },
+    username() {
+      return upperFirst((this.defaultAccount as IAccount).username)
     },
   },
 })

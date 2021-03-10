@@ -3,7 +3,6 @@ export const ru = {
     news: 'Новости',
     settings: 'Настройки',
     accounts: 'Аккаунты',
-    profile: 'Профиль',
   },
   settings: {
     choose_lang: 'Выберите язык',
