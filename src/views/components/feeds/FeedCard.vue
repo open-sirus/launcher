@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-img :src="image" />
+    <v-img :src="image" width="375" height="212" />
     <v-card-title class="text-break">{{ feed.title }}</v-card-title>
     <v-divider />
     <v-card-actions>
