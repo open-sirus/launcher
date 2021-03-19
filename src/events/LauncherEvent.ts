@@ -1,9 +1,9 @@
 import type { LauncherFile, FileStatus } from '@/entities/LauncherFile'
 import type {
+  FileDownloadProgress,
   FileManageStatus,
   FileValidationProgress,
 } from '@/services/FileManageService'
-import type { IFile } from '@/types/files'
 
 export enum LauncherEvent {
   OPEN_SELECT_GAME_DIRECTORY_DIALOG = 'OPEN_SELECT_GAME_DIRECTORY_DIALOG',
@@ -64,10 +64,13 @@ export interface IFileStatusUpdated {
 
 export interface IFileManagerStatusChanged {
   status: FileManageStatus
-  progress: FileValidationProgress
+  progress: FileValidationProgress | FileDownloadProgress
 }
 
-export interface IFileListUpdated extends Array<IFile> {}
+export interface IFileListUpdated {
+  files: Array<LauncherFile>
+  clientPath: string
+}
 
 export interface ITorrentSelectFolderData {
   directory: string | null

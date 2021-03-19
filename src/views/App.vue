@@ -34,6 +34,7 @@ import type {
   IDownloadGameActions,
   IDownloadGameState,
 } from '@/views/store/modules/downloadGame'
+import type { IAppActions, IAppGetters } from '@/views/store/modules/app'
 
 import Navigation from './components/common/Navigation.vue'
 import StatusBarBlock from './blocks/StatusBarBlock.vue'
@@ -61,6 +62,11 @@ const { useActions: useDownloadGameActions } = createNamespacedHelpers<
   IDownloadGameActions
 >('downloadGame')
 
+const { useActions: useAppActions } = createNamespacedHelpers<
+  IAppActions,
+  IAppGetters
+>('app')
+
 export default defineComponent({
   components: {
     Notifications,
@@ -84,6 +90,9 @@ export default defineComponent({
 
     const { setIsFirstStart } = useSettingsActions(['setIsFirstStart'])
 
+    const { setValidationStatus } = useAppActions(['setValidationStatus'])
+
+    setValidationStatus(null)
     validateAccounts()
     setIsFirstStart()
     subscribeToTorrentEvents()

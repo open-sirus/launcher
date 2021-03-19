@@ -4,6 +4,7 @@ import differentWith from 'lodash/differenceWith'
 import { axios } from '@/views/modules/axios'
 import { modulesFactory } from '@/utils/modulesFactory'
 import { eventService } from '@/services/EventService'
+import type { IFileManagerStatusChanged } from '@/events/LauncherEvent'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import { LauncherFile } from '@/entities/LauncherFile'
 import { isPatchEqual } from '@/utils/patches'
@@ -23,6 +24,7 @@ export interface IAvailableLocale {
 
 export interface IAppState {
   files?: Array<IFile>
+  validationStatus?: IFileManagerStatusChanged
   filesToRemove: Array<IFile>
   launcherFiles: Array<IFile>
   availableLocales: Array<IAvailableLocale>
@@ -33,6 +35,7 @@ const state: IAppState = {
   files: [],
   filesToRemove: [],
   launcherFiles: [],
+  validationStatus: undefined,
   availableLocales: [
     { key: Langs.EN, lang: 'English' },
     { key: Langs.RU, lang: 'Русский' },
@@ -43,6 +46,9 @@ const state: IAppState = {
 const mutations: MutationTree<IAppState> = {
   SET_FILES(state, files) {
     state.files = files
+  },
+  SET_VALIDATION_STATUS(state, status) {
+    state.validationStatus = status
   },
   SET_FILES_TO_REMOVE(state, files) {
     state.filesToRemove = files
@@ -60,24 +66,28 @@ const mutations: MutationTree<IAppState> = {
 }
 
 export interface IAppActions extends ActionTree<IAppState, IRootState> {
-  loadFiles: (ctx: ActionContext<IAppState, IRootState>) => Promise<void>
+  loadFiles: (
+    ctx: ActionContext<IAppState, IRootState>,
+    force: boolean
+  ) => Promise<void>
   initialStart: (ctx: ActionContext<IAppState, IRootState>) => Promise<void>
 }
 
 const actions: IAppActions = {
-  async loadFiles({ commit, state }) {
+  async loadFiles({ commit, state, rootGetters }, force = false) {
     if (state.launcherFiles.find((f) => f.isDownloading)) {
       commit('SET_ERROR', DownloadErrors.ALREADY_IN_PROGRESS)
       return
     }
 
     const { data } = await axios.get('client/patches')
-    const patches: Array<IFile> = data.patches.map(LauncherFile.fromObject)
+    const patches = data.patches.map(LauncherFile.fromObject)
 
     commit('SET_FILES_TO_REMOVE', data.delete)
 
     // Update file list and emit event only when they was really changed
     if (
+      !force &&
       state.files &&
       patches.length === state.files.length &&
       // @ts-ignore
@@ -86,8 +96,11 @@ const actions: IAppActions = {
       return
     }
 
-    eventService.emit(LauncherEvent.FILE_LIST_UPDATED, data.patches)
-    commit('SET_FILES', data.patches)
+    eventService.emit(LauncherEvent.FILE_LIST_UPDATED, {
+      files: patches,
+      clientPath: rootGetters['settings/clientDirectory'],
+    })
+    commit('SET_FILES', patches)
   },
   async initialStart({ state, commit }) {
     state.launcherFiles.forEach((file) => {
@@ -96,14 +109,19 @@ const actions: IAppActions = {
       }
     })
   },
+  async setValidationStatus({ commit }, status) {
+    commit('SET_VALIDATION_STATUS', status)
+  },
 }
 
 export interface IAppGetters extends GetterTree<IAppState, IRootState> {
   availableLocales: (state: IAppState) => Array<IAvailableLocale>
+  validationStatus: (state: IAppState) => IFileManagerStatusChanged | undefined
 }
 
 const getters: IAppGetters = {
   availableLocales: (state) => state.availableLocales,
+  validationStatus: (state) => state.validationStatus,
 }
 
 export const appModule = modulesFactory<IAppState, IRootState>({

@@ -7,6 +7,8 @@ import { mocked } from 'ts-jest/utils'
 
 import type { IAppState } from '@/views/store/modules/app'
 import { appModule } from '@/views/store/modules/app'
+import type { ISettingsState } from '@/views/store/modules/settings'
+import { settingsModule } from '@/views/store/modules/settings'
 import { eventService } from '@/services/EventService'
 import { LauncherEvent } from '@/events/LauncherEvent'
 import type { IFile } from '@/types/files'
@@ -15,9 +17,11 @@ import { LauncherFile } from '@/entities/LauncherFile'
 jest.mock('@/services/EventService')
 
 describe('File list receive', () => {
-  let store: Store<{ app: IAppState }>
+  let store: Store<{ app: IAppState; settings: ISettingsState }>
   let localVue
-  const baseURL = 'https://api.sirus.su'
+  // @ts-ignore
+  const baseURL: string = process.env.VUE_APP_FILE_RESOLVER_URL
+  const clientDirectory = '/home/client/directory'
 
   const RESPONSE: { patches: Array<IFile>; delete: Array<IFile> } = {
     patches: [
@@ -95,7 +99,12 @@ describe('File list receive', () => {
 
     incompleteFiles = [INCOMPLETE_FILE, INCOMPLETE_FILE_2]
 
-    store = new Vuex.Store({ modules: { app: cloneDeep(appModule) } })
+    store = new Vuex.Store({
+      modules: {
+        app: cloneDeep(appModule),
+        settings: cloneDeep(settingsModule),
+      },
+    })
 
     MockedEventService.emit.mockClear()
 
@@ -104,9 +113,7 @@ describe('File list receive', () => {
 
   it.skip('load file list from server', async () => {
     // TODO: Remove cases to separated file store
-    nock(baseURL)
-      .get('/api/client/patches')
-      .reply(200, { data: { data: RESPONSE } })
+    nock(baseURL).get('/client/patches').reply(200, RESPONSE)
 
     await store.dispatch('app/loadFiles', null, { root: true })
     expect(store.state.app.files).toStrictEqual(
@@ -136,7 +143,7 @@ describe('File list receive', () => {
     store.commit('app/SET_FILES', RESPONSE.patches.map(LauncherFile.fromObject))
 
     nock(baseURL)
-      .get('/api/client/patches')
+      .get('/client/patches')
       .reply(500, { error: 'Internal server error' })
 
     try {
@@ -153,9 +160,7 @@ describe('File list receive', () => {
     expect.assertions(1)
     store.commit('app/SET_FILES', RESPONSE.patches.map(LauncherFile.fromObject))
 
-    nock('https://api.sirus.su/')
-      .get('/api/client/patches')
-      .reply(200, RESPONSE)
+    nock(baseURL).get('/client/patches').reply(200, RESPONSE)
 
     await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).not.toBeCalled()
@@ -163,50 +168,59 @@ describe('File list receive', () => {
 
   it('event should be emitted if list of files was empty', async () => {
     expect.assertions(1)
-
-    nock('https://api.sirus.su/')
-      .get('/api/client/patches')
-      .reply(200, RESPONSE)
+    store.commit('settings/SET_CLIENT_DIRECTORY', clientDirectory)
+    nock(baseURL).get('/client/patches').reply(200, RESPONSE)
 
     await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).toBeCalledWith(
       LauncherEvent.FILE_LIST_UPDATED,
-      RESPONSE.patches
+      {
+        files: RESPONSE.patches.map(LauncherFile.fromObject),
+        clientPath: clientDirectory,
+      }
     )
   })
 
   it('event should be emitted if list of files has different size', async () => {
     store.commit('app/SET_FILES', RESPONSE.patches)
+    store.commit('settings/SET_CLIENT_DIRECTORY', clientDirectory)
     expect.assertions(1)
 
     const patches = [RESPONSE.patches[0], RESPONSE.patches[1]]
 
-    nock('https://api.sirus.su/')
-      .get('/api/client/patches')
+    nock(baseURL)
+      .get('/client/patches')
       .reply(200, { patches, delete: RESPONSE.delete })
 
     await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).toBeCalledWith(
       LauncherEvent.FILE_LIST_UPDATED,
-      patches
+      {
+        files: patches.map(LauncherFile.fromObject),
+        clientPath: clientDirectory,
+      }
     )
   })
 
   it('event should be emitted if one of fields changed', async () => {
     store.commit('app/SET_FILES', RESPONSE.patches)
+    store.commit('settings/SET_CLIENT_DIRECTORY', clientDirectory)
     expect.assertions(1)
 
     const patches = [...RESPONSE.patches]
     patches[0] = { ...patches[0], md5: '393ABCBA77B8E369DD83XXXXXXXXX' }
 
-    nock('https://api.sirus.su/')
-      .get('/api/client/patches')
+    nock(baseURL)
+      .get('/client/patches')
       .reply(200, { patches, delete: RESPONSE.delete })
 
     await store.dispatch('app/loadFiles')
     expect(MockedEventService.emit).toBeCalledWith(
       LauncherEvent.FILE_LIST_UPDATED,
-      patches
+      {
+        files: patches.map(LauncherFile.fromObject),
+        clientPath: clientDirectory,
+      }
     )
   })
 })
