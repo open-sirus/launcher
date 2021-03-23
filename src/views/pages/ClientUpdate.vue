@@ -46,7 +46,11 @@ import { NotificationTypes } from '@/types/notification'
 import type { ISettingsGetters } from '@/views/store/modules/settings'
 import type { INotificationActions } from '@/views/store/modules/notification'
 import type { IAppActions, IAppGetters } from '@/views/store/modules/app'
-import { FileManageStatus } from '@/services/FileManageService'
+import {
+  FileDownloadProgress,
+  FileManageStatus,
+  FileValidationProgress,
+} from '@/services/FileManageService'
 const {
   useGetters: useSettingsGetters,
 } = createNamespacedHelpers<ISettingsGetters>('settings')
@@ -90,6 +94,12 @@ export default defineComponent({
         return progress
       }
 
+      if (
+        !(validationStatus.value.progress instanceof FileValidationProgress)
+      ) {
+        return progress
+      }
+
       const {
         filesCount,
         validatedCount,
@@ -112,6 +122,10 @@ export default defineComponent({
       }
 
       if (!validationStatus.value) {
+        return progress
+      }
+
+      if (!(validationStatus.value.progress instanceof FileDownloadProgress)) {
         return progress
       }
 

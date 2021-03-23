@@ -3,6 +3,7 @@ export const en = {
     news: 'News',
     settings: 'Settings',
     accounts: 'Accounts',
+    updates: 'Updates',
   },
   settings: {
     choose_lang: 'Choose language',
@@ -13,6 +14,7 @@ export const en = {
       existed: 'Select existed',
       new: 'Download new',
     },
+    set_up_client_directory: 'Please, set client directory in the settings',
     errors: {
       wrong_client_directory: 'Please, select correct directory',
     },
@@ -86,5 +88,12 @@ export const en = {
     stop: 'Stop download',
     checked_count: 'Checked {count} Mb',
     downloaded_count: 'Downloaded {count} Mb {speed} Mb/s',
+  },
+  update: {
+    'no-updates': 'Has no new updates now.',
+    validation_in_progress: 'Validation is in progress...',
+    client: {
+      'force-check': 'Check client',
+    },
   },
 } as const
