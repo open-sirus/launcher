@@ -93,6 +93,7 @@ export const ru = {
   },
   update: {
     'no-updates': 'Новых обновлений нет.',
+    'update-in-progress': 'Выполняется обновление клиента игры',
     validation_in_progress: 'Валидация файлов...',
     client: {
       'force-check': 'Проверить клиент',

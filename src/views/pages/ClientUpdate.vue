@@ -1,7 +1,11 @@
 <template>
   <v-card class="client-update">
     <v-card-title>
-      {{ $t('update.no-updates') }}
+      {{
+        isDownloadingInProgress
+          ? $t('update.no-updates')
+          : $t('update.update-in-progress')
+      }}
     </v-card-title>
     <v-card-text v-if="isValidationInProgress">
       <div class="mb-2">{{ $t('update.validation_in_progress') }}</div>

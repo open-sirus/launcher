@@ -46,6 +46,18 @@ export class LauncherFile
     )
   }
 
+  /**
+   * Restore object after deep clone
+   * @param data
+   */
+  static restore(data: LauncherFile) {
+    const file = LauncherFile.fromObject({ ...data, md5: data.hash })
+
+    file.downloadProgress = data.downloadProgress
+
+    return file
+  }
+
   constructor(
     filename: string,
     path: string,
@@ -58,7 +70,7 @@ export class LauncherFile
     this.size = size
     this.hash = hash
     this.filename = filename
-    this.filePath = nodePath.normalize(this.path + this.filename)
+    this.filePath = nodePath.join(this.path, this.filename)
     this.downloadProgress = null
   }
 
@@ -66,6 +78,10 @@ export class LauncherFile
     isIncomplete: false,
     isValid: false,
     isValidating: false,
+  }
+
+  get downloadFilename(): string {
+    return this.filename + '_' + this.hash
   }
 
   get isDownloading() {
